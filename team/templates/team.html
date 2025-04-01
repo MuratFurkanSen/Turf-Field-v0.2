@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/team.css' %}">
+{% endblock %}
+{% block content %}
+    <div class="content">
+        <div class="left-div">
+            <h2 style="margin-top: 0;">Takım</h2>
+            <img src="{% static 'images/acikksaha.png' %}" alt="Deneme Hali Saha"
+                 style="box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
+            <div class="edit-button" style="text-align: center;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"
+                 onclick="openPopup()">Düzenle
+            </div>
+        </div>
+        <img src="{% static 'images/line.png' %}" alt="Line" style="width: 100px; height: auto; margin: 0 10px;">
+        <div class="right-div"
+             style="width: 40%; padding: 0; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start;">
+            <div class="bekleyen-rezervasyonlar" style="width: 100%; margin-top: 0;">
+                <h2 style="margin-top: 0;">Bekleyen Rezervasyonlar</h2>
+            </div>
+            <div class="ana-div" style="width: 100%; margin: 20px auto; padding: 20px; box-sizing: border-box;">
+                <div class="ilk-div">
+                    <img src="path/to/photo.jpg" alt="Fotoğraf" style="display: inline; margin-right: 10px;">
+                    <span style="display: inline; font-weight: bold;">Şahlanlar Halı Saha</span>
+                    <span style="display: inline; margin: 0 10px;">|</span>
+                    <span style="display: inline;">18.00-19.00</span>
+                    <!-- İlk div içeriği buraya gelecek -->
+                </div>
+                <div class="ikinci-div" style="margin-top: 40px; padding: 5px;">
+                    <h3>Ödeme Bekleyenler</h3>
+                    <div class="slider">
+                        <div class="slides">
+                            <div class="slide">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 1"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 2"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 3"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 4"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 5"
+                                     style="width: 20%; height: auto; margin-bottom: 15px;">
+                            </div>
+                            <div class="slide">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 6"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 7"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 8"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 9"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 10"
+                                     style="width: 20%; height: auto; margin-bottom: 15px;">
+                            </div>
+                            <div class="slide">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 11"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 12"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 13"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 14"
+                                     style="width: 20%; height: auto; margin-right: 5%; margin-bottom: 15px;">
+                                <img src="{% static 'images/kapkap.JPG' %}" alt="Fotoğraf 15"
+                                     style="width: 20%; height: auto; margin-bottom: 15px;">
+                            </div>
+                        </div>
+                        <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+                        <button class="next" onclick="changeSlide(1)">&#10095;</button>
+                    </div>
+                    <!-- İkinci div içeriği buraya gelecek -->
+                </div>
+                <div class="ucuncu-div">
+                    <button style="padding: 10px 20px; background-color: #6ec6ff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">
+                        Ödeme Yap
+                    </button>
+                    <!-- Üçüncü div içeriği buraya gelecek -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="popup" id="editPopup">
+        <div class="popup-content">
+            <span class="close" onclick="closePopup()">&times;</span>
+            <div class="popup-left" style="background-color: #006400;">
+                <div class="search-container"
+                     style="display: flex; align-items: center; background-color: white; padding: 8px; border-radius: 20px; margin: 10px 0;">
+                    <img src="{% static 'images/search.png' %}" alt="Search"
+                         style="width: 20px; height: 20px; margin-right: 8px;">
+                    <input type="text" placeholder="ID ile Oyuncu Ekle..."
+                           style="border: none; outline: none; width: 100%; background: transparent;">
+                </div>
+
+                <div class="player-cards"
+                     style="margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
+                    <div class="player-card" draggable="true"
+                         style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: move;">
+                        <img src="{% static 'images/kapkap.JPG' %}" alt="Kapkap"
+                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid red;">
+                        <p style="margin: 4px 0; color: white; font-weight: bold; font-size: 12px;">Kapkap</p>
+                        <div style="display: flex; gap: 5px; margin-top: 4px;">
+                            <button onclick="changeColor(this, 'red')"
+                                    style="width: 20px; height: 20px; background-color: red; border: none; border-radius: 50%; cursor: pointer;"></button>
+                            <button onclick="changeColor(this, 'blue')"
+                                    style="width: 20px; height: 20px; background-color: blue; border: none; border-radius: 50%; cursor: pointer;"></button>
+                        </div>
+                    </div>
+                    <div class="player-card" draggable="true"
+                         style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: move;">
+                        <img src="{% static 'images/kapkap.JPG' %}" alt="Kapkap"
+                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;border: 2px solid red;">
+                        <p style="margin: 4px 0; color: white; font-weight: bold; font-size: 12px;">Kafkas</p>
+                        <div style="display: flex; gap: 5px; margin-top: 4px;">
+                            <button onclick="changeColor(this, 'red')"
+                                    style="width: 20px; height: 20px; background-color: red; border: none; border-radius: 50%; cursor: pointer;"></button>
+                            <button onclick="changeColor(this, 'blue')"
+                                    style="width: 20px; height: 20px; background-color: blue; border: none; border-radius: 50%; cursor: pointer;"></button>
+                        </div>
+                    </div>
+                    <div class="player-card" draggable="true"
+                         style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: move;">
+                        <img src="{% static 'images/kapkap.JPG' %}" alt="Kapkap"
+                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;border: 2px solid red;">
+                        <p style="margin: 4px 0; color: white; font-weight: bold; font-size: 12px;">Kıvanç</p>
+                        <div style="display: flex; gap: 5px; margin-top: 4px;">
+                            <button onclick="changeColor(this, 'red')"
+                                    style="width: 20px; height: 20px; background-color: red; border: none; border-radius: 50%; cursor: pointer;"></button>
+                            <button onclick="changeColor(this, 'blue')"
+                                    style="width: 20px; height: 20px; background-color: blue; border: none; border-radius: 50%; cursor: pointer;"></button>
+                        </div>
+                    </div>
+                    <div class="player-card" draggable="true"
+                         style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: move;">
+                        <img src="{% static 'images/kapkap.JPG' %}" alt="Kapkap"
+                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;border: 2px solid red;">
+                        <p style="margin: 4px 0; color: white; font-weight: bold; font-size: 12px;">Kazak</p>
+                        <div style="display: flex; gap: 5px; margin-top: 4px;">
+                            <button onclick="changeColor(this, 'red')"
+                                    style="width: 20px; height: 20px; background-color: red; border: none; border-radius: 50%; cursor: pointer;"></button>
+                            <button onclick="changeColor(this, 'blue')"
+                                    style="width: 20px; height: 20px; background-color: blue; border: none; border-radius: 50%; cursor: pointer;"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-right"
+                 style="background-image: url('{% static 'images/acikksaha.png' %}'); background-size: cover; background-position: center; position: relative;"
+                 ondragover="allowDrop(event)" ondrop="drop(event)">
+            </div>
+            <button onclick="saveImage()"
+                    style="position: absolute; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                Görüntüyü Kaydet
+            </button>
+        </div>
+    </div>
+
+    <div id="kartimPopup" class="kartim-popup">
+        <div class="kartim-popup-content">
+            <span class="kartim-close">&times;</span>
+            <div class="kartim-container">
+                <div class="kartim-left">
+                    <img src="{% static 'images/fifacarti.png' %}" alt="FIFA Card" class="fifa-card">
+                </div>
+                <div class="kartim-right">
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-title">Hız</div>
+                            <div class="stat-value">85</div>
+                            <div class="stat-subtitle">
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Sprint Hızı</span>
+                                        <span class="sub-stat-value">87</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-title">Şut</div>
+                            <div class="stat-value">78</div>
+                            <div class="stat-subtitle">
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Atak Pozisyonu</span>
+                                        <span class="sub-stat-value">76</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Bitiricilik</span>
+                                        <span class="sub-stat-value">80</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Şut Gücü</span>
+                                        <span class="sub-stat-value">82</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-title">Pas</div>
+                            <div class="stat-value">82</div>
+                            <div class="stat-subtitle">
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Oyun Görüşü</span>
+                                        <span class="sub-stat-value">84</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Kısa Pas</span>
+                                        <span class="sub-stat-value">85</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Uzun Pas</span>
+                                        <span class="sub-stat-value">78</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-title">Dribbling</div>
+                            <div class="stat-value">88</div>
+                            <div class="stat-subtitle">
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Çeviklik</span>
+                                        <span class="sub-stat-value">89</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Top Kontrolü</span>
+                                        <span class="sub-stat-value">87</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Dribbling</span>
+                                        <span class="sub-stat-value">86</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-title">Defans</div>
+                            <div class="stat-value">75</div>
+                            <div class="stat-subtitle">
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Defansif Farkındalık</span>
+                                        <span class="sub-stat-value">74</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Müdahale</span>
+                                        <span class="sub-stat-value">77</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-title">Fizik</div>
+                            <div class="stat-value">80</div>
+                            <div class="stat-subtitle">
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Dayanıklılık</span>
+                                        <span class="sub-stat-value">83</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Güç</span>
+                                        <span class="sub-stat-value">78</span>
+                                    </div>
+                                </div>
+                                <div class="sub-stats-container">
+                                    <div class="sub-stat">
+                                        <span class="sub-stat-name">Çalışkanlık</span>
+                                        <span class="sub-stat-value">85</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extraJS %}
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="{% static 'js/team.js' %}"></script>
+{% endblock %}

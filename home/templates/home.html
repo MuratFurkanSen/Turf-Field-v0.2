@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="hero-section">
+        <div class="background-mark">
+            <img src="{% static 'images/background_shape.png' %}" alt="Background Shape">
+        </div>
+
+        <div class="hero-content">
+            <h1>
+                <span class="text-dark">Futbol</span>
+                <span class="text-red">Aşkını</span>
+                <span class="text-dark">Tazele</span>
+            </h1>
+            <p>Kolayca halısaha kirala</p>
+            <button class="cta-button">KİRALA</button>
+        </div>
+
+        <div class="hero-image">
+            <img src="{% static 'images/player.png' %}" alt="Football Player">
+        </div>
+    </main>
+{% endblock %}

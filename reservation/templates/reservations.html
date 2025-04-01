@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% load static %}
+    {% block extraCSS %}
+        <link rel="stylesheet" href="{% static 'css/reservations.css' %}">
+    {% endblock %}
+{% block content %}
+<div class="reservations-container">
+    <div class="reservation-item active">
+        <div class="left-content">
+            <img src="{% static 'images/placeholder.png' %}" alt="Field Image" class="field-image">
+            <h3>Şahlanlar Hali Sa.</h3>
+            <div class="separator"></div>
+            <h3>18.00-19.00</h3>
+            <div class="separator"></div>
+            <h3>Takım Adı</h3>
+        </div>
+        <button class="cancel-button">İptal Talebi</button>
+    </div>
+
+    <div class="reservation-item payment-pending">
+        <div class="left-content">
+            <img src="{% static 'images/placeholder.png' %}" alt="Field Image" class="field-image">
+            <h3>Şahlanlar Hali Sa.</h3>
+            <div class="separator"></div>
+            <h3>19.00-20.00</h3>
+            <div class="separator"></div>
+            <h3>Takım Adı</h3>
+        </div>
+        <button class="cancel-button">İptal Talebi</button>
+    </div>
+
+    <div class="reservation-item on-hold">
+        <div class="left-content">
+            <img src="{% static 'images/placeholder.png' %}" alt="Field Image" class="field-image">
+            <h3>Şahlanlar Hali Sa.</h3>
+            <div class="separator"></div>
+            <h3>20.00-21.00</h3>
+            <div class="separator"></div>
+            <h3>Takım Adı</h3>
+        </div>
+        <button class="action-button">Geri Aktif Et</button>
+    </div>
+
+    <div class="reservation-item cancelled">
+        <div class="left-content">
+            <img src="{% static 'images/placeholder.png' %}" alt="Field Image" class="field-image">
+            <h3>Şahlanlar Hali Sa.</h3>
+            <div class="separator"></div>
+            <h3>21.00-22.00</h3>
+            <div class="separator"></div>
+            <h3>Takım Adı</h3>
+        </div>
+    </div>
+
+    <div class="reservation-item completed">
+        <div class="left-content">
+            <img src="{% static 'images/placeholder.png' %}" alt="Field Image" class="field-image">
+            <h3>Şahlanlar Hali Sa.</h3>
+            <div class="separator"></div>
+            <h3>22.00-23.00</h3>
+            <div class="separator"></div>
+            <h3>Takım Adı</h3>
+        </div>
+        <button class="action-button" onclick="toggleEvaluation()">Kadroyu Değerlendir</button>
+    </div>
+</div>
+
+<!-- Evaluation Popup -->
+<div class="evaluation-popup" id="evaluationPopup">
+    <div class="popup-content">
+        <div class="popup-header">
+            <div class="field-info">
+                <div class="field-info-left">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Field" class="small-field-image">
+                    <span>Şahlanlar Hali Sa.</span>
+                </div>
+                <span class="time">18.00-19.00</span>
+            </div>
+            <div class="header-separator"></div>
+            <div class="selected-player">
+                <img src="{% static 'images/placeholder.png' %}" alt="Player" class="player-image">
+                <div class="player-details">
+                    <span class="player-name">Seçili Oyuncu</span>
+                    <span class="player-info">Takım: Takım Adı</span>
+                    <span class="player-info">Pozisyon: Forvet</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="popup-separator"></div>
+
+        <div class="player-grid">
+            <div class="player-grid-header">
+                <div class="team-titles">
+                    <h3 class="team1-title">Tüm Oyuncular</h3>
+                    <h3 class="team2-title" style="display: none;">Team 2</h3>
+                </div>
+                <button class="assign-team-button">Taraflara Ayır</button>
+            </div>
+            <div class="player-icons">
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Ahmet Yılmaz</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Mehmet Demir</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Ali Kaya</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Can Öz</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Burak Şahin</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Emre Yıldız</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Hakan Arslan</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">İbrahim Çelik</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Murat Aydın</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Ozan Kılıç</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Serkan Yılmaz</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Tolga Demir</span>
+                </div>
+                <div class="player-card" data-team="1">
+                    <img src="{% static 'images/placeholder.png' %}" alt="Player">
+                    <span class="grid-player-name">Uğur Şahin</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stats-row">
+                <div class="stat">Hız</div>
+                <div class="stat">Şut</div>
+                <div class="stat">Pas</div>
+            </div>
+            <div class="stats-row">
+                <div class="stat">Top Sürme</div>
+                <div class="stat">Defans</div>
+                <div class="stat">Fizik</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extraJS %}
+<script src="{% static 'js/reservations.js' %}"></script>
+{% endblock %}

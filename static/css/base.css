@@ -1,0 +1,112 @@
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #28a745; /* Yeşil arka plan */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Gölge artırıldı */
+    border-radius: 10px; /* Köşe yuvarlatma artırıldı */
+    width: 90%; /* Genişlik %90 */
+    margin: 20px auto; /* Ortalamak için ve üstte boşluk */
+}
+
+.logo img {
+    max-width: 100px;
+}
+
+.login-button button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Mavi arka plan */
+    color: white; /* Beyaz yazı rengi */
+    border: none; /* Kenar yok */
+    border-radius: 5px; /* Yuvarlak köşeler */
+    cursor: pointer; /* İmleç değişimi */
+    transition: background-color 0.3s; /* Arka plan geçişi */
+}
+
+.login-button button:hover {
+    background-color: #0056b3; /* Daha koyu mavi hover rengi */
+}
+.nav-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+}
+
+.nav-menu li {
+    margin-right: 25px;
+    font-weight: bold; /* Kalın yazı */
+    color: white; /* Beyaz yazı rengi eklendi */
+    cursor: pointer; /* İmleç değişimi */
+    transition: color 0.3s; /* Renk geçişi */
+}
+
+.nav-menu li:hover {
+    color: #007bff; /* Mavi hover rengi */
+}
+/*From now belong to Second Header File*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo-section img {
+    height: 50px;
+    width: auto;
+}
+
+.nav-section {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-section a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    font-size: 20px;
+    transition: color 0.3s ease;
+}
+
+.nav-section a:hover {
+    color: #4CAF50;
+}
+
+.action-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.action-section button {
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background-color 0.3s ease;
+}
+
+.action-section button:hover {
+    background-color: #45a049;
+}
+
+.action-section img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
