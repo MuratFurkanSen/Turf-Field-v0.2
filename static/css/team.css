@@ -4,48 +4,13 @@ body {
     background-color: #eefff2; /* Daha açık bir arka plan rengi */
 }
 
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: #28a745; /* Yeşil arka plan */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); /* Gölge artırıldı */
-    border-radius: 10px; /* Köşe yuvarlatma artırıldı */
-    width: 90%; /* Genişlik %90 */
-    margin: 20px auto; /* Ortalamak için ve üstte boşluk */
-}
-
-.logo img {
-    max-width: 100px;
-}
-
-.nav-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-}
-
-.nav-menu li {
-    margin-right: 25px;
-    font-weight: bold; /* Kalın yazı */
-    color: white; /* Beyaz yazı rengi eklendi */
-    cursor: pointer; /* İmleç değişimi */
-    transition: color 0.3s; /* Renk geçişi */
-}
-
-.nav-menu li:hover {
-    color: #007bff; /* Mavi hover rengi */
-}
-
 .content {
-    display: flex; /* Flexbox ile yan yana yerleştirme */
-    padding: 5px; /* Üst ve alt padding daha da azaltıldı */
-    border-radius: 0; /* Yuvarlatılmış köşeler kaldırıldı */
-    box-shadow: none; /* Hafif gölge kaldırıldı */
-    width: 90%; /* İçerik genişliği %90 */
-    margin: 20px auto; /* Ortalamak için */
+    display: flex;
+    padding: 5px;
+    border-radius: 0;
+    box-shadow: none;
+    width: 90%;
+    margin: 20px auto;
 }
 
 .left-div {
