@@ -202,4 +202,59 @@
 
 .reservation-button.active:hover {
     background-color: #5ba9e6;
+}
+
+/* Field Selection Section Styles */
+.field-selection-section {
+    flex: 0;
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: #ff9a8b;
+    border-radius: 15px;
+    padding: 0.5rem;
+}
+
+.field-info-container.show-field .field-selection-section {
+    flex: 1;
+    width: 140px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.field-selection-header h3 {
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}
+
+.field-selection-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field-option-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.field-option-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.field-option-btn.selected {
+    background-color: #fff;
+    color: #ff9a8b;
+    font-weight: bold;
 } 

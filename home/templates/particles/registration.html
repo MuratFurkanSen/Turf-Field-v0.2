@@ -1,0 +1,41 @@
+<!-- Register Form -->
+<div id="registerForm" class="auth-form" style="display: none;">
+    <h2>Kayıt Ol</h2>
+    <form action="user/register" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <i class="fas fa-user"></i>
+            {{ registration_form.username }}
+        </div>
+        <div class="form-group">
+            <i class="fas fa-envelope"></i>
+            {{ registration_form.email }}
+        </div>
+        <div class="form-group">
+            <i class="fas fa-lock"></i>
+            {{ registration_form.password1 }}
+        </div>
+        <div class="form-group">
+            <i class="fas fa-lock"></i>
+            {{ registration_form.password2 }}
+        </div>
+        <div class="form-group">
+            <i class="fas fa-id-card"></i>
+            {{ registration_form.full_name }}
+        </div>
+        <div class="form-group">
+            <i class="fas fa-calendar-alt"></i>
+            {{ registration_form.birth_date }}
+        </div>
+        <div class="form-group">
+            <i class="fas fa-futbol"></i>
+            {{ registration_form.position }}
+        </div>
+        <div class="form-group">
+            <i class="fas fa-phone"></i>
+            {{ registration_form.phone_number }}
+        </div>
+        <button type="submit" class="auth-submit">Kayıt Ol</button>
+    </form>
+    <p class="auth-switch">Zaten hesabınız var mı? <a href="#" id="showLogin">Giriş Yap</a></p>
+</div>

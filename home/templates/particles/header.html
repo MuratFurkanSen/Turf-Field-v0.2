@@ -1,0 +1,36 @@
+{% load static %}
+<header>
+    <div class="header-container">
+        <div class="logo">
+            <a href="/">
+                <img src="{% static 'images/logo.png' %}" alt="Logo">
+            </a>
+        </div>
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="">Kartım</a></li>
+                <li><a href="/team/">Takımlar</a></li>
+                <li><a href="/field/">Sahalar</a></li>
+                <li><a href="/reservation/">Rezervasyonlarım</a></li>
+            </ul>
+        </nav>
+        <div class="login-button">
+            {% if user.is_authenticated %}
+                <div class="user-dropdown">
+                    <button class="user-dropdown-btn">
+                        <i class="fas fa-user-circle"></i>
+                        {{ user.username }}
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown-content">
+                        <a href="/user/profile"><i class="fas fa-user"></i> Profilim</a>
+                        <a href="/user/settings"><i class="fas fa-cog"></i> Ayarlar</a>
+                        <a href="/user/logout"><i class="fas fa-sign-out-alt"></i> Çıkış Yap</a>
+                    </div>
+                </div>
+            {% else %}
+                <button id="loginBtn">Giriş Yap/Kayıt Ol</button>
+            {% endif %}
+        </div>
+    </div>
+</header>
