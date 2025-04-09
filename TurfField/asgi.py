@@ -1,5 +1,5 @@
 """
-ASGI config for Turf_Field project.
+ASGI config for TurfField project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Turf_Field.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TurfField.settings')
 
 application = get_asgi_application()

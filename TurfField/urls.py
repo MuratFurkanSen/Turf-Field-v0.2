@@ -1,5 +1,5 @@
 """
-URL configuration for Turf_Field project.
+URL configuration for TurfField project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/

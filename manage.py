@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Turf_Field.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'TurfField.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
