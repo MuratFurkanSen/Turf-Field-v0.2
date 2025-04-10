@@ -1,6 +1,12 @@
 <!-- Register Form -->
 <div id="registerForm" class="auth-form" style="display: none;">
     <h2>Kayıt Ol</h2>
+    
+    <!-- Error Messages Container -->
+    <div id="registerErrorMessages" class="auth-error-messages">
+        <!-- Error messages will be populated here -->
+    </div>
+    
     <form action="user/register" method="POST">
         {% csrf_token %}
         <div class="form-group">

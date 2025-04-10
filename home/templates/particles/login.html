@@ -1,6 +1,12 @@
 <!-- Login Form -->
 <div id="loginForm" class="auth-form">
     <h2>Giriş Yap</h2>
+    
+    <!-- Error Messages Container -->
+    <div id="loginErrorMessages" class="auth-error-messages">
+        <!-- Error messages will be populated here -->
+    </div>
+    
     <form action="user/login" method="POST">
         {% csrf_token %}
         <div class="form-group">

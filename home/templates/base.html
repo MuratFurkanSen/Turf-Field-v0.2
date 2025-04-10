@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     {% block extraCSS %}{% endblock %}
 </head>
@@ -17,6 +18,8 @@
 {% include 'particles/card_popup.html' %}
 
 <script src="{% static 'js/base.js' %}"></script>
+<script src="{% static 'js/auth.js' %}"></script>
+
 {% block extraJS %}{% endblock %}
 
 </body>
