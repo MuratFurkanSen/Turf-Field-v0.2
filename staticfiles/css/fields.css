@@ -1,0 +1,205 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Dropdown Styles */
+.dropdown-container {
+    display: flex;
+    gap: 2rem;
+    padding: 0.5rem;
+    margin: 2rem auto;
+    max-width: 900px;
+    height: 80px;
+    background-color: #77dd77;
+    border-radius: 300px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.rounded-select {
+    flex: 1;
+    height: 100%;
+    padding: 0 20px;
+    font-size: 24px;
+    border: 2px solid #e0e0e0;
+    border-radius: 300px;
+    background-color: #ff9a8b;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease;
+    appearance: none;
+}
+
+.rounded-select:hover {
+    border-color: #4CAF50;
+}
+
+.rounded-select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+/* Style for the dropdown options */
+.rounded-select option {
+    padding: 12px;
+    font-size: 16px;
+}
+
+/* Field Info Section Styles */
+.field-info-container {
+    display: flex;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    background-color: #77dd77;
+    border-radius: 20px;
+    gap: 0;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.field-left-section {
+    display: flex;
+    gap: 1.5rem;
+    min-width: 400px;
+    cursor: pointer;
+}
+
+.field-image img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.field-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+}
+
+.field-details h2 {
+    font-size: 20px;
+    color: #333;
+}
+
+.field-details p {
+    font-size: 16px;
+    color: #666;
+}
+
+.field-icons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.field-icons img {
+    width: 25px;
+    height: 25px;
+}
+
+.vertical-separator {
+    width: 0;
+    min-height: 160px;
+    background-color: #ffffff;
+    margin: 0;
+    transition: all 0.3s ease;
+}
+
+.time-slots-section, .teams-section {
+    flex: 0;
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.field-info-container.show-time {
+    gap: 2rem;
+}
+
+.field-info-container.show-time .vertical-separator {
+    width: 2px;
+    margin: 0 1rem;
+}
+
+.field-info-container.show-time .time-slots-section {
+    flex: 1;
+    width: 300px;
+    opacity: 1;
+    visibility: visible;
+    background-color: #ff9a8b;
+    border-radius: 15px;
+    padding: 0.75rem;
+}
+
+.field-info-container.show-teams .teams-section {
+    flex: 1;
+    width: 200px;
+    opacity: 1;
+    visibility: visible;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.time-content {
+    background-color: #666;
+    color: white;
+    padding: 0.3rem 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+    font-size: 14px;
+}
+
+.time-header h3 {
+    font-size: 18px;
+    margin-bottom: 0.75rem;
+}
+
+.teams-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.teams-content {
+    background-color: #ff9a8b;
+    border-radius: 15px;
+    padding: 0.75rem;
+    flex-grow: 1;
+}
+
+.teams-content h3 {
+    font-size: 18px;
+    margin-bottom: 0.75rem;
+}
+
+.reservation-button {
+    background-color: #6ec6ff;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 0.75rem;
+    font-size: 16px;
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.reservation-button.active {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.reservation-button.active:hover {
+    background-color: #5ba9e6;
+} 
