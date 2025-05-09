@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/userInfoEdit.css' %}"/>
+{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Bilgilerimi Düzenle</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="/update_user_info" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-container">
+                                <div class="form-left-column">
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="profile_photo" class="form-label">Profil Fotoğrafı</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <div class="photo-upload">
+                                                <label for="profile_photo">
+                                                    <i class="fas fa-camera"></i>
+                                                    Fotoğraf Değiştir
+                                                </label>
+                                                <input type="file" id="profile_photo" name="profile_photo"
+                                                       accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="username" class="form-label">Kullanıcı Adı</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="text" class="form-control" id="username" name="username"
+                                                   value="{{ user.username }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="email" class="form-label">E-posta Adresi</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                   value="{{ user.email }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="phone" class="form-label">Telefon Numarası</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="tel" class="form-control" id="phone" name="phone"
+                                                   value="{{ user.phone }}" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-right-column">
+                                    <div class="password-section-title">Şifre Değişikliği</div>
+
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="current_password" class="form-label">Mevcut Şifre</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="password" class="form-control" id="current_password"
+                                                   name="current_password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="new_password" class="form-label">Yeni Şifre</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="password" class="form-control" id="new_password"
+                                                   name="new_password">
+                                            <small class="text-muted">Şifrenizi değiştirmek istemiyorsanız boş
+                                                bırakın</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="confirm_password" class="form-label">Yeni Şifre (Tekrar)</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="password" class="form-control" id="confirm_password"
+                                                   name="confirm_password">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="button-container">
+                                <a href="/profile" class="btn btn-secondary">İptal</a>
+                                <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -41,3 +41,11 @@ def user_logout(request):
     if request.user.is_authenticated:
         logout(request)
     return redirect('/')
+
+def user_info_edit(request):
+    return render(request, "userInfoEdit.html", {})
+
+def update_user_info(request):
+    return redirect("/user/temp")
+def profile(request):
+    return redirect("/user/temp")
