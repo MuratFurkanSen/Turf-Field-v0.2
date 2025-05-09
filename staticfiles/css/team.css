@@ -1,0 +1,432 @@
+body {
+    font-family: 'Arial', sans-serif; /* Yazı tipi */
+    margin: 0; /* Varsayılan margin sıfırlandı */
+    background-color: #eefff2; /* Daha açık bir arka plan rengi */
+}
+
+.content {
+    display: flex;
+    padding: 5px;
+    border-radius: 0;
+    box-shadow: none;
+    width: 90%;
+    margin: 20px auto;
+}
+
+.left-div {
+    width: 60%; /* Sol div %60 genişlik */
+    padding: 5px; /* İçerik için padding daha da azaltıldı */
+    background-color: transparent; /* Arka plan rengi kaldırıldı */
+    border-radius: 0; /* Yuvarlatılmış köşeler kaldırıldı */
+    margin-right: 20px; /* Sağ div ile araya boşluk */
+    box-shadow: none; /* Gölge kaldırıldı */
+}
+
+.right-div {
+    width: 40%; /* Sağ div %40 genişlik */
+    padding: 5px; /* İçerik için padding daha da azaltıldı */
+    background-color: transparent; /* Arka plan rengi kaldırıldı */
+    border-radius: 0; /* Yuvarlatılmış köşeler kaldırıldı */
+    box-shadow: none; /* Gölge kaldırıldı */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.left-div img {
+    max-width: 100%; /* Resmin genişliği div'in genişliğine uyum sağlar */
+    border-radius: 10px; /* Resmin köşeleri yuvarlatıldı */
+}
+
+.edit-button {
+    width: 100%; /* Buton genişliği %100 */
+    padding: 10px; /* Buton için padding */
+    background-color: #6ec6ff; /* Düzenle buton rengi güncellendi */
+    color: white; /* Beyaz yazı rengi */
+    border: none; /* Kenar yok */
+    border-radius: 5px; /* Yuvarlak köşeler */
+    cursor: pointer; /* İmleç değişimi */
+    margin-top: 10px; /* Resim ile buton arasında boşluk */
+    transition: background-color 0.3s, transform 0.3s; /* Arka plan ve büyütme geçişi */
+}
+
+.edit-button:hover {
+    background-color: #5ab0e4; /* Daha koyu mavi hover rengi */
+    transform: scale(1.05); /* Hover durumunda büyütme efekti */
+}
+
+.reservation-title {
+    font-size: 1.5em; /* Başlık boyutu */
+    margin-bottom: 10px; /* Başlık ile içerik arasında boşluk */
+}
+
+.rezervasyonKart {
+    display: flex; /* Flexbox ile yan yana yerleştirme */
+    align-items: center; /* Dikey ortalama */
+    padding: 10px; /* İçerik için padding */
+    margin-bottom: 10px; /* Kartlar arasında boşluk */
+    background-color: #ffffff; /* Beyaz arka plan */
+    border: 1px solid #dee2e6; /* Hafif gri kenar */
+    border-radius: 5px; /* Yuvarlatılmış köşeler */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Daha belirgin gölge */
+}
+
+.rezervasyonKart img {
+    width: 50px; /* Resim genişliği */
+    height: 50px; /* Resim yüksekliği */
+    border-radius: 5px; /* Resmin köşeleri yuvarlatıldı */
+    margin-right: 10px; /* Resim ile metin arasında boşluk */
+}
+
+.divider {
+    width: 1px; /* Çizgi genişliği */
+    height: 100%; /* Çizgi yüksekliği */
+    background-color: #6c757d; /* Gri çizgi rengi */
+    margin: 0 10px; /* Çizgi ile metin arasında boşluk */
+}
+
+.payment-title {
+    margin-top: 10px; /* Üstte boşluk */
+    font-size: 1.2em; /* Başlık boyutu */
+}
+
+.inline-container {
+    display: flex; /* Flexbox ile inline düzen */
+    align-items: center; /* Dikey ortalama */
+}
+
+.slider {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.slides {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.slide {
+    display: flex;
+    width: 100%;
+}
+
+.slide img {
+    min-width: 20%; /* Her bir görselin genişliği %20 */
+}
+
+button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 10;
+}
+
+button.prev {
+    left: 10px;
+}
+
+button.next {
+    right: 10px;
+}
+
+.ucuncu-div button {
+    transition: transform 0.3s ease; /* Buton için geçiş efekti */
+}
+
+.ucuncu-div button:hover {
+    transform: scale(1.05); /* Buton hover durumunda büyütme efekti */
+}
+
+.ikinci-div img {
+    transition: transform 0.3s ease; /* Görseller için geçiş efekti */
+}
+
+.ikinci-div img:hover {
+    transform: scale(1.25); /* Görsel hover durumunda büyütme efekti artırıldı */
+}
+
+.ana-div {
+    width: 100%; /* Ana div genişliği %100 */
+    background-color: #77dd77; /* Ana div arka plan rengi güncellendi */
+    border-radius: 5%; /* %5 köşe yuvarlatma */
+    padding: 40px 20px; /* Üst ve alt padding 40px, sağ ve sol 20px */
+    font-family: 'Arial', sans-serif; /* Yazı tipi */
+    color: #333; /* Yazı rengi */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Gölge eklendi */
+}
+
+.ikinci-div {
+    background-color: #ff9a8b; /* İkinci div arka plan rengi */
+}
+
+.ucuncu-div {
+    text-align: right; /* Sağ hizalama */
+}
+
+.left-div h2 {
+    background-color: #003366; /* Daha açık lacivert arka plan rengi */
+    color: white; /* Yazı rengi beyaz yapıldı */
+    padding: 10px; /* Başlık için padding eklendi */
+    border-radius: 5px; /* Köşe yuvarlatma eklendi */
+}
+
+.bekleyen-rezervasyonlar h2 {
+    background-color: #003366; /* Daha açık lacivert arka plan rengi */
+    color: white; /* Yazı rengi beyaz yapıldı */
+    padding: 10px; /* Başlık için padding eklendi */
+    border-radius: 5px; /* Köşe yuvarlatma eklendi */
+}
+
+.waiting-reservation {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4); /* Gölge daha da artırıldı */
+}
+
+.team-section {
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4); /* Gölge daha da artırıldı */
+}
+
+.popup {
+    display: none; /* Başlangıçta gizli */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; /* Yükseklik %100 */
+    background-color: rgba(0, 0, 0, 0.5); /* Yarı saydam arka plan */
+}
+
+.popup-content {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 80%;
+    background-color: #eefff2; /* Beyazdan #eefff2'ye değiştirildi */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    min-height: 400px;
+}
+
+.popup-left {
+    width: 30%;
+    padding: 10px;
+    height: 100%; /* 97%'den 100%'e değiştirildi */
+    border-radius: 3%;
+    box-sizing: border-box;
+    margin-right: 1px;
+    margin-top: 0; /* 1%'den 0'a değiştirildi */
+    flex: 3; /* Flex oranı eklendi */
+}
+
+.popup-right {
+    width: 70%;
+    padding: 10px;
+    box-sizing: border-box;
+    height: 100%; /* Yükseklik eklendi */
+    flex: 7; /* Flex oranı eklendi */
+}
+
+.close {
+    color: #aaa;
+    margin-top: -1.5%;
+    margin-left: -1%;
+    padding: 0;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.kartim-popup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kartim-popup-content {
+    background-color: #eefff2;
+    width: 80%;
+    height: 80%;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    padding: 20px;
+    animation: popupAnimation 0.3s ease-out;
+    overflow: hidden;
+}
+
+.kartim-close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.kartim-close:hover {
+    color: #000;
+}
+
+.kartim-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    gap: 20px;
+}
+
+.kartim-left {
+    flex: 4; /* 30%'den 40%'e çıkarıldı */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.kartim-right {
+    flex: 6; /* 70%'den 60%'e düşürüldü */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin-right: 20px;
+}
+
+.fifa-card {
+    width: 105%; /* 100%'den 120%'ye çıkarıldı */
+    height: auto; /* height'ı auto yaparak oranı koruduk */
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 15px;
+    width: 90%;
+    height: 100%;
+    padding: 15px;
+}
+
+.stat-item {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px 15px 25px 15px; /* Üst: 15px, Sağ: 15px, Alt: 25px, Sol: 15px */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    height: auto;
+    min-height: 200px;
+}
+
+.stat-title {
+    color: #28a745;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-bottom: 2px;
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px; /* Alt boşluk artırıldı */
+    text-align: center;
+}
+
+.stat-subtitle {
+    font-size: 0.8em;
+    color: #666;
+    width: 100%;
+    margin-top: 2px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.sub-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0px; /* Yatay padding'i kaldırdım */
+    margin-bottom: 6px;
+    transition: background-color 0.3s;
+    width: 100%;
+    min-height: 28px;
+    text-align: center;
+    background-color: transparent; /* Arka plan rengini kaldırdım */
+}
+
+.sub-stat:hover {
+    background-color: transparent; /* Hover efektini kaldırdım */
+}
+
+.sub-stat-name {
+    color: #495057;
+    font-weight: 500;
+    font-size: 0.8em; /* Font boyutunu biraz büyüttüm */
+    flex: 1;
+    text-align: left;
+    margin-right: 40px;
+}
+
+.sub-stat-value {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 0.8em; /* Font boyutunu biraz büyüttüm */
+    text-align: right;
+    min-width: 30px;
+}
+
+/* Alt başlıklar için container */
+.sub-stats-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Alt başlıkları ortala */
+    gap: 6px;
+}
+
+@keyframes popupAnimation {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
