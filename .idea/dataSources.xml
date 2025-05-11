@@ -10,5 +10,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\Fixie\PycharmProjects\Turf_Field_v0.2\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="db" uuid="1bd3b7e7-c064-437d-815b-554dd7ecc7e6">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\Fixie\PycharmProjects\Turf-Field-v0.2\db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
