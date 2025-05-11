@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>İşletme Yönetimi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .time-slot {
+            margin: 2px;
+            padding: 5px 10px;
+            font-size: 0.9rem;
+        }
+        .time-slot.available {
+            background-color: #28a745;
+            color: white;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .time-slot.booked {
+            background-color: #dc3545;
+            color: white;
+            pointer-events: none;
+        }
+        .time-slot.phone-booked {
+            background-color: #fd7e14;
+            color: white;
+            pointer-events: none;
+        }
+        .time-slot.closed {
+            background-color: #6c757d;
+            color: white;
+            opacity: 0.5;
+            pointer-events: auto;
+            cursor: pointer;
+        }
+        .time-slot:hover {
+            opacity: 0.8;
+        }
+        .day-column {
+            min-width: 120px;
+        }
+        .date-text {
+            font-size: 0.8rem;
+            color: #666;
+            display: block;
+        }
+        .section-header {
+            cursor: pointer;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+        .section-header:hover {
+            background-color: #e9ecef;
+        }
+        .section-header.active {
+            background-color: #0d6efd;
+            color: white;
+        }
+        .section-content {
+            display: none;
+        }
+        .section-content.active {
+            display: block;
+        }
+        .reservation-code-input {
+            display: none;
+            margin-top: 5px;
+            width: 100%;
+        }
+        .reservation-code-input.show {
+            display: block;
+        }
+        .time-slot-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .control-buttons {
+            display: none;
+            margin-top: 5px;
+            gap: 5px;
+        }
+        .control-buttons.show {
+            display: flex;
+        }
+        .control-buttons button {
+            font-size: 0.8rem;
+            padding: 2px 5px;
+        }
+        .time-settings {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .time-settings select {
+            width: 120px;
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .revenue-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .revenue-card {
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .revenue-card h6 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .revenue-card .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #28a745;
+        }
+        .facility-count {
+            font-size: 1.2rem;
+            color: #0d6efd;
+            margin-top: 10px;
+        }
+        .reservation-count {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        .reservation-count i {
+            margin-right: 5px;
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4">İşletme Yönetimi</h1>
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="section-header" onclick="toggleSection('reservation')">
+                    <h5 class="mb-0">Halı Saha Rezervasyon Takvimi</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="section-header" onclick="toggleSection('revenue')">
+                    <h5 class="mb-0">Kazanç Analizi</h5>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="section-header" onclick="toggleSection('online-revenue')">
+                    <h5 class="mb-0">Online Kazanç Özeti</h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Halı Saha Saatleri -->
+        <div class="section-content active" id="reservation-section">
+            <!-- Çalışma Saatleri Ayarı -->
+            <div class="time-settings mb-4">
+                <h6 class="mb-3">Çalışma Saatleri Ayarı</h6>
+                <div class="d-flex align-items-center">
+                    <label>Açılış Saati:</label>
+                    <select class="form-select" id="startHour" onchange="updateTimeSlots()">
+                        <option value="0">00:00</option>
+                        <option value="1">01:00</option>
+                        <option value="2">02:00</option>
+                        <option value="3">03:00</option>
+                        <option value="4">04:00</option>
+                        <option value="5">05:00</option>
+                        <option value="6">06:00</option>
+                        <option value="7">07:00</option>
+                        <option value="8">08:00</option>
+                        <option value="9" selected>09:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
+                        <option value="12">12:00</option>
+                        <option value="13">13:00</option>
+                        <option value="14">14:00</option>
+                        <option value="15">15:00</option>
+                        <option value="16">16:00</option>
+                        <option value="17">17:00</option>
+                        <option value="18">18:00</option>
+                        <option value="19">19:00</option>
+                        <option value="20">20:00</option>
+                        <option value="21">21:00</option>
+                        <option value="22">22:00</option>
+                        <option value="23">23:00</option>
+                    </select>
+                    <label>Kapanış Saati:</label>
+                    <select class="form-select" id="endHour" onchange="updateTimeSlots()">
+                        <option value="1">01:00</option>
+                        <option value="2">02:00</option>
+                        <option value="3">03:00</option>
+                        <option value="4">04:00</option>
+                        <option value="5">05:00</option>
+                        <option value="6">06:00</option>
+                        <option value="7">07:00</option>
+                        <option value="8">08:00</option>
+                        <option value="9">09:00</option>
+                        <option value="10">10:00</option>
+                        <option value="11">11:00</option>
+                        <option value="12">12:00</option>
+                        <option value="13">13:00</option>
+                        <option value="14">14:00</option>
+                        <option value="15">15:00</option>
+                        <option value="16">16:00</option>
+                        <option value="17">17:00</option>
+                        <option value="18">18:00</option>
+                        <option value="19">19:00</option>
+                        <option value="20">20:00</option>
+                        <option value="21">21:00</option>
+                        <option value="22">22:00</option>
+                        <option value="23">23:00</option>
+                        <option value="24">24:00</option>
+                    </select>
+                    <button class="btn btn-primary ms-3" onclick="saveTimeSettings()">Kaydet</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-primary" onclick="previousWeek()">Önceki Hafta</button>
+                        <button class="btn btn-sm btn-outline-primary" onclick="nextWeek()">Sonraki Hafta</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Saat</th>
+                                    <th class="day-column">Pazartesi<br><span class="date-text" id="monday-date"></span></th>
+                                    <th class="day-column">Salı<br><span class="date-text" id="tuesday-date"></span></th>
+                                    <th class="day-column">Çarşamba<br><span class="date-text" id="wednesday-date"></span></th>
+                                    <th class="day-column">Perşembe<br><span class="date-text" id="thursday-date"></span></th>
+                                    <th class="day-column">Cuma<br><span class="date-text" id="friday-date"></span></th>
+                                    <th class="day-column">Cumartesi<br><span class="date-text" id="saturday-date"></span></th>
+                                    <th class="day-column">Pazar<br><span class="date-text" id="sunday-date"></span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="timeSlots">
+                                <!-- Saat dilimleri JavaScript ile doldurulacak -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kazanç Grafikleri -->
+        <div class="section-content" id="revenue-section">
+            <div class="card">
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="revenueTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" data-bs-target="#daily" type="button" role="tab">Günlük</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly" type="button" role="tab">Aylık</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="yearly-tab" data-bs-toggle="tab" data-bs-target="#yearly" type="button" role="tab">Yıllık</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content mt-3" id="revenueTabContent">
+                        <div class="tab-pane fade show active" id="daily" role="tabpanel">
+                            <canvas id="dailyChart"></canvas>
+                        </div>
+                        <div class="tab-pane fade" id="monthly" role="tabpanel">
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                        <div class="tab-pane fade" id="yearly" role="tabpanel">
+                            <canvas id="yearlyChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Online Kazanç Özeti -->
+        <div class="section-content" id="online-revenue-section">
+            <div class="revenue-summary">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="revenue-card">
+                            <h6>Günlük Online Kazanç</h6>
+                            <div class="amount">₺1,250</div>
+                            <div class="text-muted">Son 24 saat</div>
+                            <div class="reservation-count mt-2">
+                                <i class="fas fa-calendar-check"></i> 15 Rezervasyon
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="revenue-card">
+                            <h6>Aylık Online Kazanç</h6>
+                            <div class="amount">₺32,500</div>
+                            <div class="text-muted">Bu ay</div>
+                            <div class="reservation-count mt-2">
+                                <i class="fas fa-calendar-check"></i> 325 Rezervasyon
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="revenue-card">
+                            <h6>Yıllık Online Kazanç</h6>
+                            <div class="amount">₺385,000</div>
+                            <div class="text-muted">Bu yıl</div>
+                            <div class="reservation-count mt-2">
+                                <i class="fas fa-calendar-check"></i> 3,850 Rezervasyon
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="revenue-card">
+                            <h6>Halı Saha Bilgileri</h6>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="facility-count">
+                                        <i class="fas fa-futbol"></i> Toplam Halı Saha: 3
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="facility-count">
+                                        <i class="fas fa-clock"></i> Ortalama Doluluk: %75
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="facility-count">
+                                        <i class="fas fa-star"></i> Müşteri Memnuniyeti: 4.8/5
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Bölüm değiştirme fonksiyonu
+        function toggleSection(sectionId) {
+            const sections = document.querySelectorAll('.section-content');
+            const headers = document.querySelectorAll('.section-header');
+            
+            sections.forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            headers.forEach(header => {
+                header.classList.remove('active');
+            });
+            
+            document.getElementById(`${sectionId}-section`).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Tarihleri güncelle
+        function updateDates() {
+            const today = new Date();
+            const currentDay = today.getDay();
+            const diff = currentDay === 0 ? -6 : 1 - currentDay;
+            
+            const monday = new Date(today);
+            monday.setDate(today.getDate() + diff);
+            
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const months = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+            
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(monday);
+                date.setDate(monday.getDate() + i);
+                const dateText = `${date.getDate()} ${months[date.getMonth()]}`;
+                document.getElementById(`${days[i]}-date`).textContent = dateText;
+            }
+        }
+
+        // Saat dilimlerini güncelle
+        function updateTimeSlots() {
+            const startHour = parseInt(document.getElementById('startHour').value);
+            let endHour = parseInt(document.getElementById('endHour').value);
+            
+            // Eğer kapanış saati açılış saatinden küçükse, 24 saat ekle
+            if (endHour <= startHour) {
+                endHour += 24;
+            }
+            
+            // Mevcut saat dilimlerini temizle
+            const timeSlots = document.getElementById('timeSlots');
+            timeSlots.innerHTML = '';
+            
+            // Yeni saat dilimlerini oluştur
+            for (let hour = startHour; hour < endHour; hour++) {
+                const displayHour = hour % 24; // 24'ten büyük saatleri düzelt
+                const row = document.createElement('tr');
+                const timeCell = document.createElement('td');
+                timeCell.textContent = `${displayHour}:00 - ${(displayHour + 1) % 24}:00`;
+                row.appendChild(timeCell);
+
+                for (let day = 0; day < 7; day++) {
+                    const cell = document.createElement('td');
+                    const container = document.createElement('div');
+                    container.className = 'time-slot-container';
+                    
+                    const button = document.createElement('button');
+                    button.className = 'btn btn-sm time-slot available';
+                    button.textContent = 'Müsait';
+                    button.onclick = function() {
+                        showControlButtons(this);
+                    };
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control form-control-sm reservation-code-input';
+                    input.placeholder = 'Rezervasyon Kodu';
+                    
+                    const controlButtons = document.createElement('div');
+                    controlButtons.className = 'control-buttons';
+                    
+                    const phoneBookBtn = document.createElement('button');
+                    phoneBookBtn.className = 'btn btn-sm btn-warning';
+                    phoneBookBtn.textContent = 'Telefonla Rezervasyon';
+                    phoneBookBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        markAsPhoneBooked(button, input);
+                    };
+                    
+                    const closeTimeBtn = document.createElement('button');
+                    closeTimeBtn.className = 'btn btn-sm btn-secondary';
+                    closeTimeBtn.textContent = 'Saati Kapat';
+                    closeTimeBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        closeTimeSlot(button, input);
+                    };
+                    
+                    const activateBtn = document.createElement('button');
+                    activateBtn.className = 'btn btn-sm btn-success';
+                    activateBtn.textContent = 'Aktif Et';
+                    activateBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        activateTimeSlot(button, input);
+                    };
+                    
+                    controlButtons.appendChild(phoneBookBtn);
+                    controlButtons.appendChild(closeTimeBtn);
+                    controlButtons.appendChild(activateBtn);
+                    
+                    container.appendChild(button);
+                    container.appendChild(input);
+                    container.appendChild(controlButtons);
+                    cell.appendChild(container);
+                    row.appendChild(cell);
+                }
+
+                timeSlots.appendChild(row);
+            }
+
+            // Çarşamba 13-14'ü online rezervasyon olarak işaretle
+            const wednesdayCells = document.querySelectorAll('tr:nth-child(5) td'); // 13:00-14:00 satırı
+            const wednesdayCell = wednesdayCells[3]; // Çarşamba sütunu
+            const button = wednesdayCell.querySelector('.time-slot');
+            const input = wednesdayCell.querySelector('.reservation-code-input');
+            
+            if (button && input) {
+                button.classList.remove('available');
+                button.classList.add('booked');
+                button.textContent = 'Dolu';
+                input.classList.add('show');
+                input.value = 'ONL456'; // Örnek rezervasyon kodu
+            }
+        }
+
+        // Çalışma saatlerini kaydet
+        function saveTimeSettings() {
+            const startHour = document.getElementById('startHour').value;
+            const endHour = document.getElementById('endHour').value;
+            
+            // Burada backend'e kaydetme işlemi yapılabilir
+            alert(`Çalışma saatleri kaydedildi: ${startHour}:00 - ${endHour}:00`);
+        }
+
+        // Kontrol butonlarını göster
+        function showControlButtons(button) {
+            const container = button.parentElement;
+            const controlButtons = container.querySelector('.control-buttons');
+            const activateBtn = controlButtons.querySelector('.btn-success');
+            
+            // Eğer butonlar zaten görünüyorsa, gizle
+            if (controlButtons.classList.contains('show')) {
+                controlButtons.classList.remove('show');
+                return;
+            }
+            
+            // Eğer saat kapalıysa sadece aktif et butonunu göster
+            if (button.classList.contains('closed')) {
+                controlButtons.querySelectorAll('button').forEach(btn => {
+                    if (btn !== activateBtn) {
+                        btn.style.display = 'none';
+                    }
+                });
+                activateBtn.style.display = 'block';
+            } else {
+                // Normal durumda telefon ve kapat butonlarını göster
+                controlButtons.querySelectorAll('button').forEach(btn => {
+                    if (btn === activateBtn) {
+                        btn.style.display = 'none';
+                    } else {
+                        btn.style.display = 'block';
+                    }
+                });
+            }
+            
+            controlButtons.classList.add('show');
+        }
+
+        // Telefonla rezervasyon yap
+        function markAsPhoneBooked(button, input) {
+            const container = button.parentElement;
+            const controlButtons = container.querySelector('.control-buttons');
+            
+            button.classList.remove('available', 'closed');
+            button.classList.add('phone-booked');
+            button.textContent = 'Dolu';
+            input.classList.add('show');
+            input.placeholder = 'Kiracı Bilgisi';
+            input.value = '';
+            controlButtons.classList.remove('show');
+        }
+
+        // Saati kapat
+        function closeTimeSlot(button, input) {
+            const container = button.parentElement;
+            const controlButtons = container.querySelector('.control-buttons');
+            
+            button.classList.remove('available', 'phone-booked');
+            button.classList.add('closed');
+            button.textContent = 'Kapalı';
+            input.classList.remove('show');
+            input.value = '';
+            controlButtons.classList.remove('show');
+        }
+
+        // Saati aktif et
+        function activateTimeSlot(button, input) {
+            const container = button.parentElement;
+            const controlButtons = container.querySelector('.control-buttons');
+            
+            button.classList.remove('closed');
+            button.classList.add('available');
+            button.textContent = 'Müsait';
+            input.classList.remove('show');
+            input.value = '';
+            input.placeholder = 'Rezervasyon Kodu';
+            controlButtons.classList.remove('show');
+        }
+
+        // Hafta navigasyonu
+        function previousWeek() {
+            alert('Önceki hafta');
+        }
+
+        function nextWeek() {
+            alert('Sonraki hafta');
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimeSlots();
+            updateDates();
+            document.querySelector('.section-header').classList.add('active');
+        });
+
+        // Grafik oluşturma fonksiyonu
+        function createChart(canvasId, labels, data) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Kazanç (TL)',
+                        data: data,
+                        borderColor: 'rgb(75, 192, 192)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Günlük grafik
+        createChart('dailyChart', 
+            ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        );
+
+        // Aylık grafik
+        createChart('monthlyChart',
+            ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30', '31'],
+            Array(31).fill(0)
+        );
+
+        // Yıllık grafik
+        createChart('yearlyChart',
+            ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+            Array(12).fill(0)
+        );
+    </script>
+</body>
+</html>
