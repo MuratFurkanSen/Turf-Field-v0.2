@@ -43,7 +43,7 @@ class UserSkillSet(models.Model):
     def_awareness = models.IntegerField(default=SKILL_DEFAULT_VALUE)
     interceptions = models.IntegerField(default=SKILL_DEFAULT_VALUE)
 
-    # Heading Fields
+    # Physics Fields
     stamina = models.IntegerField(default=SKILL_DEFAULT_VALUE)
     strength = models.IntegerField(default=SKILL_DEFAULT_VALUE)
     aggression = models.IntegerField(default=SKILL_DEFAULT_VALUE)
@@ -55,24 +55,24 @@ class UserSkillSet(models.Model):
     @property
     def shooting(self):
         skills = [self.attack_position, self.finishing, self.shot_power]
-        return sum(skills) / len(skills)
+        return int(sum(skills) / len(skills))
 
     @property
     def passing(self):
         skills = [self.vision, self.short_pass, self.long_pass]
-        return sum(skills) / len(skills)
+        return int(sum(skills) / len(skills))
 
     @property
     def dribbling(self):
         skills = [self.agility, self.ball_control, self.dribble]
-        return sum(skills) / len(skills)
+        return int(sum(skills) / len(skills))
 
     @property
     def defense(self):
         skills = [self.def_awareness, self.interceptions]
-        return sum(skills) / len(skills)
+        return int(sum(skills) / len(skills))
 
     @property
-    def heading(self):
+    def physics(self):
         skills = [self.stamina, self.strength, self.aggression]
-        return sum(skills) / len(skills)
+        return int(sum(skills) / len(skills))
