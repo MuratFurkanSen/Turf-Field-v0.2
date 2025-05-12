@@ -147,4 +147,9 @@ EMAIL_HOST_USER = 'halisaham13@gmail.com'
 EMAIL_HOST_PASSWORD = 'hlzi frnb bapu jubn'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+# User Uploaded Media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
 

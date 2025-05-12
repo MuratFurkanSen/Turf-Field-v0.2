@@ -8,9 +8,6 @@ urlpatterns = [
     path('send-otp', views.handle_otp_request, name="send_otp"),
     path('verify-otp', views.verify_otp, name="verify_otp"),
     path('reset-password', views.reset_password, name="reset_password"),
-    path('profile', views.profile, name='profile'),
+    path('profile', views.user_profile, name='profile'),
     path('update_user_info', views.update_user_info, name='update_user_info'),
-    path('temp', views.user_info_edit),
-
-
 ]
