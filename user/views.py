@@ -138,3 +138,6 @@ def reset_password(request):
             except ValidationError as e:
                 return JsonResponse({'success': False, 'errors': e.messages})
     return JsonResponse({'success': False})
+
+def player_card(request):
+    return render(request, 'playerCard.html')
