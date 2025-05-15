@@ -61,192 +61,173 @@
             <div class="separator"></div>
             <h3>Takım Adı</h3>
         </div>
-        <button class="action-button" onclick="toggleEvaluation()">Kadroyu Değerlendir</button>
+        <button class="action-button" onclick="toggleStaffEvaluation()">Kadroyu Değerlendir</button>
     </div>
 </div>
 
-<!-- Evaluation Popup -->
-<div class="evaluation-popup" id="evaluationPopup" style="display: none;">
-    <div class="popup-content" style="margin: 10px auto; position: relative;">
-        <button class="close-button" style="position: absolute; top: 10px; right: 10px; background: none; border: none; font-size: 28px; font-weight: bold; cursor: pointer; color: white;" onclick="toggleEvaluation()">×</button>
-        <!-- Üst Div - Oyuncular Listesi -->
-        <div class="players-section">
-            <h2 style="margin: 0; padding: 0;">Oyuncular</h2>
-            <div class="players-grid" style="margin-top: 5px;">
+<!-- Staff Evaluation Popup -->
+<div class="staff-eval-popup" id="staffEvalPopup">
+    <div class="staff-eval-content">
+        <button class="staff-eval-close" onclick="toggleStaffEvaluation()">×</button>
+        
+        <!-- Üst Kısım - Oyuncular Listesi -->
+        <div class="staff-eval-players-section">
+            <h2>Oyuncular</h2>
+            <div class="staff-eval-players-grid">
                 {% for i in "1234567891011121314" %}
-                <div class="player-item">
-                    <img src="{% static 'images/kapkap.JPG' %}" alt="Oyuncu" style="width: 60px; height: 60px;">
-                    <span class="player-name">Oyuncu</span>
+                <div class="staff-eval-player-item">
+                    <img src="{% static 'images/kapkap.JPG' %}" alt="Oyuncu">
+                    <span class="staff-eval-player-name">Oyuncu</span>
                 </div>
                 {% endfor %}
             </div>
         </div>
 
-        <!-- Alt Div - Oyuncu Detayları -->
-        <div class="player-details-section">
-            <!-- Sol Div - Oyuncu Fotoğrafı -->
-            <div class="player-image-section" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                <h3 style="margin: 0; font-size: 24px; color: white;">Kapkap</h3>
-                <img src="{% static 'images/kapkap.JPG' %}" alt="Seçili Oyuncu" style="width: 300px; height: 240px;">
-                <h3 style="margin: 0; font-size: 20px; color: white;">Orta Saha</h3>
+        <!-- Alt Kısım - Oyuncu Detayları -->
+        <div class="staff-eval-details-section">
+            <!-- Sol Kısım - Oyuncu Fotoğrafı -->
+            <div class="staff-eval-image-section">
+                <h3>Kapkap</h3>
+                <img src="{% static 'images/kapkap.JPG' %}" alt="Seçili Oyuncu">
+                <h3>Orta Saha</h3>
             </div>
 
-            <!-- Sağ Div - Oyuncu İstatistikleri -->
-            <div class="player-stats-section" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
-                <div class="stat-item" style="padding: 4px;">
-                    <div class="stat-title" style="font-size: 12px; margin-bottom: 2px;">Hız</div>
-                    <div class="stat-value speed-stat" style="font-size: 14px; margin-bottom: 2px;">85</div>
-                    <div class="stat-subtitle" style="font-size: 10px;">
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Hızlanma</span>
-                                <input type="range" class="sub-stat-value speed-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="84">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">84</span>
+            <!-- Sağ Kısım - Oyuncu İstatistikleri -->
+            <div class="staff-eval-stats-section">
+                <div class="staff-eval-stat-item">
+                    <div class="staff-eval-stat-title">Hız</div>
+                    <div class="staff-eval-stat-value speed-stat">85</div>
+                    <div class="staff-eval-stat-subtitle">
+                        <div class="staff-eval-sub-stats">
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Hızlanma</span>
+                                <input type="range" class="staff-eval-stat-slider speed-input" min="0" max="99" value="84">
+                                <span class="staff-eval-slider-value">84</span>
                             </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Sprint Hızı</span>
-                                <input type="range" class="sub-stat-value speed-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="86">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">86</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="stat-item" style="padding: 4px;">
-                    <div class="stat-title" style="font-size: 12px; margin-bottom: 2px;">Şut</div>
-                    <div class="stat-value shooting-stat" style="font-size: 14px; margin-bottom: 2px;">78</div>
-                    <div class="stat-subtitle" style="font-size: 10px;">
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Atak Pozisyonu</span>
-                                <input type="range" class="sub-stat-value shooting-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="76">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">76</span>
-                            </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Bitiricilik</span>
-                                <input type="range" class="sub-stat-value shooting-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="80">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">80</span>
-                            </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Şut Gücü</span>
-                                <input type="range" class="sub-stat-value shooting-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="82">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">82</span>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Sprint Hızı</span>
+                                <input type="range" class="staff-eval-stat-slider speed-input" min="0" max="99" value="86">
+                                <span class="staff-eval-slider-value">86</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="stat-item" style="padding: 4px;">
-                    <div class="stat-title" style="font-size: 12px; margin-bottom: 2px;">Pas</div>
-                    <div class="stat-value passing-stat" style="font-size: 14px; margin-bottom: 2px;">82</div>
-                    <div class="stat-subtitle" style="font-size: 10px;">
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Oyun Görüşü</span>
-                                <input type="range" class="sub-stat-value passing-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="84">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">84</span>
+                <div class="staff-eval-stat-item">
+                    <div class="staff-eval-stat-title">Şut</div>
+                    <div class="staff-eval-stat-value shooting-stat">78</div>
+                    <div class="staff-eval-stat-subtitle">
+                        <div class="staff-eval-sub-stats">
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Atak Pozisyonu</span>
+                                <input type="range" class="staff-eval-stat-slider shooting-input" min="0" max="99" value="76">
+                                <span class="staff-eval-slider-value">76</span>
                             </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Kısa Pas</span>
-                                <input type="range" class="sub-stat-value passing-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="85">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">85</span>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Bitiricilik</span>
+                                <input type="range" class="staff-eval-stat-slider shooting-input" min="0" max="99" value="80">
+                                <span class="staff-eval-slider-value">80</span>
                             </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Uzun Pas</span>
-                                <input type="range" class="sub-stat-value passing-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="78">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">78</span>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Şut Gücü</span>
+                                <input type="range" class="staff-eval-stat-slider shooting-input" min="0" max="99" value="82">
+                                <span class="staff-eval-slider-value">82</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="stat-item" style="padding: 4px;">
-                    <div class="stat-title" style="font-size: 12px; margin-bottom: 2px;">Dribbling</div>
-                    <div class="stat-value dribbling-stat" style="font-size: 14px; margin-bottom: 2px;">88</div>
-                    <div class="stat-subtitle" style="font-size: 10px;">
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Çeviklik</span>
-                                <input type="range" class="sub-stat-value dribbling-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="89">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">89</span>
+                <div class="staff-eval-stat-item">
+                    <div class="staff-eval-stat-title">Pas</div>
+                    <div class="staff-eval-stat-value passing-stat">82</div>
+                    <div class="staff-eval-stat-subtitle">
+                        <div class="staff-eval-sub-stats">
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Oyun Görüşü</span>
+                                <input type="range" class="staff-eval-stat-slider passing-input" min="0" max="99" value="84">
+                                <span class="staff-eval-slider-value">84</span>
                             </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Top Kontrolü</span>
-                                <input type="range" class="sub-stat-value dribbling-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="87">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">87</span>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Kısa Pas</span>
+                                <input type="range" class="staff-eval-stat-slider passing-input" min="0" max="99" value="85">
+                                <span class="staff-eval-slider-value">85</span>
                             </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Dribbling</span>
-                                <input type="range" class="sub-stat-value dribbling-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="86">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">86</span>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Uzun Pas</span>
+                                <input type="range" class="staff-eval-stat-slider passing-input" min="0" max="99" value="78">
+                                <span class="staff-eval-slider-value">78</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="stat-item" style="padding: 4px;">
-                    <div class="stat-title" style="font-size: 12px; margin-bottom: 2px;">Defans</div>
-                    <div class="stat-value defense-stat" style="font-size: 14px; margin-bottom: 2px;">75</div>
-                    <div class="stat-subtitle" style="font-size: 10px;">
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Defansif Farkındalık</span>
-                                <input type="range" class="sub-stat-value defense-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="74">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">74</span>
+                <div class="staff-eval-stat-item">
+                    <div class="staff-eval-stat-title">Dribbling</div>
+                    <div class="staff-eval-stat-value dribbling-stat">88</div>
+                    <div class="staff-eval-stat-subtitle">
+                        <div class="staff-eval-sub-stats">
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Çeviklik</span>
+                                <input type="range" class="staff-eval-stat-slider dribbling-input" min="0" max="99" value="89">
+                                <span class="staff-eval-slider-value">89</span>
                             </div>
-                        </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Müdahale</span>
-                                <input type="range" class="sub-stat-value defense-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="77">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">77</span>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Top Kontrolü</span>
+                                <input type="range" class="staff-eval-stat-slider dribbling-input" min="0" max="99" value="87">
+                                <span class="staff-eval-slider-value">87</span>
+                            </div>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Dribbling</span>
+                                <input type="range" class="staff-eval-stat-slider dribbling-input" min="0" max="99" value="86">
+                                <span class="staff-eval-slider-value">86</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="stat-item" style="padding: 4px;">
-                    <div class="stat-title" style="font-size: 12px; margin-bottom: 2px;">Fizik</div>
-                    <div class="stat-value physical-stat" style="font-size: 14px; margin-bottom: 2px;">80</div>
-                    <div class="stat-subtitle" style="font-size: 10px;">
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block; margin-right: 8px;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Güç</span>
-                                <input type="range" class="sub-stat-value physical-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="82">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">82</span>
+                <div class="staff-eval-stat-item">
+                    <div class="staff-eval-stat-title">Defans</div>
+                    <div class="staff-eval-stat-value defense-stat">75</div>
+                    <div class="staff-eval-stat-subtitle">
+                        <div class="staff-eval-sub-stats">
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Defansif Farkındalık</span>
+                                <input type="range" class="staff-eval-stat-slider defense-input" min="0" max="99" value="74">
+                                <span class="staff-eval-slider-value">74</span>
+                            </div>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Müdahale</span>
+                                <input type="range" class="staff-eval-stat-slider defense-input" min="0" max="99" value="77">
+                                <span class="staff-eval-slider-value">77</span>
                             </div>
                         </div>
-                        <div class="sub-stats-container">
-                            <div class="sub-stat" style="display: inline-block;">
-                                <span class="sub-stat-name" style="font-size: 12px;">Dayanıklılık</span>
-                                <input type="range" class="sub-stat-value physical-input stat-slider" style="width: 100px; background: transparent;" min="0" max="99" value="78">
-                                <span class="slider-value" style="color: #28a745; font-size: 12px;">78</span>
+                    </div>
+                </div>
+
+                <div class="staff-eval-stat-item">
+                    <div class="staff-eval-stat-title">Fizik</div>
+                    <div class="staff-eval-stat-value physical-stat">80</div>
+                    <div class="staff-eval-stat-subtitle">
+                        <div class="staff-eval-sub-stats">
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Güç</span>
+                                <input type="range" class="staff-eval-stat-slider physical-input" min="0" max="99" value="82">
+                                <span class="staff-eval-slider-value">82</span>
+                            </div>
+                            <div class="staff-eval-sub-stat">
+                                <span class="staff-eval-sub-stat-name">Dayanıklılık</span>
+                                <input type="range" class="staff-eval-stat-slider physical-input" min="0" max="99" value="78">
+                                <span class="staff-eval-slider-value">78</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <button class="submit-evaluation-button" onclick="submitEvaluation()">Değerlendirmeyi Gönder</button>
     </div>
 </div>
 {% endblock %}
 {% block extraJS %}
 <script src="{% static 'js/reservations.js' %}"></script>
-<script>
-
-</script>
 {% endblock %}

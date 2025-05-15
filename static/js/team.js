@@ -233,3 +233,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+function toggleSelection(element) {
+    element.classList.toggle('selected');
+    updateSelectionCount();
+}
+
+function updateSelectionCount() {
+    const selectedPlayers = document.querySelectorAll('.player-item.selected');
+    const countElement = document.getElementById('selectedCount');
+    countElement.textContent = selectedPlayers.length;
+}
+

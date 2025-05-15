@@ -97,22 +97,81 @@ body {
 
 .slider {
     position: relative;
-    overflow: hidden;
+    overflow-x: auto;
     width: 100%;
+    padding: 0 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #4CAF50 #f0f0f0;
+}
+
+.slider::-webkit-scrollbar {
+    height: 8px;
+}
+
+.slider::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.slider::-webkit-scrollbar-thumb {
+    background-color: #4CAF50;
+    border-radius: 4px;
 }
 
 .slides {
     display: flex;
-    transition: transform 0.5s ease;
+    width: 100%;
 }
 
 .slide {
     display: flex;
     width: 100%;
+    flex-wrap: nowrap;
+    gap: 15px;
+    justify-content: flex-start;
+    padding: 20px 0;
 }
 
-.slide img {
-    min-width: 20%; /* Her bir görselin genişliği %20 */
+.player-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 80px;
+    flex-shrink: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.player-item img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.player-item img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.player-item.selected img {
+    border: 3px solid #003366;
+    box-shadow: 0 0 15px rgba(0, 51, 102, 0.4);
+    transform: scale(1.05);
+}
+
+.player-name {
+    font-size: 12px;
+    color: #333;
+    text-align: center;
+    font-weight: 500;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 button.prev, button.next {
@@ -161,11 +220,22 @@ button.next {
 }
 
 .ikinci-div {
-    background-color: #ff9a8b; /* İkinci div arka plan rengi */
+    background-color: #ff9a8b;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.ikinci-div h3 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.2em;
 }
 
 .ucuncu-div {
-    text-align: right; /* Sağ hizalama */
+    text-align: right;
+    margin-top: 10px;
 }
 
 .left-div h2 {
@@ -418,6 +488,25 @@ button.next {
     flex-direction: column;
     align-items: center; /* Alt başlıkları ortala */
     gap: 6px;
+}
+
+.selection-counter {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    background-color: #f8f9fa;
+    padding: 8px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#selectedCount {
+    color: #ff6b6b;
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 5px;
 }
 
 @keyframes popupAnimation {
