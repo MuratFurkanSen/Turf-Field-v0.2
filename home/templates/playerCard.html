@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/playerCard.css' %}"/>
+{% endblock %}
+
+{% block content %}
+    <div class="player-card-container">
+        <div class="player-card-left">
+            <div class="fifa-card-container">
+                <img src="{% static 'images/fifacarti.png' %}" alt="FIFA Card" class="fifa-card">
+                <div class="card-stats">
+                    <div class="card-stat" data-position="top-left">{{ user.profile.skills.pace }}</div>
+                    <div class="card-stat" data-position="top-center">{{ user.profile.skills.shooting }}</div>
+                    <div class="card-stat" data-position="top-right">{{ user.profile.skills.passing }}</div>
+                    <div class="card-stat" data-position="bottom-left">{{ user.profile.skills.dribbling }}</div>
+                    <div class="card-stat" data-position="bottom-center">{{ user.profile.skills.defense }}</div>
+                    <div class="card-stat" data-position="bottom-right">{{ user.profile.skills.physics }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="player-card-right">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-title">Hız</div>
+                    <div class="stat-value">{{ user.profile.skills.pace }}</div>
+                    <div class="stat-subtitle">
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Sprint Hızı</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.sprint_speed }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">Şut</div>
+                    <div class="stat-value">{{ user.profile.skills.shooting }}</div>
+                    <div class="stat-subtitle">
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Atak Pozisyonu</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.attack_position }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Bitiricilik</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.finishing }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Şut Gücü</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.shot_power }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">Pas</div>
+                    <div class="stat-value">{{ user.profile.skills.passing }}</div>
+                    <div class="stat-subtitle">
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Oyun Görüşü</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.vision }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Kısa Pas</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.short_pass }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Uzun Pas</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.long_pass }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">Dribbling</div>
+                    <div class="stat-value">{{ user.profile.skills.dribbling }}</div>
+                    <div class="stat-subtitle">
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Çeviklik</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.agility }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Top Kontrolü</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.ball_control }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Dribbling</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.dribble }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">Defans</div>
+                    <div class="stat-value">{{ user.profile.skills.defense }}</div>
+                    <div class="stat-subtitle">
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Defansif Farkındalık</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.def_awareness }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Müdahale</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.interceptions }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-title">Fizik</div>
+                    <div class="stat-value">{{ user.profile.skills.physics }}</div>
+                    <div class="stat-subtitle">
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Dayanıklılık</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.stamina }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Güç</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.strength }}</span>
+                            </div>
+                        </div>
+                        <div class="sub-stats-container">
+                            <div class="sub-stat">
+                                <span class="sub-stat-name">Çalışkanlık</span>
+                                <span class="sub-stat-value">{{ user.profile.skills.aggression }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

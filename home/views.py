@@ -12,3 +12,15 @@ def header_register_login_forms(request):
         'registration_form': register_form,
         'login_form': login_form,
     }
+
+def player_card(request):
+    return render(request, 'playerCard.html')
+
+
+def wallet(request):
+    return render(request, 'wallet.html')
+
+def load_balance(request):
+    if request.method == 'POST':
+        pass
+    return render(request, 'wallet.html')

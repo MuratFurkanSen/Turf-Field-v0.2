@@ -12,61 +12,82 @@
                         <h3 class="text-center">Bilgilerimi Düzenle</h3>
                     </div>
                     <div class="card-body">
-                        <form method="POST" action="/update_user_info" enctype="multipart/form-data">
+                        <form method="POST" action="{% url 'update_user_info' %}" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <div class="form-container">
                                 <div class="form-left-column">
+                                    <!-- Profile Picture -->
                                     <div class="form-row">
                                         <div class="form-label-col">
                                             <label for="profile_photo" class="form-label">Profil Fotoğrafı</label>
                                         </div>
                                         <div class="form-input-col">
-                                            <div class="photo-upload">
-                                                <label for="profile_photo">
-                                                    <i class="fas fa-camera"></i>
-                                                    Fotoğraf Değiştir
-                                                </label>
-                                                <input type="file" id="profile_photo" name="profile_photo"
-                                                       accept="image/*">
+                                            <div class="profile-photo-container">
+                                                <div class="profile-photo-preview">
+                                                    <img src="{{ user_profile.profile_picture.url }}"
+                                                         alt="Varsayılan Profil" id="profilePreview">
+                                                </div>
+                                                <div class="photo-upload">
+                                                    <label for="profile_photo">
+                                                        <i class="fas fa-camera"></i> Fotoğraf Değiştir
+                                                    </label>
+                                                    <input type="file" id="profile_photo" name="profile_picture"
+                                                           accept="image/*">
+                                                    {% if form.profile_picture.errors %}
+                                                        <div class="error">{{ form.profile_picture.errors.0 }}</div>
+                                                    {% endif %}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <!-- Username (readonly) -->
                                     <div class="form-row">
                                         <div class="form-label-col">
                                             <label for="username" class="form-label">Kullanıcı Adı</label>
                                         </div>
                                         <div class="form-input-col">
                                             <input type="text" class="form-control" id="username" name="username"
-                                                   value="{{ user.username }}" required>
+                                                   value="{{ user.username }}" disabled>
                                         </div>
                                     </div>
 
+                                    <!-- Email -->
                                     <div class="form-row">
                                         <div class="form-label-col">
                                             <label for="email" class="form-label">E-posta Adresi</label>
                                         </div>
                                         <div class="form-input-col">
                                             <input type="email" class="form-control" id="email" name="email"
-                                                   value="{{ user.email }}" required>
+                                                   value="{{ form.email.value|default:user.email }}" required>
+                                            {% if form.email.errors %}
+                                                <div class="error">{{ form.email.errors.0 }}</div>
+                                            {% endif %}
                                         </div>
                                     </div>
 
+                                    <!-- Phone Number -->
                                     <div class="form-row">
                                         <div class="form-label-col">
                                             <label for="phone" class="form-label">Telefon Numarası</label>
                                         </div>
                                         <div class="form-input-col">
-                                            <input type="tel" class="form-control" id="phone" name="phone"
-                                                   value="{{ user.phone }}" required>
+                                            <input type="tel" class="form-control" id="phone" name="phone_number"
+                                                   value="{{ form.phone_number.value|default:user_profile.phone_number }}"
+                                                   required>
+                                            {% if form.phone_number.errors %}
+                                                <div class="error">{{ form.phone_number.errors.0 }}</div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
 
+                                <!-- Right Column -->
                                 <div class="form-right-column">
-                                    <div class="password-section-title">Şifre Değişikliği</div>
+                                    <div class="password-section-title">Şifre İşlemleri</div>
 
+                                    <!-- Current Password -->
                                     <div class="form-row">
                                         <div class="form-label-col">
                                             <label for="current_password" class="form-label">Mevcut Şifre</label>
@@ -74,9 +95,15 @@
                                         <div class="form-input-col">
                                             <input type="password" class="form-control" id="current_password"
                                                    name="current_password" required>
+                                            {% if form.current_password.errors %}
+                                                <div class="error">{{ form.current_password.errors.0 }}</div>
+                                            {% endif %}
+                                            <br>
+                                            <small class="text-muted">Değişiklik Yapmak İçin Şifrenizi Giriniz</small>
                                         </div>
                                     </div>
 
+                                    <!-- New Password -->
                                     <div class="form-row">
                                         <div class="form-label-col">
                                             <label for="new_password" class="form-label">Yeni Şifre</label>
@@ -84,11 +111,13 @@
                                         <div class="form-input-col">
                                             <input type="password" class="form-control" id="new_password"
                                                    name="new_password">
-                                            <small class="text-muted">Şifrenizi değiştirmek istemiyorsanız boş
-                                                bırakın</small>
+                                            {% if form.new_password.errors %}
+                                                <div class="error">{{ form.new_password.errors.0 }}</div>
+                                            {% endif %}
                                         </div>
                                     </div>
 
+                                    <!-- Confirm Password -->
                                     <div class="form-row">
                                         <div class="form-label-col">
                                             <label for="confirm_password" class="form-label">Yeni Şifre (Tekrar)</label>
@@ -96,19 +125,32 @@
                                         <div class="form-input-col">
                                             <input type="password" class="form-control" id="confirm_password"
                                                    name="confirm_password">
+                                            {% if form.confirm_password.errors %}
+                                                <div class="error">{{ form.confirm_password.errors.0 }}</div>
+                                            {% endif %}
+                                            <br>
+                                            <small class="text-muted">Şifrenizi değiştirmek istemiyorsanız yeni şifre
+                                                alanlarını boş bırakın</small>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div id="errorMessages" class="auth-error-messages">
+                                <!-- Error messages will be populated here -->
+                            </div>
 
                             <div class="button-container">
-                                <a href="/profile" class="btn btn-secondary">İptal</a>
+                                <a href="{% url 'profile' %}" class="btn btn-secondary">İptal</a>
                                 <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+{% endblock %}
+{% block extraJS %}
+    <script src="{% static 'js/userInfoEdit.js' %}"></script>
 {% endblock %}

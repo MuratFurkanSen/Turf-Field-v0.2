@@ -1,7 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import UserProfile
+from django.contrib.auth.password_validation import validate_password
+
+from .models import UserProfile, UserSkillSet, VendorProfile
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -39,13 +41,18 @@ class UserRegistrationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
         if commit:
             user.save()
-            UserProfile.objects.create(
+            skills = UserSkillSet.objects.create()
+            profile = UserProfile.objects.create(
                 user=user,
+                skills=skills,
                 full_name=self.cleaned_data['full_name'],
                 birth_date=self.cleaned_data['birth_date'],
                 position=self.cleaned_data['position'],
                 phone_number=self.cleaned_data['phone_number']
             )
+            skills.user_profile = profile
+            profile.save()
+            skills.save()
         return user
 
 class UserLoginForm(AuthenticationForm):
@@ -58,3 +65,83 @@ class UserLoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ('username', 'password')
+
+class UserProfileUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+    current_password = forms.CharField(widget=forms.PasswordInput(), required=True)
+    new_password = forms.CharField(widget=forms.PasswordInput(), required=False)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(), required=False)
+
+    class Meta:
+        model = UserProfile
+        fields = ['profile_picture', 'phone_number']
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)  # You’ll pass this from your view
+        super().__init__(*args, **kwargs)
+        self.fields['profile_picture'].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get('new_password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        if not self.user.check_password(cleaned_data.get('current_password')):
+            raise forms.ValidationError("Hatalı Şifre Girdiniz")
+        if new_password and new_password != confirm_password:
+            raise forms.ValidationError("Yeni şifreler eşleşmiyor.")
+        if new_password:
+            validate_password(new_password)
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        user = self.user
+
+        # Update email
+        user.email = self.cleaned_data['email']
+
+        # Change password if provided
+        new_password = self.cleaned_data.get('new_password')
+        if new_password:
+            user.set_password(new_password)
+
+        if commit:
+            user.save()
+            profile.user = user
+            profile.save()
+
+        return profile
+
+
+class VendorRegistrationForm(UserCreationForm):
+    username = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Kullanıcı Adı'}))
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    full_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Ad Soyad'}))
+    phone_number = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Telefon Numarası'}))
+    password1 = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Şifre'})
+    )
+    password2 = forms.CharField(
+        label='Confirm Password',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Şifre Tekrar'})
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2',
+                  'full_name' , 'phone_number']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+            VendorProfile.objects.create(
+                user=user,
+                full_name=self.cleaned_data['full_name'],
+                phone_number=self.cleaned_data['phone_number']
+            )
+        return user

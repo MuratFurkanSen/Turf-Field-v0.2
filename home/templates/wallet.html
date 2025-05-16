@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/wallet.css' %}"/>
+{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <!-- Wallet Overview Card -->
+                <div class="wallet-overview-card">
+                    <div class="wallet-header">
+                        <h3>Cüzdanım</h3>
+                        <div class="wallet-balance">
+                            <span class="balance-label">Mevcut Bakiye</span>
+                            <span class="balance-amount">{{ user.wallet.balance|default:"0.00" }} TL</span>
+                        </div>
+                    </div>
+                    <div class="wallet-actions">
+                        <button type="button" class="btn btn-outline-primary" id="showLoadBalance">
+                            <i class="fas fa-plus-circle"></i> Bakiye Yükle
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" id="showTransactionHistory" data-bs-toggle="modal" data-bs-target="#transactionHistoryModal">
+                            <i class="fas fa-history"></i> İşlem Geçmişi
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Load Balance Card -->
+                <div class="card mt-4 load-balance-section" style="display: none;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3 class="text-center mb-0">Bakiye Yükle</h3>
+                        <button type="button" class="btn-close btn-close-white" id="closeLoadBalance" aria-label="Close"></button>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'load_balance' %}" id="walletForm">
+                            {% csrf_token %}
+                            <div class="form-container">
+                                <div class="form-left-column">
+                                    <!-- Card Holder Name -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="card_name" class="form-label">Kart Sahibinin Adı</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="text" class="form-control" id="card_name" name="card_name"
+                                                   required>
+                                            <div class="error" id="card_name_error"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Card Number -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="card_number" class="form-label">Kart Numarası</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="text" class="form-control" id="card_number" name="card_number"
+                                                   maxlength="19" placeholder="1234 5678 9012 3456" required>
+                                            <div class="error" id="card_number_error"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Amount -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="amount" class="form-label">Miktar (TL)</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="number" class="form-control" id="amount" name="amount"
+                                                   min="1" step="0.01" required>
+                                            <div class="error" id="amount_error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-right-column">
+                                    <div class="password-section-title">Kart Detayları</div>
+
+                                    <!-- Expiry Date -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="exp_date" class="form-label">Geçerlilik Tarihi</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="text" class="form-control" id="exp_date" name="exp_date"
+                                                   maxlength="5" placeholder="MM/YY" required>
+                                            <div class="error" id="exp_date_error"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- CVV -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="cvv" class="form-label">CVV</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="text" class="form-control" id="cvv" name="cvv"
+                                                   maxlength="3" placeholder="123" required>
+                                            <div class="error" id="cvv_error"></div>
+                                            <small class="text-muted">Kartınızın Arka Yüzündeki 3 Haneli kod</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="errorMessages" class="auth-error-messages">
+                                <!-- Error messages will be populated here -->
+                            </div>
+
+                            <div class="button-container">
+                                <button type="button" class="btn btn-secondary" id="cancelLoadBalance">İptal</button>
+                                <button type="submit" class="btn btn-primary">Bakiye Yükle</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Transaction History Modal -->
+                <div class="modal fade" id="transactionHistoryModal" tabindex="-1" aria-labelledby="transactionHistoryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="transactionHistoryModalLabel">İşlem Geçmişi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="transaction-list">
+                                    {% for transaction in transactions %}
+                                    <div class="transaction-item">
+                                        <div class="transaction-info">
+                                            <span class="transaction-type">{{ transaction.get_transaction_type_display }}</span>
+                                            <span class="transaction-date">{{ transaction.created_at|date:"d.m.Y H:i" }}</span>
+                                        </div>
+                                        <div class="transaction-amount {% if transaction.amount > 0 %}positive{% else %}negative{% endif %}">
+                                            {{ transaction.amount }} TL
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                    <div class="no-transactions">
+                                        Henüz işlem geçmişiniz bulunmamaktadır.
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extraJS %}
+    <script src="{% static 'js/wallet.js' %}"></script>
+{% endblock %}
