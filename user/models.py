@@ -7,8 +7,9 @@ SKILL_DEFAULT_VALUE = 50
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    role = models.CharField(max_length=10, default='app_user')
     skills = models.OneToOneField('UserSkillSet', on_delete=models.CASCADE, related_name='skills')
-    profile_picture = models.ImageField(upload_to='profile_pics/', default='profile_pics/Default User Profile Male.png')
+    profile_picture = models.ImageField(upload_to='app_user_profile_pics/', default='app_user_profile_pics/Default User Profile Male.png')
     full_name = models.CharField(max_length=50)
     birth_date = models.DateField()
     phone_number = models.CharField(max_length=50, unique=True)
@@ -18,6 +19,11 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return f"{self.id}| " + self.user.username
+
+class VendorProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile2')
+    role = models.CharField(max_length=10, default='vendor')
+    full_name = models.CharField(max_length=50)
 
 class UserSkillSet(models.Model):
     user_profile = models.OneToOneField(UserProfile, on_delete=models.CASCADE, related_name='skill_set', blank=True, null=True)

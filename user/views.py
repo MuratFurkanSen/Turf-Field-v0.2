@@ -13,7 +13,7 @@ import random
 
 from django.template.loader import render_to_string
 
-from .forms import UserRegistrationForm, UserLoginForm, UserProfileUpdateForm
+from .forms import UserRegistrationForm, UserLoginForm, UserProfileUpdateForm, VendorRegistrationForm
 from .models import UserProfile
 
 
@@ -139,5 +139,13 @@ def reset_password(request):
                 return JsonResponse({'success': False, 'errors': e.messages})
     return JsonResponse({'success': False})
 
-def player_card(request):
-    return render(request, 'playerCard.html')
+
+def vendor_register(request):
+    if request.method == 'POST':
+        form = VendorRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/user/profile')
+    form = VendorRegistrationForm()
+    context= {'form': form}
+    return render(request, 'vender_registration.html', context)

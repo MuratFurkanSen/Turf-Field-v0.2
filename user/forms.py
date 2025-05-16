@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
 
-from .models import UserProfile, UserSkillSet
+from .models import UserProfile, UserSkillSet, VendorProfile
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -113,3 +113,35 @@ class UserProfileUpdateForm(forms.ModelForm):
             profile.save()
 
         return profile
+
+
+class VendorRegistrationForm(UserCreationForm):
+    username = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Kullanıcı Adı'}))
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
+    full_name = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Ad Soyad'}))
+    phone_number = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Telefon Numarası'}))
+    password1 = forms.CharField(
+        label='Password',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Şifre'})
+    )
+    password2 = forms.CharField(
+        label='Confirm Password',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Şifre Tekrar'})
+    )
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2',
+                  'full_name' , 'phone_number']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+            VendorProfile.objects.create(
+                user=user,
+                full_name=self.cleaned_data['full_name'],
+                phone_number=self.cleaned_data['phone_number']
+            )
+        return user

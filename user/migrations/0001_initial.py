@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             name='UserProfile',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('profile_picture', models.ImageField(default='profile_pics/Default User Profile.png', upload_to='profile_pics/')),
+                ('profile_picture', models.ImageField(default='app_user_profile_pics/Default User Profile.png', upload_to='app_user_profile_pics/')),
                 ('full_name', models.CharField(max_length=50)),
                 ('birth_date', models.DateField()),
                 ('phone_number', models.CharField(max_length=50, unique=True)),
