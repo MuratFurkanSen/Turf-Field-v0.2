@@ -7,7 +7,7 @@
         <!-- Error messages will be populated here -->
     </div>
     
-    <form action="user/register" method="POST">
+    <form action="/user/register" method="POST">
         {% csrf_token %}
         <div class="form-group">
             <i class="fas fa-user"></i>
@@ -45,5 +45,6 @@
     </form>
     <div class="auth-links">
         <a href="#" id="showLogin">Zaten hesabınız var mı? Giriş Yap</a>
+        <a href="/facility" id="">İşletmenizi Eklemek mi İstiyorsunuz ? <br>Hemen İşletme Sayfasına geçin</a>
     </div>
 </div>

@@ -1,17 +1,24 @@
-from django.shortcuts import render
-from user.forms import UserRegistrationForm, UserLoginForm
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
+from user.forms import UserRegistrationForm, UserLoginForm, VendorRegistrationForm
+from user.models import Transaction
+
 
 # Create your views here.
 def home(request):
     return render(request, 'home.html', {})
 
+
 def header_register_login_forms(request):
     register_form = UserRegistrationForm()
     login_form = UserLoginForm()
+    vendor_registration_form = VendorRegistrationForm()
     return {
         'registration_form': register_form,
         'login_form': login_form,
+        'vendor_registration_form': vendor_registration_form,
     }
+
 
 def player_card(request):
     return render(request, 'playerCard.html')
@@ -20,7 +27,30 @@ def player_card(request):
 def wallet(request):
     return render(request, 'wallet.html')
 
+
 def load_balance(request):
     if request.method == 'POST':
-        pass
+        card_holder_name = request.POST.get('card_name')
+        card_number = request.POST.get('card_number')
+        amount = request.POST.get('amount')
+        exp_date = request.POST.get('exp_date')
+        cvv = request.POST.get('cvv')
+        if make_transaction(card_holder_name, card_number, amount, exp_date, cvv):
+            Transaction.objects.create(user_profile=request.user.profile,
+                                       type="Yükleme",
+                                       amount=amount)
+
+            request.user.profile.wallet_balance += int(amount)
+            request.user.profile.save()
+            return redirect('/home/wallet')
+        else:
+            return JsonResponse({'error': 'İşlem Gerçekleştirilemedi'})
     return render(request, 'wallet.html')
+
+
+def make_transaction(card_holder_name, card_number, amount, exp_date, cvv):
+    return True
+
+
+def test(request):
+    return redirect('/')

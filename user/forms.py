@@ -2,8 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
-
-from .models import UserProfile, UserSkillSet, VendorProfile
+from .models import AppUserProfile, UserSkillSet, VendorProfile
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -42,8 +41,9 @@ class UserRegistrationForm(UserCreationForm):
         if commit:
             user.save()
             skills = UserSkillSet.objects.create()
-            profile = UserProfile.objects.create(
+            profile = AppUserProfile.objects.create(
                 user=user,
+                role='app_user',
                 skills=skills,
                 full_name=self.cleaned_data['full_name'],
                 birth_date=self.cleaned_data['birth_date'],
@@ -73,7 +73,7 @@ class UserProfileUpdateForm(forms.ModelForm):
     confirm_password = forms.CharField(widget=forms.PasswordInput(), required=False)
 
     class Meta:
-        model = UserProfile
+        model = AppUserProfile
         fields = ['profile_picture', 'phone_number']
 
     def __init__(self, *args, **kwargs):
@@ -114,7 +114,6 @@ class UserProfileUpdateForm(forms.ModelForm):
 
         return profile
 
-
 class VendorRegistrationForm(UserCreationForm):
     username = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'placeholder': 'Kullanıcı Adı'}))
     email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={'placeholder': 'Email'}))
@@ -141,7 +140,56 @@ class VendorRegistrationForm(UserCreationForm):
             user.save()
             VendorProfile.objects.create(
                 user=user,
+                role='vendor',
                 full_name=self.cleaned_data['full_name'],
                 phone_number=self.cleaned_data['phone_number']
             )
         return user
+
+class VendorProfileUpdateForm(forms.ModelForm):
+    email = forms.EmailField(required=True)
+    current_password = forms.CharField(widget=forms.PasswordInput(), required=True)
+    new_password = forms.CharField(widget=forms.PasswordInput(), required=False)
+    confirm_password = forms.CharField(widget=forms.PasswordInput(), required=False)
+
+    class Meta:
+        model = VendorProfile
+        fields = ['profile_picture', 'phone_number']
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.fields['profile_picture'].required = False
+
+    def clean(self):
+        cleaned_data = super().clean()
+        new_password = cleaned_data.get('new_password')
+        confirm_password = cleaned_data.get('confirm_password')
+
+        if not self.user.check_password(cleaned_data.get('current_password')):
+            raise forms.ValidationError("Hatalı Şifre Girdiniz")
+        if new_password and new_password != confirm_password:
+            raise forms.ValidationError("Yeni şifreler eşleşmiyor.")
+        if new_password:
+            validate_password(new_password)
+
+        return cleaned_data
+
+    def save(self, commit=True):
+        profile = super().save(commit=False)
+        user = self.user
+
+        # Update email
+        user.email = self.cleaned_data['email']
+
+        # Change password if provided
+        new_password = self.cleaned_data.get('new_password')
+        if new_password:
+            user.set_password(new_password)
+
+        if commit:
+            user.save()
+            profile.user = user
+            profile.save()
+
+        return profile

@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/facilityInfo.css' %}"/>
+{% endblock %}
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Tesis Bilgilerini Düzenle</h3>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'update_profile_info' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+
+                            <div class="form-container">
+                                <div class="form-left-column">
+                                    <!-- Facility Logo -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="facility_logo" class="form-label">Tesis Logosu</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <div class="profile-photo-container">
+                                                <div class="profile-photo-preview">
+                                                    <img src="{{ vendor_profile.logo.url }}"
+                                                         alt="Tesis Logosu" id="logoPreview">
+                                                </div>
+                                                <div class="photo-upload">
+                                                    <label for="facility_logo">
+                                                        <i class="fas fa-camera"></i> Logo Değiştir
+                                                    </label>
+                                                    <input type="file" id="facility_logo" name="logo"
+                                                           accept="image/*">
+                                                    {% if form.logo.errors %}
+                                                        <div class="error">{{ form.logo.errors.0 }}</div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Facility Name -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="facility_name" class="form-label">Tesis Adı</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="text" class="form-control" id="facility_name" name="facility_name"
+                                                   value="{{ form.facility_name.value }}" required>
+                                            {% if form.facility_name.errors %}
+                                                <div class="error">{{ form.facility_name.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Business Type -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="business_type" class="form-label">İşletme Türü</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <select class="form-control" id="business_type" name="business_type" required>
+                                                <option value="">Seçiniz</option>
+                                                <option value="sports_complex" {% if vendor_profile.business_type == 'sports_complex' %}selected{% endif %}>Spor Kompleksi</option>
+                                                <option value="stadium" {% if vendor_profile.business_type == 'stadium' %}selected{% endif %}>Stadyum</option>
+                                                <option value="fitness_center" {% if vendor_profile.business_type == 'fitness_center' %}selected{% endif %}>Fitness Merkezi</option>
+                                                <option value="other" {% if vendor_profile.business_type == 'other' %}selected{% endif %}>Diğer</option>
+                                            </select>
+                                            {% if form.business_type.errors %}
+                                                <div class="error">{{ form.business_type.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Contact Email -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="email" class="form-label">İletişim E-postası</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="email" class="form-control" id="email" name="email"
+                                                   value="{{ form.email.value }}" required>
+                                            {% if form.email.errors %}
+                                                <div class="error">{{ form.email.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Phone Number -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="phone" class="form-label">Telefon Numarası</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="tel" class="form-control" id="phone" name="phone_number"
+                                                   value="{{ form.phone_number.value }}"
+                                                   required>
+                                            {% if form.phone_number.errors %}
+                                                <div class="error">{{ form.phone_number.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Right Column -->
+                                <div class="form-right-column">
+                                    <div class="password-section-title">İşletme Detayları</div>
+
+                                    <!-- Address -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="address" class="form-label">Adres</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <textarea class="form-control" id="address" name="address" rows="3" required>{{ form.address.value }}</textarea>
+                                            {% if form.address.errors %}
+                                                <div class="error">{{ form.address.errors.0 }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="description" class="form-label">Tesis Açıklaması</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <textarea class="form-control" id="description" name="description" rows="4">{{ form.description.value }}</textarea>
+                                            {% if form.description.errors %}
+                                                <div class="error">{{ form.description.errors.0 }}</div>
+                                            {% endif %}
+                                            <small class="text-muted">Tesisinizi tanıtan kısa bir açıklama yazın</small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Business Hours -->
+                                    <div class="form-row">
+                                        <div class="form-label-col">
+                                            <label for="business_hours" class="form-label">Çalışma Saatleri</label>
+                                        </div>
+                                        <div class="form-input-col">
+                                            <input type="text" class="form-control" id="business_hours" name="business_hours"
+                                                   value="{{ form.business_hours.value }}" required>
+                                            {% if form.business_hours.errors %}
+                                                <div class="error">{{ form.business_hours.errors.0 }}</div>
+                                            {% endif %}
+                                            <small class="text-muted">Örnek: 09:00 - 22:00</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="errorMessages" class="auth-error-messages">
+                                <!-- Error messages will be populated here -->
+                            </div>
+
+                            <div class="button-container">
+                                <button type="submit" class="btn btn-primary">Değişiklikleri Kaydet</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extraJS %}
+    <script src="{% static 'js/facilityInfo.js' %}"></script>
+{% endblock %}

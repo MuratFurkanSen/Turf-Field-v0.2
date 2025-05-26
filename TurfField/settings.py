@@ -30,13 +30,16 @@ ALLOWED_HOSTS = ['188.119.38.49', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    # Django Apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Custom Apps
+    # Module Apps
+    'polymorphic',
+    # Website Apps
     'home',
     'user',
     'team',
@@ -110,7 +113,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'tr-tr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Istanbul'
+
 
 USE_I18N = True
 

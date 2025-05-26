@@ -1,0 +1,208 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Facility Hero Section */
+.facility-hero {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    min-height: calc(100vh - 70px);
+    overflow: hidden;
+    background-color: #f8f9fa;
+}
+
+.facility-background {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    width: 70%;
+    height: 90%;
+    z-index: 0;
+}
+
+.facility-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left center;
+    opacity: 0.3;
+}
+
+.facility-content {
+    position: relative;
+    z-index: 2;
+    max-width: 45%;
+    padding: 2rem 0;
+}
+
+.facility-content h1 {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.text-dark {
+    color: #2c3e50;
+}
+
+.text-blue {
+    color: #3498db;
+}
+
+.facility-content p {
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    color: #34495e;
+    margin-bottom: 2rem;
+    font-weight: 400;
+}
+
+.facility-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.facility-btn {
+    padding: clamp(0.8rem, 1.5vw, 1rem) clamp(2rem, 3vw, 3rem);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.facility-btn.primary {
+    background-color: #3498db;
+    color: white;
+}
+
+.facility-btn.primary:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.facility-btn.secondary {
+    background-color: white;
+    color: #3498db;
+    border: 2px solid #3498db;
+}
+
+.facility-btn.secondary:hover {
+    background-color: #f8f9fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+}
+
+.facility-illustration {
+    position: relative;
+    z-index: 2;
+    width: 40%;
+    height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.facility-illustration img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-height: 600px;
+}
+
+/* Facility Features Section */
+.facility-features {
+    padding: 4rem 5%;
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.feature-card {
+    background-color: #f8f9fa;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background-color: #3498db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.feature-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.feature-card h3 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.feature-card p {
+    color: #7f8c8d;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .facility-hero {
+        flex-direction: column;
+        text-align: center;
+        height: auto;
+        padding: 4rem 5%;
+    }
+
+    .facility-content {
+        max-width: 100%;
+        margin-bottom: 3rem;
+    }
+
+    .facility-illustration {
+        width: 80%;
+        height: 50vh;
+    }
+
+    .facility-actions {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .facility-features {
+        grid-template-columns: 1fr;
+    }
+
+    .facility-content h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+    }
+
+    .facility-content p {
+        font-size: clamp(1rem, 1.5vw, 1.4rem);
+    }
+}

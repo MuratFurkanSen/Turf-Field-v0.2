@@ -2,10 +2,13 @@
 <div id="authPopup" class="auth-popup">
     <div class="auth-popup-content">
         <span class="auth-close">&times;</span>
-        
-        {% include 'particles/login.html' %}
-        {% include 'particles/registration.html' %}
-        {% include 'particles/password_reset.html' %}
+        {% include 'login.html' %}
+        {% if '/facility/' not in request.path %}
+            {% include 'user_registration.html' %}
+        {% else %}
+            {% include 'vendor_registration.html' %}
+        {% endif %}
+        {% include 'password_reset.html' %}
         
     </div>
 </div>

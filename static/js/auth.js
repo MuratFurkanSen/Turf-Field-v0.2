@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const loginBtn = document.getElementById('loginBtn');
     const showRegister = document.getElementById('showRegister');
     const showLogin = document.getElementById('showLogin');
+    const showVendorRegister = document.getElementById('showVendorRegister');
     // Forms
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
@@ -15,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const password_resetMessageContainer = document.getElementById('password-resetErrorMessages');
 
     // Password Reset Functionality
-
     const showForgotPassword = document.getElementById('showForgotPassword');
     const backToLogin = document.getElementById('backToLogin');
     const goToLogin = document.getElementById('goToLogin');
@@ -276,6 +276,9 @@ document.addEventListener('DOMContentLoaded', function () {
             case "password-reset":
                 errorMessageContainer = password_resetMessageContainer
                 break
+            case "vendor-register":
+                errorMessageContainer = vendorRegisterMessageContainer
+                break
         }
         // Add the list to the error messages container
         errorMessageContainer.appendChild(errorList);
@@ -285,12 +288,13 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     // Function to clear error messages
     function clearErrorMessages() {
-        let containers = [registerMessageContainer, loginMessageContainer, password_resetMessageContainer]
+        let containers = [registerMessageContainer, loginMessageContainer, password_resetMessageContainer, vendorRegisterMessageContainer]
         for (let errorMessageContainer of containers) {
-            errorMessageContainer.innerHTML = '';
-            errorMessageContainer.classList.remove('show');
+            if (errorMessageContainer) {
+                errorMessageContainer.innerHTML = '';
+                errorMessageContainer.classList.remove('show');
+            }
         }
-
     }
     
     // Handle register form submission
@@ -348,6 +352,59 @@ document.addEventListener('DOMContentLoaded', function () {
                 displayAuthErrors(data.errors, "login");
             } else if (response.redirected) {
                 // ✅ Login succeeded and redirect was returned
+                window.location.href = response.url;
+            }
+        });
+    }
+
+    // Switch to vendor register form
+    if (showVendorRegister) {
+        showVendorRegister.addEventListener('click', function (e) {
+            e.preventDefault();
+            loginForm.style.display = 'none';
+            registerForm.style.display = 'none';
+            vendorRegisterForm.style.display = 'flex';
+            // Clear error messages when switching forms
+            clearErrorMessages();
+        });
+    }
+
+    // Switch to login form from vendor register
+    if (showVendorLogin) {
+        showVendorLogin.addEventListener('click', function (e) {
+            e.preventDefault();
+            vendorRegisterForm.style.display = 'none';
+            loginForm.style.display = 'flex';
+            // Clear error messages when switching forms
+            clearErrorMessages();
+        });
+    }
+
+    // Handle vendor register form submission
+    if (vendorRegisterForm) {
+        vendorRegisterForm.addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+
+            const response = await fetch(form.action, {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
+                },
+                body: formData,
+            });
+
+            const contentType = response.headers.get("content-type");
+
+            if (contentType && contentType.includes("application/json")) {
+                // ❌ Register failed — show errors
+                const data = await response.json();
+                clearErrorMessages();
+                displayAuthErrors(data.errors, "vendor-register");
+            } else if (response.redirected) {
+                // ✅ Register succeeded and redirect was returned
                 window.location.href = response.url;
             }
         });

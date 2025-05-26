@@ -11,7 +11,43 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeLoadBalanceBtn = document.getElementById('closeLoadBalance');
     const cancelLoadBalanceBtn = document.getElementById('cancelLoadBalance');
     const loadBalanceSection = document.querySelector('.load-balance-section');
-    
+    const errorMessagesContainer = document.getElementById('errorMessages');
+
+    // Function to display error messages
+    function displayErrors(errors) {
+        // Clear any previous error messages
+        clearErrors();
+
+        // If there are no errors, return
+        if (!errors || errors.length === 0) {
+            return;
+        }
+
+        // Create a list to hold the error messages
+        const errorList = document.createElement('ul');
+
+        // Add each error to the list
+        errors.forEach(function (error) {
+            const errorItem = document.createElement('li');
+            errorItem.textContent = error;
+            errorList.appendChild(errorItem);
+        });
+
+        // Add the list to the error messages container
+        errorMessagesContainer.appendChild(errorList);
+
+        // Show the error messages container
+        errorMessagesContainer.classList.add('show');
+    }
+
+    // Function to clear error messages
+    function clearErrors() {
+        if (errorMessagesContainer) {
+            errorMessagesContainer.innerHTML = '';
+            errorMessagesContainer.classList.remove('show');
+        }
+    }
+
     // Initialize Bootstrap Modal
     let transactionHistoryModal;
     try {
@@ -27,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Show transaction history modal
     if (showTransactionHistoryBtn && transactionHistoryModal) {
-        showTransactionHistoryBtn.addEventListener('click', function() {
+        showTransactionHistoryBtn.addEventListener('click', function () {
             try {
                 transactionHistoryModal.show();
             } catch (error) {
@@ -38,11 +74,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Show load balance section
     if (showLoadBalanceBtn && loadBalanceSection) {
-        showLoadBalanceBtn.addEventListener('click', function() {
+        showLoadBalanceBtn.addEventListener('click', function () {
             loadBalanceSection.style.display = 'block';
             // Trigger reflow
             loadBalanceSection.offsetHeight;
             loadBalanceSection.classList.add('show');
+            // Clear any previous errors when opening the form
+            clearErrors();
         });
     }
 
@@ -52,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
         setTimeout(() => {
             loadBalanceSection.style.display = 'none';
         }, 300); // Match the transition duration
+        // Clear any errors when closing
+        clearErrors();
     }
 
     if (closeLoadBalanceBtn) {
@@ -105,35 +145,35 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateCardNumber() {
         const errorElement = document.getElementById('card_number_error');
         const value = cardNumber.value.replace(/\s/g, '');
-        
+
         if (value.length < 16) {
             errorElement.textContent = 'Kart numarası 16 haneli olmalıdır';
             return false;
         }
-        
+
         // Luhn algorithm for card validation
         let sum = 0;
         let isEven = false;
-        
+
         for (let i = value.length - 1; i >= 0; i--) {
             let digit = parseInt(value[i]);
-            
+
             if (isEven) {
                 digit *= 2;
                 if (digit > 9) {
                     digit -= 9;
                 }
             }
-            
+
             sum += digit;
             isEven = !isEven;
         }
-        
+
         if (sum % 10 !== 0) {
             errorElement.textContent = 'Geçersiz kart numarası';
             return false;
         }
-        
+
         errorElement.textContent = '';
         return true;
     }
@@ -141,27 +181,27 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateExpDate() {
         const errorElement = document.getElementById('exp_date_error');
         const value = expDate.value;
-        
+
         if (!value.match(/^\d{2}\/\d{2}$/)) {
             errorElement.textContent = 'Geçersiz tarih formatı (AA/YY)';
             return false;
         }
-        
+
         const [month, year] = value.split('/');
         const currentDate = new Date();
         const currentYear = currentDate.getFullYear() % 100;
         const currentMonth = currentDate.getMonth() + 1;
-        
+
         if (month < 1 || month > 12) {
             errorElement.textContent = 'Geçersiz ay';
             return false;
         }
-        
+
         if (year < currentYear || (year === currentYear && month < currentMonth)) {
             errorElement.textContent = 'Kart süresi dolmuş';
             return false;
         }
-        
+
         errorElement.textContent = '';
         return true;
     }
@@ -169,12 +209,12 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateCVV() {
         const errorElement = document.getElementById('cvv_error');
         const value = cvv.value;
-        
+
         if (value.length !== 3) {
             errorElement.textContent = 'CVV 3 haneli olmalıdır';
             return false;
         }
-        
+
         errorElement.textContent = '';
         return true;
     }
@@ -182,17 +222,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateCardName() {
         const errorElement = document.getElementById('card_name_error');
         const value = cardName.value.trim();
-        
+
         if (value.length < 3) {
             errorElement.textContent = 'Lütfen geçerli bir isim girin';
             return false;
         }
-        
+
         if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(value)) {
             errorElement.textContent = 'İsim sadece harflerden oluşmalıdır';
             return false;
         }
-        
+
         errorElement.textContent = '';
         return true;
     }
@@ -200,17 +240,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateAmount() {
         const errorElement = document.getElementById('amount_error');
         const value = parseFloat(amount.value);
-        
+
         if (isNaN(value) || value <= 0) {
             errorElement.textContent = 'Lütfen geçerli bir miktar girin';
             return false;
         }
-        
+
         if (value > 10000) {
             errorElement.textContent = 'Maksimum yükleme miktarı 10.000 TL\'dir';
             return false;
         }
-        
+
         errorElement.textContent = '';
         return true;
     }
@@ -221,17 +261,20 @@ document.addEventListener('DOMContentLoaded', function () {
         const isCVVValid = validateCVV();
         const isCardNameValid = validateCardName();
         const isAmountValid = validateAmount();
-        
+
         return isCardNumberValid && isExpDateValid && isCVVValid && isCardNameValid && isAmountValid;
     }
 
     // Form submission
     form.addEventListener('submit', async function (e) {
         e.preventDefault();
-        
+
         if (!validateForm()) {
             return;
         }
+
+        // Clear any previous errors
+        clearErrors();
 
         // Show loading state
         submitButton.disabled = true;
@@ -252,15 +295,14 @@ document.addEventListener('DOMContentLoaded', function () {
             if (contentType && contentType.includes('application/json')) {
                 const data = await response.json();
                 if (data.errors) {
-                    const errorContainer = document.getElementById('errorMessages');
-                    errorContainer.innerHTML = data.errors.map(error => `<li>${error}</li>`).join('');
-                    errorContainer.classList.add('show');
+                    displayErrors(data.errors);
                 }
             } else if (response.redirected) {
                 window.location.href = response.url;
             }
         } catch (error) {
             console.error('Error:', error);
+            displayErrors(['Bir hata oluştu. Lütfen tekrar deneyin.']);
         } finally {
             submitButton.disabled = false;
             submitButton.innerHTML = 'Bakiye Yükle';

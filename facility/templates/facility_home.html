@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/facility.css' %}">
+{% endblock %}
+{% block header %}
+    {% include 'particles/facility_header.html' %}
+{% endblock %}
+{% block content %}
+    <main class="facility-hero">
+        <div class="facility-background">
+            <!-- Could add it later
+            <img src="{% static 'images/facility_home_background_shape.png' %}" alt="Background Shape">
+            -->
+        </div>
+
+        <div class="facility-content">
+            <h1>
+                <span class="text-dark">İşletmenizi</span>
+                <span class="text-blue">Yönetin</span>
+                <span class="text-dark">Geliştirin</span>
+            </h1>
+            <p>Halı saha işletmenizi dijitalleştirin ve gelirinizi artırın</p>
+            <div class="facility-actions">
+                <button class="facility-btn primary">YÖNETİM PANELİ</button>
+                <button class="facility-btn secondary">İSTATİSTİKLER</button>
+            </div>
+        </div>
+
+        <div class="facility-illustration">
+            <img src="{% static 'images/facility_home_background_shape.png' %}" alt="Facility Management">
+        </div>
+    </main>
+
+    <section class="facility-features">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <h3>Rezervasyon Yönetimi</h3>
+            <p>Online ve telefon rezervasyonlarını tek panelden yönetin</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Gelir Takibi</h3>
+            <p>Günlük, aylık ve yıllık gelirlerinizi analiz edin</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>Müşteri Yönetimi</h3>
+            <p>Müşteri verilerinizi düzenli tutun ve sadakat programları oluşturun</p>
+        </div>
+    </section>
+{% endblock %}

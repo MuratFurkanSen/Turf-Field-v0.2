@@ -13,7 +13,7 @@
                         <h3>Cüzdanım</h3>
                         <div class="wallet-balance">
                             <span class="balance-label">Mevcut Bakiye</span>
-                            <span class="balance-amount">{{ user.wallet.balance|default:"0.00" }} TL</span>
+                            <span class="balance-amount">{{ user.profile.wallet_balance }} TL</span>
                         </div>
                     </div>
                     <div class="wallet-actions">
@@ -23,6 +23,40 @@
                         <button type="button" class="btn btn-outline-primary" id="showTransactionHistory" data-bs-toggle="modal" data-bs-target="#transactionHistoryModal">
                             <i class="fas fa-history"></i> İşlem Geçmişi
                         </button>
+                    </div>
+                </div>
+
+                <!-- Transaction History Modal -->
+                <div class="modal fade" id="transactionHistoryModal" tabindex="-1" aria-labelledby="transactionHistoryModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="transactionHistoryModalLabel">İşlem Geçmişi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="transaction-list">
+                                    {% for transaction in user.profile.transactions.all %}
+                                    <div class="transaction-item">
+                                        <div class="transaction-info">
+                                            <span class="transaction-type">{{ transaction.type }}</span>
+                                            <span class="transaction-date">{{ transaction.date|date:"d.m.Y H:i" }}</span>
+                                        </div>
+                                        <div class="transaction-amount {% if transaction.amount > 0 %}positive{% else %}negative{% endif %}">
+                                            {{ transaction.amount }} TL
+                                        </div>
+                                    </div>
+                                    {% empty %}
+                                    <div class="no-transactions">
+                                        Henüz işlem geçmişiniz bulunmamaktadır.
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -113,40 +147,6 @@
                                 <button type="submit" class="btn btn-primary">Bakiye Yükle</button>
                             </div>
                         </form>
-                    </div>
-                </div>
-
-                <!-- Transaction History Modal -->
-                <div class="modal fade" id="transactionHistoryModal" tabindex="-1" aria-labelledby="transactionHistoryModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="transactionHistoryModalLabel">İşlem Geçmişi</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="transaction-list">
-                                    {% for transaction in transactions %}
-                                    <div class="transaction-item">
-                                        <div class="transaction-info">
-                                            <span class="transaction-type">{{ transaction.get_transaction_type_display }}</span>
-                                            <span class="transaction-date">{{ transaction.created_at|date:"d.m.Y H:i" }}</span>
-                                        </div>
-                                        <div class="transaction-amount {% if transaction.amount > 0 %}positive{% else %}negative{% endif %}">
-                                            {{ transaction.amount }} TL
-                                        </div>
-                                    </div>
-                                    {% empty %}
-                                    <div class="no-transactions">
-                                        Henüz işlem geçmişiniz bulunmamaktadır.
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

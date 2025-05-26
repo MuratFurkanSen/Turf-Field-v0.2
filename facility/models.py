@@ -13,3 +13,4 @@ class Facility(models.Model):
     maps_location = models.URLField()
     website = models.URLField()
     belonged_vendor = models.ForeignKey(VendorProfile, on_delete=models.CASCADE, related_name='vendor')
+    rating = models.FloatField()

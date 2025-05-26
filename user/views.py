@@ -1,5 +1,3 @@
-from idlelib.iomenu import errors
-
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -7,18 +5,35 @@ from django.contrib import messages
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.mail import EmailMessage
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 import random
 
 from django.template.loader import render_to_string
 
-from .forms import UserRegistrationForm, UserLoginForm, UserProfileUpdateForm, VendorRegistrationForm
-from .models import UserProfile
+from .forms import UserRegistrationForm, UserLoginForm, UserProfileUpdateForm, VendorRegistrationForm, \
+    VendorProfileUpdateForm
+from .models import AppUserProfile, VendorProfile
 
 
 # Create your views here.
-def user_register(request):
+def profile_required(required_role):
+    def decorator(view_func):
+        def wrapper(request, *args, **kwargs):
+            if not request.user.is_authenticated:
+                return HttpResponseForbidden("You must be logged in.")
+
+            profile = getattr(request.user, 'profile', None)
+            if profile and profile.role == required_role:
+                return view_func(request, *args, **kwargs)
+            return HttpResponseForbidden("You do not have access to this page.")
+
+        return wrapper
+
+    return decorator
+
+
+def app_user_register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -33,6 +48,24 @@ def user_register(request):
                 errors.extend(error_list.as_text().replace('*', '').split('\n'))
             return JsonResponse({'errors': errors})
     return redirect('/')
+
+
+def vendor_register(request):
+    if request.method == 'POST':
+        form = VendorRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect('/facility')
+        else:
+            errors = []
+            for error_list in form.errors.values():
+                errors.extend(error_list.as_text().replace('*', '').split('\n'))
+            return JsonResponse({'errors': errors})
+    return redirect('facility')
 
 
 def user_login(request):
@@ -58,17 +91,23 @@ def user_logout(request):
 
 @login_required
 def user_profile(request):
-    curr_user_profile = UserProfile.objects.get(user_id=request.user.id)
-    return render(request, "userInfoEdit.html", {'user_profile': curr_user_profile})
+    if request.user.profile.role == 'app_user':
+        curr_profile = AppUserProfile.objects.get(user_id=request.user.id)
+    else:
+        curr_profile = VendorProfile.objects.get(user_id=request.user.id)
+    return render(request, "profileInfo.html", {'user_profile': curr_profile})
 
 
 @login_required
-def update_user_info(request):
+def update_profile_info(request):
     profile = request.user.profile
+    role = profile.role
 
     if request.method == 'POST':
-        form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile, user=request.user)
-        print(form.errors)
+        if role == 'app_user':
+            form = UserProfileUpdateForm(request.POST, request.FILES, instance=profile, user=request.user)
+        else:
+            form = VendorProfileUpdateForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Profiliniz güncellendi.')
@@ -78,14 +117,17 @@ def update_user_info(request):
             for error_list in form.errors.values():
                 errors.extend(error_list.as_text().replace('*', '').split('\n'))
             return JsonResponse({'errors': errors})
-    form = UserProfileUpdateForm(instance=profile, user=request.user, initial={'email': request.user.email})
-    return render(request, 'userInfoEdit.html', {'form': form, 'user_profile': profile})
+    if role == 'app_user':
+        form = UserProfileUpdateForm(instance=profile, user=request.user, initial={'email': request.user.email})
+    else:
+        form = VendorProfileUpdateForm(instance=profile, user=request.user, initial={'email': request.user.email})
+    return render(request, 'profileInfo.html', {'form': form, 'user_profile': profile})
 
 
 def handle_otp_request(request):
     if request.method == 'POST':
         phone_number = request.POST.get('phone_number')
-        profile = UserProfile.objects.filter(phone_number=phone_number)
+        profile = AppUserProfile.objects.filter(phone_number=phone_number)
 
         if len(profile.values()) != 0:
             profile = profile[0]
@@ -138,14 +180,3 @@ def reset_password(request):
             except ValidationError as e:
                 return JsonResponse({'success': False, 'errors': e.messages})
     return JsonResponse({'success': False})
-
-
-def vendor_register(request):
-    if request.method == 'POST':
-        form = VendorRegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('/user/profile')
-    form = VendorRegistrationForm()
-    context= {'form': form}
-    return render(request, 'vender_registration.html', context)
