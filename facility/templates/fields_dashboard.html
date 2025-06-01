@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+    {% include 'particles/facility_header.html' %}
+{% endblock %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/facility/dashboard.css' %}">
+{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div class="header-content">
+            <a href="{% url 'facility:facility_dashboard' %}" class="back-button">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1>{{ facility.name }} - Sahalar</h1>
+        </div>
+    </div>
+    
+    <div class="facilities-grid">
+        <!-- Existing Fields -->
+        {% for field in fields %}
+        <div class="facility-card">
+            <div class="facility-image">
+                {% if field.picture %}
+                    <img src="{{ field.picture.url }}" alt="{{ field.name }}">
+                {% else %}
+                    <img src="{% static 'images/default-field.jpg' %}" alt="Default Field Image">
+                {% endif %}
+            </div>
+            <div class="facility-info">
+                <h3>{{ field.name }}</h3>
+                <p><i class="fas fa-futbol"></i> {{ field.field_type }}</p>
+                <p><i class="fas fa-users"></i> {{ field.capacity }} Kişilik</p>
+                <div class="facility-rating">
+                    <i class="fas fa-star"></i>
+                    <span>{{ field.rating }}</span>
+                </div>
+            </div>
+            <div class="facility-actions">
+                <a href="{% url 'facility:field_edit' field.id %}" class="action-btn edit">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a href="{% url 'facility:field_delete' field.id %}" class="action-btn delete" data-field-id="{{ field.id }}" data-field-name="{{ field.name }}">
+                    <i class="fas fa-trash"></i> Sil
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Field Creation Card -->
+        <div class="facility-card create-card" onclick="showFieldPopup()">
+            <div class="create-card-content">
+                <i class="fas fa-plus-circle"></i>
+                <h3>Yeni Saha Ekle</h3>
+                <p>Yeni bir saha kaydı oluşturmak için tıklayın</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Popup -->
+<div id="deleteConfirmationPopup" class="auth-popup">
+    <div class="auth-popup-content">
+        <span class="auth-close">&times;</span>
+        <div class="auth-form">
+            <h2>Saha Silme Onayı</h2>
+            
+            <!-- Error Messages Container -->
+            <div id="deleteErrorMessages" class="auth-error-messages">
+                <!-- Error messages will be populated here -->
+            </div>
+            
+            <form id="deleteConfirmationForm" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Şifrenizi Girin" required>
+                </div>
+                <div class="confirmation-message">
+                    <p><strong><span id="fieldNameToDelete"></span></strong> sahasını silmek istediğinizden emin misiniz?</p>
+                    <p class="warning-text">Bu işlem geri alınamaz!</p>
+                </div>
+                <button type="submit" class="auth-submit delete">Sahayı Sil</button>
+                <button type="button" class="auth-submit cancel" onclick="hideDeleteConfirmation()">İptal</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include Field Creation Popup -->
+{% include 'field_creation.html' %}
+{% endblock %}
+{% block extraJS %}
+    <script src="{% static 'js/facility/dashboard.js' %}"></script>
+{% endblock %} 

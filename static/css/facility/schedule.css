@@ -1,0 +1,102 @@
+.time-slot {
+    margin: 2px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    width: 100%;
+    border: none;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.time-slot.active {
+    background-color: #28a745;
+    color: white;
+}
+
+.time-slot.inactive {
+    background-color: #6c757d;
+    color: white;
+    opacity: 0.7;
+}
+
+.time-slot:hover {
+    opacity: 0.8;
+    transform: scale(1.02);
+}
+
+.day-column {
+    min-width: 120px;
+}
+
+.date-text {
+    font-size: 0.8rem;
+    color: #666;
+    display: block;
+}
+
+.time-settings {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.time-settings select {
+    width: 120px;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 8px;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    padding: 1rem;
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+.table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .time-settings .row {
+        flex-direction: column;
+    }
+    
+    .time-settings .col-md-4 {
+        margin-bottom: 1rem;
+    }
+    
+    .day-column {
+        min-width: 100px;
+    }
+}

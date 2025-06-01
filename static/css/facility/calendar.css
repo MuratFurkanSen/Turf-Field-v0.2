@@ -1,0 +1,133 @@
+
+.time-slot {
+    margin: 2px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+}
+
+.time-slot.available {
+    background-color: #28a745;
+    color: white;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.time-slot.booked {
+    background-color: #dc3545;
+    color: white;
+    pointer-events: none;
+}
+
+.time-slot.phone-booked {
+    background-color: #fd7e14;
+    color: white;
+    pointer-events: none;
+}
+
+.time-slot.closed {
+    background-color: #6c757d;
+    color: white;
+    opacity: 0.5;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+.time-slot:hover {
+    opacity: 0.8;
+}
+
+.day-column {
+    min-width: 120px;
+}
+
+.date-text {
+    font-size: 0.8rem;
+    color: #666;
+    display: block;
+}
+
+.reservation-code-input {
+    display: none;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.reservation-code-input.show {
+    display: block;
+}
+
+.time-slot-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.control-buttons {
+    display: none;
+    margin-top: 5px;
+    gap: 5px;
+}
+
+.control-buttons.show {
+    display: flex;
+}
+
+.control-buttons button {
+    font-size: 0.8rem;
+    padding: 2px 5px;
+}
+
+.time-settings {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.time-settings select {
+    width: 120px;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.revenue-summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.revenue-card {
+    background-color: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.revenue-card h6 {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.revenue-card .amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.facility-count {
+    font-size: 1.2rem;
+    color: #0d6efd;
+    margin-top: 10px;
+}
+
+.reservation-count {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.reservation-count i {
+    margin-right: 5px;
+    color: #28a745;
+}

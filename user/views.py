@@ -79,7 +79,10 @@ def user_login(request):
             for error_list in form.errors.values():
                 errors.extend(error_list.as_text().replace('*', '').split('\n'))
             return JsonResponse({'errors': errors})
-    return redirect('/')
+    if request.user.profile.role == 'vendor':
+        return redirect('/facility')
+    else:
+        return redirect('/')
 
 
 @login_required

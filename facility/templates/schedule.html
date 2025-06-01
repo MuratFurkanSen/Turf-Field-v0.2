@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extraCSS %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/facility/schedule.css' %}">
+{% endblock %}
+
+{% block header %}
+    {% include 'particles/facility_header.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Çalışma Saatleri Ayarları</h5>
+            <button class="btn btn-primary" onclick="saveSchedule()">Kaydet</button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Saat</th>
+                        <th class="day-column">
+                            Pazartesi
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="toggleAllSlots('Mon')">Tümünü Aç/Kapat</button>
+                        </th>
+                        <th class="day-column">
+                            Salı
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="toggleAllSlots('Tue')">Tümünü Aç/Kapat</button>
+                        </th>
+                        <th class="day-column">
+                            Çarşamba
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="toggleAllSlots('Wed')">Tümünü Aç/Kapat</button>
+                        </th>
+                        <th class="day-column">
+                            Perşembe
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="toggleAllSlots('Thu')">Tümünü Aç/Kapat</button>
+                        </th>
+                        <th class="day-column">
+                            Cuma
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="toggleAllSlots('Fri')">Tümünü Aç/Kapat</button>
+                        </th>
+                        <th class="day-column">
+                            Cumartesi
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="toggleAllSlots('Sat')">Tümünü Aç/Kapat</button>
+                        </th>
+                        <th class="day-column">
+                            Pazar
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" onclick="toggleAllSlots('Sun')">Tümünü Aç/Kapat</button>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody id="timeSlots">
+                    <!-- Saat dilimleri JavaScript ile doldurulacak -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extraJS %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/facility/schedule.js' %}"></script>
+{% endblock %}

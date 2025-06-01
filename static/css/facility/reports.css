@@ -1,0 +1,54 @@
+.time-settings {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.time-settings select {
+    width: 120px;
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.revenue-summary {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.revenue-card {
+    background-color: white;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.revenue-card h6 {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.revenue-card .amount {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.facility-count {
+    font-size: 1.2rem;
+    color: #0d6efd;
+    margin-top: 10px;
+}
+
+.reservation-count {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+.reservation-count i {
+    margin-right: 5px;
+    color: #28a745;
+}

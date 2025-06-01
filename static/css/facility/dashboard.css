@@ -1,0 +1,250 @@
+.dashboard-container {
+    padding: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-header {
+    margin-bottom: 1.5rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.back-button {
+    color: #28a745;
+    font-size: 1.5rem;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #eefff2;
+    transform: translateX(-3px);
+}
+
+.dashboard-header h1 {
+    color: #28a745;
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.facilities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.facility-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.facility-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.facility-image {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+}
+
+.facility-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.facility-info {
+    padding: 1rem;
+}
+
+.facility-info h3 {
+    color: #2c3e50;
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+}
+
+.facility-info p {
+    color: #666;
+    margin-bottom: 0.35rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.facility-info p i {
+    color: #28a745;
+    width: 16px;
+    font-size: 0.9rem;
+}
+
+.facility-rating {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.75rem;
+    color: #f1c40f;
+    font-size: 0.9rem;
+}
+
+.facility-rating i {
+    color: #f1c40f;
+    font-size: 0.9rem;
+}
+
+.facility-actions {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    gap: 0.75rem;
+}
+
+.action-btn {
+    flex: 1;
+    padding: 0.4rem;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.action-btn.edit {
+    background-color: #28a745;
+    color: white;
+}
+
+.action-btn.edit:hover {
+    background-color: #218838;
+}
+
+.action-btn.delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.action-btn.delete:hover {
+    background-color: #c82333;
+}
+
+/* Create Card Styles */
+.create-card {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    background-color: #f8f9fa;
+    border: 2px dashed #28a745;
+}
+
+.create-card-content {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.create-card-content i {
+    font-size: 2.5rem;
+    color: #28a745;
+    margin-bottom: 0.75rem;
+}
+
+.create-card-content h3 {
+    color: #28a745;
+    margin-bottom: 0.35rem;
+    font-size: 1.1rem;
+}
+
+.create-card-content p {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+/* Delete Confirmation Popup Styles */
+.confirmation-message {
+    text-align: center;
+    margin: 1rem 0;
+    padding: 1rem;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+}
+
+.confirmation-message p {
+    margin: 0.5rem 0;
+    color: #856404;
+}
+
+.confirmation-message .warning-text {
+    font-size: 0.9rem;
+    color: #dc3545;
+}
+
+#deleteConfirmationPopup .auth-submit.delete {
+    background-color: #dc3545;
+    margin-bottom: 0.5rem;
+}
+
+#deleteConfirmationPopup .auth-submit.delete:hover {
+    background-color: #c82333;
+}
+
+#deleteConfirmationPopup .auth-submit.cancel {
+    background-color: #6c757d;
+}
+
+#deleteConfirmationPopup .auth-submit.cancel:hover {
+    background-color: #5a6268;
+}
+
+#deleteConfirmationPopup .form-group {
+    margin-bottom: 1rem;
+}
+
+#deleteConfirmationPopup .auth-error-messages {
+    margin-bottom: 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1rem;
+    }
+
+    .facilities-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .back-button {
+        margin-bottom: 0.5rem;
+    }
+}

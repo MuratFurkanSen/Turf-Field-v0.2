@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+    {% include 'particles/facility_header.html' %}
+{% endblock %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/facility/facility_creation.css' %}">
+{% endblock %}
+{% block content %}
+<!-- Facility Registration Popup -->
+<div id="facilityPopup" class="auth-popup">
+    <div class="auth-popup-content">
+        <span class="auth-close">&times;</span>
+        <div id="facilityForm" class="auth-form">
+            <h2>İşletme Kaydı</h2>
+            
+            <!-- Error Messages Container -->
+            <div id="facilityErrorMessages" class="auth-error-messages">
+                <!-- Error messages will be populated here -->
+            </div>
+            
+            <form action="/facility/create" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <i class="fas fa-building"></i>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-phone"></i>
+                    {{ form.contact_phone_number }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-image"></i>
+                    {{ form.picture }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-map-marker-alt"></i>
+                    {{ form.open_location }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-map"></i>
+                    {{ form.maps_location }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-globe"></i>
+                    {{ form.website }}
+                </div>
+                <button type="submit" class="auth-submit">İşletme Kaydı Oluştur</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extraJS %}
+    <script src="{% static 'js/facility/facility_creation.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!-- Field Creation Popup -->
+<div id="fieldPopup" class="auth-popup">
+    <div class="auth-popup-content">
+        <span class="auth-close">&times;</span>
+        <div id="fieldForm" class="auth-form">
+            <h2>Saha Kaydı</h2>
+
+            <!-- Error Messages Container -->
+            <div id="fieldErrorMessages" class="auth-error-messages">
+                <!-- Error messages will be populated here -->
+            </div>
+
+            <form action="{% url 'facility:field_create' facility.id %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <i class="fas fa-futbol"></i>
+                    {{ form.name }}
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-image"></i>
+                    {{ form.picture }}
+                </div>
+                <button type="submit" class="auth-submit">Saha Kaydı Oluştur</button>
+            </form>
+        </div>
+    </div>
+</div> 

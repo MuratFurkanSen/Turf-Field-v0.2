@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+    {% include 'particles/facility_header.html' %}
+{% endblock %}
+{% block extraCSS %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/facility/reports.css' %}">
+{% endblock %}
+{% block content %}
+    <!-- Online Kazanç Özeti -->
+    <div class="section-content" id="online-revenue-section">
+        <div class="revenue-summary">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="revenue-card">
+                        <h6>Günlük Online Kazanç</h6>
+                        <div class="amount">₺1,250</div>
+                        <div class="text-muted">Son 24 saat</div>
+                        <div class="reservation-count mt-2">
+                            <i class="fas fa-calendar-check"></i> 15 Rezervasyon
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="revenue-card">
+                        <h6>Aylık Online Kazanç</h6>
+                        <div class="amount">₺32,500</div>
+                        <div class="text-muted">Bu ay</div>
+                        <div class="reservation-count mt-2">
+                            <i class="fas fa-calendar-check"></i> 325 Rezervasyon
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="revenue-card">
+                        <h6>Yıllık Online Kazanç</h6>
+                        <div class="amount">₺385,000</div>
+                        <div class="text-muted">Bu yıl</div>
+                        <div class="reservation-count mt-2">
+                            <i class="fas fa-calendar-check"></i> 3,850 Rezervasyon
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="revenue-card">
+                        <h6>Halı Saha Bilgileri</h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="facility-count">
+                                    <i class="fas fa-futbol"></i> Toplam Halı Saha: 3
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="facility-count">
+                                    <i class="fas fa-clock"></i> Ortalama Doluluk: %75
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="facility-count">
+                                    <i class="fas fa-star"></i> Müşteri Memnuniyeti: 4.8/5
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts--->
+    <div class="section-content" id="revenue-section">
+        <div class="card">
+            <div class="card-body">
+                <ul class="nav nav-tabs" id="revenueTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="daily-tab" data-bs-toggle="tab" data-bs-target="#daily"
+                                type="button" role="tab">Günlük
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="monthly-tab" data-bs-toggle="tab" data-bs-target="#monthly"
+                                type="button" role="tab">Aylık
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="yearly-tab" data-bs-toggle="tab" data-bs-target="#yearly"
+                                type="button"
+                                role="tab">Yıllık
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content mt-3" id="revenueTabContent">
+                    <div class="tab-pane fade show active" id="daily" role="tabpanel">
+                        <canvas id="dailyChart"></canvas>
+                    </div>
+                    <div class="tab-pane fade" id="monthly" role="tabpanel">
+                        <canvas id="monthlyChart"></canvas>
+                    </div>
+                    <div class="tab-pane fade" id="yearly" role="tabpanel">
+                        <canvas id="yearlyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block extraJS %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/facility/reports.js' %}"></script>
+{% endblock %}

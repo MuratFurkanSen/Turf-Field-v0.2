@@ -363,50 +363,8 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             loginForm.style.display = 'none';
             registerForm.style.display = 'none';
-            vendorRegisterForm.style.display = 'flex';
             // Clear error messages when switching forms
             clearErrorMessages();
-        });
-    }
-
-    // Switch to login form from vendor register
-    if (showVendorLogin) {
-        showVendorLogin.addEventListener('click', function (e) {
-            e.preventDefault();
-            vendorRegisterForm.style.display = 'none';
-            loginForm.style.display = 'flex';
-            // Clear error messages when switching forms
-            clearErrorMessages();
-        });
-    }
-
-    // Handle vendor register form submission
-    if (vendorRegisterForm) {
-        vendorRegisterForm.addEventListener("submit", async function (e) {
-            e.preventDefault();
-            const form = e.target;
-            const formData = new FormData(form);
-
-            const response = await fetch(form.action, {
-                method: "POST",
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRFToken": formData.get("csrfmiddlewaretoken"),
-                },
-                body: formData,
-            });
-
-            const contentType = response.headers.get("content-type");
-
-            if (contentType && contentType.includes("application/json")) {
-                // ❌ Register failed — show errors
-                const data = await response.json();
-                clearErrorMessages();
-                displayAuthErrors(data.errors, "vendor-register");
-            } else if (response.redirected) {
-                // ✅ Register succeeded and redirect was returned
-                window.location.href = response.url;
-            }
         });
     }
 }); 

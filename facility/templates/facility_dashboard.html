@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+    {% include 'particles/facility_header.html' %}
+{% endblock %}
+{% block extraCSS %}
+    <link rel="stylesheet" href="{% static 'css/facility/dashboard.css' %}">
+{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>İşletmelerim</h1>
+    </div>
+    
+    <div class="facilities-grid">
+        <!-- Existing Facilities -->
+        {% for facility in facilities %}
+        <div class="facility-card">
+            <div class="facility-image">
+                <img src="{{ facility.picture.url }}" alt="{{ facility.name }}">
+            </div>
+            <div class="facility-info">
+                <h3>{{ facility.name }}</h3>
+                <p><i class="fas fa-map-marker-alt"></i> {{ facility.open_location }}</p>
+                <p><i class="fas fa-phone"></i> {{ facility.contact_phone_number }}</p>
+                <div class="facility-rating">
+                    <i class="fas fa-star"></i>
+                    <span>{{ facility.rating }}</span>
+                </div>
+            </div>
+            <div class="facility-actions">
+                <a href="{% url 'facility:field_dashboard' facility.id %}" class="action-btn edit">
+                    <i class="fas fa-edit"></i> Düzenle
+                </a>
+                <a href="{% url 'facility:delete' facility.id %}" class="action-btn delete" data-facility-id="{{ facility.id }}" data-facility-name="{{ facility.name }}">
+                    <i class="fas fa-trash"></i> Sil
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Facility Creation Card -->
+        <div class="facility-card create-card" onclick="showFacilityPopup()">
+            <div class="create-card-content">
+                <i class="fas fa-plus-circle"></i>
+                <h3>Yeni İşletme Ekle</h3>
+                <p>Yeni bir işletme kaydı oluşturmak için tıklayın</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Popup -->
+<div id="deleteConfirmationPopup" class="auth-popup">
+    <div class="auth-popup-content">
+        <span class="auth-close">&times;</span>
+        <div class="auth-form">
+            <h2>İşletme Silme Onayı</h2>
+            
+            <!-- Error Messages Container -->
+            <div id="deleteErrorMessages" class="auth-error-messages">
+                <!-- Error messages will be populated here -->
+            </div>
+            
+            <form id="deleteConfirmationForm" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" name="password" placeholder="Şifrenizi Girin" required>
+                </div>
+                <div class="confirmation-message">
+                    <p><strong><span id="facilityNameToDelete"></span></strong> işletmesini silmek istediğinizden emin misiniz?</p>
+                    <p class="warning-text">Bu işlem geri alınamaz!</p>
+                </div>
+                <button type="submit" class="auth-submit delete">İşletmeyi Sil</button>
+                <button type="button" class="auth-submit cancel" onclick="hideDeleteConfirmation()">İptal</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include Facility Creation Popup -->
+{% include 'facility_creation.html' %}
+{% endblock %}
+{% block extraJS %}
+    <script src="{% static 'js/facility/dashboard.js' %}"></script>
+{% endblock %}

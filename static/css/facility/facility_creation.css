@@ -1,0 +1,140 @@
+/* Facility Creation Popup Styles */
+#facilityPopup {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#facilityPopup .auth-popup-content {
+    background-color: #eefff2;
+    width: 500px;
+    max-width: 90%;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    position: relative;
+    padding: 30px;
+    animation: popupAnimation 0.3s ease-out;
+}
+
+#facilityPopup .auth-close {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+#facilityPopup .auth-close:hover {
+    color: #000;
+}
+
+#facilityPopup .auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#facilityPopup .auth-form h2 {
+    color: #28a745;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+#facilityPopup .form-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#facilityPopup .form-group i {
+    position: absolute;
+    left: 15px;
+    color: #28a745;
+    font-size: 18px;
+}
+
+#facilityPopup .form-group input,
+#facilityPopup .form-group select,
+#facilityPopup .form-group textarea {
+    width: 100%;
+    padding: 12px 15px 12px 45px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+#facilityPopup .form-group input:focus,
+#facilityPopup .form-group select:focus,
+#facilityPopup .form-group textarea:focus {
+    border-color: #28a745;
+    outline: none;
+}
+
+#facilityPopup .auth-submit {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#facilityPopup .auth-submit:hover {
+    background-color: #218838;
+}
+
+#facilityPopup .auth-error-messages {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    color: #721c24;
+    display: none;
+}
+
+#facilityPopup .auth-error-messages.show {
+    display: block;
+}
+
+#facilityPopup .auth-error-messages ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+#facilityPopup .auth-error-messages li {
+    margin-bottom: 5px;
+}
+
+#facilityPopup .auth-error-messages li:last-child {
+    margin-bottom: 0;
+}
+
+/* Animation for popup */
+@keyframes popupAnimation {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

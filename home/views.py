@@ -53,4 +53,4 @@ def make_transaction(card_holder_name, card_number, amount, exp_date, cvv):
 
 
 def test(request):
-    return redirect('/')
+    return render(request, 'calendar.html', {})
