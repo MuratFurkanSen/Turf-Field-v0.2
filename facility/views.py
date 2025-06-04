@@ -22,8 +22,27 @@ def facility_calendar(request):
     return render(request, 'calendar.html')
 
 
+def send_facilities(request):
+    facilities = Facility.objects.filter(belonged_vendor=request.user.profile)
+    facilities_list = []
+    for facility in facilities:
+        facilities_list.append({
+            'id': facility.id,
+            'name': facility.name,
+        })
+
+    return JsonResponse({'facilities': facilities_list})
+
+
 def reports(request):
     return render(request, 'reports.html', {})
+
+
+def facility_dashboard(request):
+    form = FacilityCreationForm(user=request.user)
+    facilities = Facility.objects.filter(belonged_vendor=request.user.profile)
+    context = {'form': form, 'facilities': facilities}
+    return render(request, 'facility_dashboard.html', context)
 
 
 def facility_creation(request):
@@ -51,13 +70,6 @@ def facility_edit(request, pk):
     return render(request, 'fields_dashboard.html')
 
 
-def manage_facilities(request):
-    form = FacilityCreationForm(user=request.user)
-    facilities = Facility.objects.filter(belonged_vendor=request.user.profile)
-    context = {'form': form, 'facilities': facilities}
-    return render(request, 'facility_dashboard.html', context)
-
-
 def field_dashboard(request, pk):
     facility = Facility.objects.get(pk=pk)
     owned_fields = Field.objects.filter(belonged_facility=facility)
@@ -78,8 +90,10 @@ def field_creation(request, pk):
             return JsonResponse({'success': False, 'errors': form.errors})
     return JsonResponse({'success': False, 'errors': ['Yanlış İşlem']})
 
+
 def field_edit(request, pk):
     return render(request, 'schedule.html')
+
 
 def field_delete(request, pk):
     if request.method == 'POST':

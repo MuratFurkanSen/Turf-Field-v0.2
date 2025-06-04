@@ -20,7 +20,7 @@ class FieldCreationForm(forms.ModelForm):
         field.belonged_facility = self.facility
         field.schedule_hours = \
             {
-                'Mon': [16],
+                'Mon': [],
                 'Tue': [],
                 'Wed': [],
                 'Thu': [],

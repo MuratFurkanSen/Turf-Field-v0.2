@@ -1,11 +1,15 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+
+import user
 from user.forms import UserRegistrationForm, UserLoginForm, VendorRegistrationForm
 from user.models import Transaction
 
 
 # Create your views here.
 def home(request):
+    if request.user.is_authenticated and request.user.profile.role == 'vendor':
+        return redirect('/facility')
     return render(request, 'home.html', {})
 
 

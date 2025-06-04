@@ -17,4 +17,5 @@ class ReservationHour(models.Model):
     date = models.DateField()
     start_hour = models.TimeField()
     is_reserved = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     code = models.CharField(max_length=50, default='', blank=True)
