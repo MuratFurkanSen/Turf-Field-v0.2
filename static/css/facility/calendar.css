@@ -165,3 +165,19 @@
     gap: 5px;
     align-items: center;
 }
+
+.cancel-booking-container {
+    display: none;
+    margin-top: 5px;
+    width: 100%;
+}
+
+.cancel-booking-container.show {
+    display: block;
+}
+
+.cancel-booking-container button {
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 2px 5px;
+}
