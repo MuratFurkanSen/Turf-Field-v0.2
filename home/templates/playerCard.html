@@ -11,6 +11,12 @@
             <div class="fifa-card-container">
                 <img src="{% static 'images/fifacarti.png' %}" alt="FIFA Card" class="fifa-card">
                 <div class="card-stats">
+                    <div class="card-stat" data-position="card-image-position">
+                        <img src="{{ user.profile.profile_picture.url }}" 
+                            alt="Varsayılan Profil" 
+                            class="profile-image">
+                    </div>
+                    <div class="card-stat" data-position="top-left">{{ user_profile.profile_picture.url }}</div>
                     <div class="card-stat" data-position="top-left">{{ user.profile.skills.pace }}</div>
                     <div class="card-stat" data-position="top-center">{{ user.profile.skills.shooting }}</div>
                     <div class="card-stat" data-position="top-right">{{ user.profile.skills.passing }}</div>

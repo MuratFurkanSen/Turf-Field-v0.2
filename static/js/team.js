@@ -208,15 +208,8 @@ function updatePreviewCards() {
 
 // Kartım popup işlemleri
 document.addEventListener('DOMContentLoaded', function () {
-    const kartimLink = document.querySelector('.nav-menu ul li:first-child');
     const kartimPopup = document.getElementById('kartimPopup');
     const kartimClose = document.querySelector('.kartim-close');
-
-    // Kartım linkine tıklandığında
-    kartimLink.addEventListener('click', function () {
-        kartimPopup.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Arka planı scroll edilemez yap
-    });
 
     // Çarpı işaretine tıklandığında
     kartimClose.addEventListener('click', function () {

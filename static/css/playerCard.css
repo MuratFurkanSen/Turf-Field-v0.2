@@ -55,46 +55,63 @@
 
 .card-stat {
     position: absolute;
-    color: white;
-    font-weight: bold;
+    color: wheat;
+    font-weight: 200;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     transform: translate(-50%, -50%);
 }
 
+.profile-image {
+    width: 150%;
+    height: 150%;
+    object-fit: cover;
+    position: absolute;
+
+}
+
 /* Positions */
+
+.card-stat[data-position="card-image-position"] {
+    top: 30%;
+    left: 55%;
+    width: 25%;
+    height: 25%;
+    transform: translate(-50%, -50%);
+}
+
 .card-stat[data-position="top-left"] {
-    top: 25%;
+    top: 66%;
     left: 25%;
     font-size: calc(1vw + 14px);
 }
 
 .card-stat[data-position="top-center"] {
-    top: 25%;
-    left: 50%;
-    font-size: calc(1vw + 14px);
-}
-
-.card-stat[data-position="top-right"] {
-    top: 25%;
-    left: 75%;
-    font-size: calc(1vw + 14px);
-}
-
-.card-stat[data-position="bottom-left"] {
-    top: 75%;
+    top: 72%;
     left: 25%;
     font-size: calc(1vw + 14px);
 }
 
+.card-stat[data-position="top-right"] {
+    top: 78%;
+    left: 25%;
+    font-size: calc(1vw + 14px);
+}
+
+.card-stat[data-position="bottom-left"] {
+    top: 65.7%;
+    left: 61%;
+    font-size: calc(1vw + 14px);
+}
+
 .card-stat[data-position="bottom-center"] {
-    top: 75%;
-    left: 50%;
+    top: 72%;
+    left: 61%;
     font-size: calc(1vw + 14px);
 }
 
 .card-stat[data-position="bottom-right"] {
-    top: 75%;
-    left: 75%;
+    top: 78.5%;
+    left: 61%;
     font-size: calc(1vw + 14px);
 }
 
