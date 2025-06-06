@@ -1,0 +1,60 @@
+<!-- Teams Popup -->
+<div id="teamsPopup" class="teams-popup">
+    <div class="teams-popup-content">
+        <span class="close-popup">&times;</span>
+        <div class="teams-tabs">
+            <button class="tab-button active" data-tab="my-teams">
+                <i class="fas fa-users"></i>
+                <span>Takımlarım</span>
+            </button>
+            <button class="tab-button" data-tab="join-team">
+                <i class="fas fa-user-plus"></i>
+                <span>Takıma Katıl</span>
+            </button>
+        </div>
+        <div class="tab-content">
+            <div id="my-teams" class="tab-pane active">
+                <h3>Takımlarım</h3>
+                <div class="teams-slider-container">
+                    <button class="slider-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                    <div class="teams-list">
+
+                    </div>
+                    <button class="slider-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div id="create-team" class="tab-pane">
+                <h3>Yeni Takım Oluştur</h3>
+                <form class="create-team-form" id="createTeamForm">
+                    <div class="form-group">
+                        <label for="teamName">Takım Adı</label>
+                        <input type="text" id="teamName" placeholder="Takım adını girin" required>
+                    </div>
+                    <div class="button-group">
+                        <button type="button" class="cancel-btn">İptal</button>
+                        <button type="submit" class="submit-btn">Takım Oluştur</button>
+                    </div>
+                </form>
+            </div>
+            <div id="join-team" class="tab-pane">
+                <h3>Takıma Katıl</h3>
+                <div class="invites-section">
+                    <h4>Gelen Davetler</h4>
+                    <div class="received-invites">
+                        <!-- Davetler buraya gelecek -->
+                    </div>
+                </div>
+                <div class="search-section">
+                    <h4>Takım Ara</h4>
+                    <div class="search-container">
+                        <input type="text" placeholder="Takım adı veya ID ile ara...">
+                        <button class="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="joinable-teams">
+                        <!-- Takım listesi buraya gelecek -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

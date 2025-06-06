@@ -183,3 +183,18 @@ def reset_password(request):
             except ValidationError as e:
                 return JsonResponse({'success': False, 'errors': e.messages})
     return JsonResponse({'success': False})
+
+
+def send_team_invites(request):
+    invite_objects = request.user.profile.team_invites.all()
+    team_invites = []
+    for invite_object in invite_objects:
+        team = invite_object.team
+        team_invites.append({
+            'id': invite_object.id,
+            'team_name': team.name,
+            'member_count': team.members.count(),
+            'captain_username': team.captain.user.username,
+        })
+
+    return JsonResponse({'success': True, 'invites': team_invites})

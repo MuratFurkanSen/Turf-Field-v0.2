@@ -237,3 +237,79 @@ function updateSelectionCount() {
     countElement.textContent = selectedPlayers.length;
 }
 
+// Form submission handler
+document.addEventListener('DOMContentLoaded', function() {
+    const playerSearchForm = document.getElementById('playerSearchForm');
+    
+    playerSearchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const username = this.querySelector('input[name="username"]').value;
+        const team_id = window.location.href.split('/').filter(Boolean).pop();
+        // Send the request to the server
+        fetch(`/team/invite/${team_id}/ `, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken') // Django CSRF token
+            },
+            body: JSON.stringify({
+                username: username
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Kullanıcıya Davet Başarılı Bir Şekilde Gönderildi')
+                // Clear the input
+                this.querySelector('input[name="username"]').value = '';
+            } else {
+                alert(data.error || 'Oyuncu eklenirken bir hata oluştu.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Bir hata oluştu. Lütfen tekrar deneyin.');
+        });
+    });
+});
+
+// Helper function to get CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Helper function to create a new player card
+function createPlayerCard(player) {
+    const card = document.createElement('div');
+    card.className = 'player-card';
+    card.setAttribute('draggable', true);
+    card.setAttribute('id', 'player-card-' + Date.now());
+    
+    card.innerHTML = `
+        <img src="${player.image_url || '/static/images/kapkap.JPG'}" alt="${player.username}"
+             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid red;">
+        <p style="margin: 4px 0; color: white; font-weight: bold; font-size: 12px;">${player.username}</p>
+        <div style="display: flex; gap: 5px; margin-top: 4px;">
+            <button onclick="changeColor(this, 'red')" style="width: 20px; height: 20px; background-color: red; border: none; border-radius: 50%; cursor: pointer;"></button>
+            <button onclick="changeColor(this, 'blue')" style="width: 20px; height: 20px; background-color: blue; border: none; border-radius: 50%; cursor: pointer;"></button>
+        </div>
+    `;
+    
+    // Add drag event listener
+    card.addEventListener('dragstart', drag);
+    
+    return card;
+}
+

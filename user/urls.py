@@ -11,4 +11,5 @@ urlpatterns = [
     path('profile', views.user_profile, name='profile'),
     path('update_user_info', views.update_profile_info, name='update_profile_info'),
     path('vendor_registration', views.vendor_register, name='vendor_registration'),
+    path('team_invites/', views.send_team_invites, name='send_team_invites'),
 ]
