@@ -205,6 +205,24 @@ function updateTimeSlots(fieldId, monday) {
                         input.classList.add('show');
                     }
 
+                    // Add cancel booking container for booked slots
+                    const cancelBookingContainer = document.createElement('div');
+                    cancelBookingContainer.className = 'cancel-booking-container';
+                    if (status === 'booked') {
+                        cancelBookingContainer.classList.add('show');
+                    }
+
+                    const cancelButton = document.createElement('button');
+                    cancelButton.className = 'btn btn-sm btn-danger';
+                    cancelButton.textContent = 'Rezervasyonu İptal Et';
+                    cancelButton.onclick = function(e) {
+                        e.stopPropagation();
+                        if (confirm('Bu rezervasyonu iptal etmek istediğinizden emin misiniz?')) {
+                            cancelBooking(button, input, cancelBookingContainer);
+                        }
+                    };
+                    cancelBookingContainer.appendChild(cancelButton);
+
                     const controlButtons = document.createElement('div');
                     controlButtons.className = 'control-buttons';
 
@@ -238,6 +256,7 @@ function updateTimeSlots(fieldId, monday) {
 
                     container.appendChild(button);
                     container.appendChild(input);
+                    container.appendChild(cancelBookingContainer);
                     container.appendChild(controlButtons);
                     cell.appendChild(container);
                     row.appendChild(cell);
@@ -422,6 +441,26 @@ function activateTimeSlot(button, input) {
     input.value = '';
     input.placeholder = 'Rezervasyon Kodu';
     controlButtons.classList.remove('show');
+}
+
+// Add the cancelBooking function
+function cancelBooking(button, input, cancelContainer) {
+    const container = button.parentElement;
+    const row = container.parentElement.parentElement;
+    const index = Array.from(row.children).indexOf(container.parentElement) - 1;
+
+    const slot_date = new Date(monday);
+    slot_date.setDate(monday.getDate() + index);
+    slot_date.setHours(0, 0, 0, 0);
+    const slot_hour = parseInt(row.getElementsByTagName('td')[0].innerText.split(':')[0]);
+
+    updateSlot(button, false, true, '', slot_date, slot_hour);
+    button.classList.remove('booked');
+    button.classList.add('available');
+    button.textContent = 'Müsait';
+    input.classList.remove('show');
+    input.value = '';
+    cancelContainer.classList.remove('show');
 }
 
 // Hafta navigasyonu
