@@ -277,7 +277,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 errorMessageContainer = password_resetMessageContainer
                 break
             case "vendor-register":
-                errorMessageContainer = vendorRegisterMessageContainer
+                errorMessageContainer = registerMessageContainer
                 break
         }
         // Add the list to the error messages container
@@ -288,7 +288,7 @@ document.addEventListener('DOMContentLoaded', function () {
     };
     // Function to clear error messages
     function clearErrorMessages() {
-        let containers = [registerMessageContainer, loginMessageContainer, password_resetMessageContainer, vendorRegisterMessageContainer]
+        let containers = [registerMessageContainer, loginMessageContainer, password_resetMessageContainer]
         for (let errorMessageContainer of containers) {
             if (errorMessageContainer) {
                 errorMessageContainer.innerHTML = '';
