@@ -50,7 +50,7 @@ def facility_creation(request):
         form = FacilityCreationForm(request.POST, user=request.user)
         if form.is_valid():
             form.save()
-            return redirect('/facility/fields')
+            return redirect('/facility/facilities')
     form = FacilityCreationForm()
     return render(request, 'facility_creation.html', {'form': form})
 

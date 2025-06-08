@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Get field creation popup elements
     const fieldPopup = document.getElementById('fieldPopup');
-    const fieldClose = fieldPopup.querySelector('.auth-close');
+    const fieldClose = document.querySelector('.auth-close');
     const fieldForm = document.getElementById('fieldCreationForm');
     const fieldErrorMessages = document.getElementById('fieldErrorMessages');
 
@@ -102,10 +102,26 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Function to show delete confirmation popup
-    window.showDeleteConfirmation = function (fieldId, fieldName) {
-        const fieldNameElement = document.getElementById('fieldNameToDelete');
-        fieldNameElement.textContent = fieldName;
-        currentDeleteUrl = `/facility/field/delete/${fieldId}/`;
+    window.showDeleteConfirmation = function (id, name, type) {
+        const nameElement = document.getElementById('facilityNameToDelete');
+        const popupTitle = document.querySelector('#deleteConfirmationPopup .auth-form h2');
+        const confirmMessage = document.querySelector('#deleteConfirmationPopup .confirmation-message p:first-child');
+        const submitButton = document.querySelector('#deleteConfirmationPopup .auth-submit.delete');
+        
+        nameElement.textContent = name;
+        currentDeleteUrl = type === 'facility' ? `/facility/delete/${id}/` : `/facility/field/delete/${id}/`;
+        
+        // Update popup content based on type
+        if (type === 'facility') {
+            popupTitle.textContent = 'İşletme Silme Onayı';
+            confirmMessage.innerHTML = `<strong><span id="facilityNameToDelete">${name}</span></strong> işletmesini silmek istediğinizden emin misiniz?`;
+            submitButton.textContent = 'İşletmeyi Sil';
+        } else {
+            popupTitle.textContent = 'Saha Silme Onayı';
+            confirmMessage.innerHTML = `<strong><span id="facilityNameToDelete">${name}</span></strong> sahasını silmek istediğinizden emin misiniz?`;
+            submitButton.textContent = 'Sahayı Sil';
+        }
+        
         deleteForm.action = currentDeleteUrl;
         deletePopup.style.display = 'flex';
         document.body.style.overflow = 'hidden';
@@ -141,14 +157,15 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Handle delete field confirmation
+    // Handle delete buttons for both facilities and fields
     const deleteButtons = document.querySelectorAll('.action-btn.delete');
     deleteButtons.forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
-            const fieldId = this.dataset.fieldId;
-            const fieldName = this.dataset.fieldName;
-            showDeleteConfirmation(fieldId, fieldName);
+            const id = this.dataset.facilityId || this.dataset.fieldId;
+            const name = this.dataset.facilityName || this.dataset.fieldName;
+            const type = this.dataset.facilityId ? 'facility' : 'field';
+            showDeleteConfirmation(id, name, type);
         });
     });
 
