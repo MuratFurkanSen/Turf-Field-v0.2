@@ -5,13 +5,26 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render
 
 from team.models import Team, TeamJoinRequest, TeamInvite
-from user.models import AppUserProfile
 
 
 # Create your views here.
 def team_main(request, pk):
     team = Team.objects.get(pk=pk)
-    context = {'players': team.members.all(),}
+    players = team.members.all()
+    member_positions = team.member_positions
+    players_position_zip = []
+    for player in players:
+        member_position = member_positions[str(player.id)]
+        players_position_zip.append((player,{
+            'top': str(member_position['top']).replace(',','.'),
+            'left': str(member_position['left']).replace(',','.'),
+            'color': member_position['color'],
+
+        }))
+
+    context = {'players': players,
+               'player_positions': member_positions,
+               'player_position_zip': players_position_zip}
     return render(request, 'team_main.html', context)
 
 
@@ -121,4 +134,26 @@ def deny_invite(request, invite_pk):
     if request.user.profile != invite.recipient:
         return HttpResponseForbidden('Fuck OFF')
     invite.delete()
+    return JsonResponse({'success': True})
+
+
+def send_member_positions(request, team_pk):
+    team = Team.objects.get(pk=team_pk)
+    if request.user.profile not in team.members.all():
+        return HttpResponseForbidden('Fuck OFF')
+    print(team.member_positions)
+    return JsonResponse({'success': True, 'playerPositions': team.member_positions})
+
+
+def save_member_positions(request):
+    data = json.loads(request.body.decode('utf-8'))
+    team = Team.objects.get(pk=data['team_pk'])
+    if request.user.profile not in team.members.all():
+        return HttpResponseForbidden("Fuck OFF")
+    for player in data['players']:
+        player_position = team.member_positions[str(player['id'])]
+        player_position['top'] = player['top']
+        player_position['left'] = player['left']
+        player_position['color'] = player['color']
+    team.save()
     return JsonResponse({'success': True})

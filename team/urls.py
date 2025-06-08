@@ -11,5 +11,7 @@ urlpatterns = [
     path('invite/<int:team_pk>/', views.send_invite, name='send_invite'),
     path('invite/accept/<int:invite_pk>/', views.accept_invite, name='accept_invite'),
     path('invite/deny/<int:invite_pk>/', views.deny_invite, name='deny_invite'),
+    path('save_positions/', views.save_member_positions, name='save_member_positions'),
+    path('get_positions/<int:team_pk>/', views.send_member_positions, name='send_member_positions'),
 
 ]

@@ -35,6 +35,7 @@ body {
 .left-div img {
     max-width: 100%; /* Resmin genişliği div'in genişliğine uyum sağlar */
     border-radius: 10px; /* Resmin köşeleri yuvarlatıldı */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .edit-button {
@@ -47,6 +48,8 @@ body {
     cursor: pointer; /* İmleç değişimi */
     margin-top: 10px; /* Resim ile buton arasında boşluk */
     transition: background-color 0.3s, transform 0.3s; /* Arka plan ve büyütme geçişi */
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .edit-button:hover {
@@ -216,6 +219,10 @@ button.next {
     font-family: 'Arial', sans-serif; /* Yazı tipi */
     color: #333; /* Yazı rengi */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Gölge eklendi */
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .ikinci-div {
@@ -223,6 +230,8 @@ button.next {
     padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
+    margin-top: 40px;
+    padding: 5px;
 }
 
 .ikinci-div h3 {
@@ -242,6 +251,7 @@ button.next {
     color: white; /* Yazı rengi beyaz yapıldı */
     padding: 10px; /* Başlık için padding eklendi */
     border-radius: 5px; /* Köşe yuvarlatma eklendi */
+    margin-top: 0;
 }
 
 .bekleyen-rezervasyonlar h2 {
@@ -249,6 +259,7 @@ button.next {
     color: white; /* Yazı rengi beyaz yapıldı */
     padding: 10px; /* Başlık için padding eklendi */
     border-radius: 5px; /* Köşe yuvarlatma eklendi */
+    margin-top: 0;
 }
 
 .waiting-reservation {
@@ -296,14 +307,23 @@ button.next {
     margin-right: 1px;
     margin-top: 0; /* 1%'den 0'a değiştirildi */
     flex: 3; /* Flex oranı eklendi */
+    background-color: #006400;
 }
 
 .popup-right {
     width: 70%;
     padding: 10px;
     box-sizing: border-box;
-    height: 100%; /* Yükseklik eklendi */
-    flex: 7; /* Flex oranı eklendi */
+    height: 100%;
+    flex: 7;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden; /* Prevent cards from going outside */
+}
+
+.popup-right[data-bg-image] {
+    background-image: var(--bg-image);
 }
 
 .close {
@@ -517,4 +537,356 @@ button.next {
         transform: scale(1);
         opacity: 1;
     }
+}
+
+/* Additional styles from inline HTML */
+.left-div h2 {
+    margin-top: 0;
+}
+
+.left-div img {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.edit-button {
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.divider-image {
+    width: 100px;
+    height: auto;
+    margin: 0 10px;
+}
+
+.right-div {
+    width: 40%;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.bekleyen-rezervasyonlar {
+    width: 100%;
+    margin-top: 0;
+}
+
+.bekleyen-rezervasyonlar h2 {
+    margin-top: 0;
+}
+
+.ana-div {
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.ilk-div img {
+    display: inline;
+    margin-right: 10px;
+}
+
+.ilk-div span {
+    display: inline;
+}
+
+.ilk-div span.facility-name {
+    font-weight: bold;
+}
+
+.ilk-div span.divider {
+    margin: 0 10px;
+}
+
+.ikinci-div {
+    margin-top: 40px;
+    padding: 5px;
+}
+
+.payment-button {
+    padding: 10px 20px;
+    background-color: #6ec6ff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.popup-left {
+    background-color: #006400;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 8px;
+    border-radius: 20px;
+    margin: 10px 0;
+}
+
+#playerSearchForm {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+}
+
+#playerSearchForm img {
+    width: 20px;
+    height: 20px;
+}
+
+#playerSearchForm input {
+    border: none;
+    outline: none;
+    width: 100%;
+    background: transparent;
+}
+
+#playerSearchForm button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    color: #006400;
+}
+
+.player-cards {
+    margin-top: 20px;
+    display: grid; /* Ensure it's a grid container */
+    grid-template-columns: repeat(3, 1fr); /* 3 columns, equal width */
+    gap: 15px; /* Gap between grid items */
+    width: 100%;
+}
+
+.player-card {
+    position: absolute;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: move;
+    z-index: 1;
+}
+
+.player-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid red;
+}
+
+.player-card p {
+    margin: 4px 0;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.color-buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 4px;
+}
+
+.color-button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.color-button.red {
+    background-color: red;
+}
+
+.color-button.blue {
+    background-color: blue;
+}
+
+.popup-right {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.save-button, .reset-button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    min-width: 220px; /* Increased minimum width to ensure text does not wrap */
+    white-space: nowrap; /* Explicitly ensure text does not wrap */
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+    float: none; /* Ensure no floating interference */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    text-align: center; /* Center the text within the button */
+    font-size: 16px; /* Explicitly set font size for consistency */
+}
+
+.save-button {
+    background-color: #28a745;
+}
+
+.reset-button {
+    background-color: #dc3545;
+}
+
+.save-button:hover, .reset-button:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+/* Dropped Player Card Styles */
+.dropped-player-card {
+    position: absolute;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: move;
+}
+
+.dropped-player-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid red;
+}
+
+.dropped-player-card p {
+    margin: 4px 0;
+    color: black;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.dropped-player-card .color-buttons {
+    display: flex;
+    gap: 5px;
+    margin-top: 4px;
+}
+
+.dropped-player-card .color-button {
+    width: 20px;
+    height: 20px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dropped-player-card .color-button.red {
+    background-color: red;
+}
+
+.dropped-player-card .color-button.blue {
+    background-color: blue;
+}
+
+/* Preview Card Styles */
+.preview-card {
+    position: absolute;
+    transform: translate(-50%, -50%);
+}
+
+.preview-card img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Popup Display */
+.popup.show {
+    display: block;
+}
+
+.popup.hide {
+    display: none;
+}
+
+.popup-left .player-card {
+    position: relative; /* Ensure cards in left panel respect grid flow */
+    width: 100%;
+    height: auto;
+    margin: 0; /* Clear any lingering margins */
+    transform: none; /* Clear any lingering transforms */
+    display: flex; /* Ensure player-card itself is a flex container for its content */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-right .player-card {
+    position: absolute;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: move;
+    z-index: 1;
+}
+
+.player-cards {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    width: 100%;
+}
+
+.button-container {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: row; /* Ensure buttons are laid out horizontally */
+    justify-content: flex-end; /* Push buttons to the right side of the container */
+    align-items: center; /* Vertically align items */
+    gap: 10px; /* Space between buttons */
+    z-index: 2; /* Ensure buttons are on top of other elements */
+    flex-wrap: nowrap; /* Prevent wrapping */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.save-button, .reset-button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    min-width: 220px; /* Increased minimum width to ensure text does not wrap */
+    white-space: nowrap; /* Explicitly ensure text does not wrap */
+    flex-shrink: 0; /* Prevent buttons from shrinking */
+    float: none; /* Ensure no floating interference */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    text-align: center; /* Center the text within the button */
+    font-size: 16px; /* Explicitly set font size for consistency */
+}
+
+.save-button {
+    background-color: #28a745;
+}
+
+.reset-button {
+    background-color: #dc3545;
+}
+
+.save-button:hover, .reset-button:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
 }

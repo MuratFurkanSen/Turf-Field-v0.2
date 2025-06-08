@@ -6,28 +6,23 @@
 {% block content %}
     <div class="content">
         <div class="left-div">
-            <h2 style="margin-top: 0;">Takım</h2>
-            <img src="{% static 'images/acikksaha.png' %}" alt="Deneme Hali Saha"
-                 style="box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);">
-            <div class="edit-button" style="text-align: center;box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);"
-                 onclick="openPopup()">Düzenle
-            </div>
+            <h2>Takım</h2>
+            <div id="layoutPreview"></div>
+            <div class="edit-button" onclick="openPopup()">Düzenle</div>
         </div>
-        <img src="{% static 'images/line.png' %}" alt="Line" style="width: 100px; height: auto; margin: 0 10px;">
-        <div class="right-div"
-             style="width: 40%; padding: 0; box-sizing: border-box; display: flex; flex-direction: column; align-items: flex-start;">
-            <div class="bekleyen-rezervasyonlar" style="width: 100%; margin-top: 0;">
-                <h2 style="margin-top: 0;">Bekleyen Rezervasyonlar</h2>
+        <img src="{% static 'images/line.png' %}" alt="Line" class="divider-image">
+        <div class="right-div">
+            <div class="bekleyen-rezervasyonlar">
+                <h2>Bekleyen Rezervasyonlar</h2>
             </div>
-            <div class="ana-div" style="width: 100%; margin: 20px auto; padding: 20px; box-sizing: border-box;">
+            <div class="ana-div">
                 <div class="ilk-div">
-                    <img src="path/to/photo.jpg" alt="Fotoğraf" style="display: inline; margin-right: 10px;">
-                    <span style="display: inline; font-weight: bold;">Şahlanlar Halı Saha</span>
-                    <span style="display: inline; margin: 0 10px;">|</span>
-                    <span style="display: inline;">18.00-19.00</span>
-                    <!-- İlk div içeriği buraya gelecek -->
+                    <img src="path/to/photo.jpg" alt="Fotoğraf">
+                    <span class="facility-name">Şahlanlar Halı Saha</span>
+                    <span class="divider">|</span>
+                    <span class="time-slot">18.00-19.00</span>
                 </div>
-                <div class="ikinci-div" style="margin-top: 40px; padding: 5px;">
+                <div id="test" class="ikinci-div">
                     <h3>Ödeme Bekleyenler</h3>
                     <div class="slider">
                         <div class="slides">
@@ -72,9 +67,7 @@
                     <span id="selectedCount">0</span> Kişi Seçildi
                 </div>
                 <div class="ucuncu-div">
-                    <button style="padding: 10px 20px; background-color: #6ec6ff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">
-                        Ödeme Yap
-                    </button>
+                    <button class="payment-button">Ödeme Yap</button>
                 </div>
             </div>
         </div>
@@ -83,51 +76,56 @@
     <div class="popup" id="editPopup">
         <div class="popup-content">
             <span class="close" onclick="closePopup()">&times;</span>
-            <div class="popup-left" style="background-color: #006400;">
-                <div class="search-container"
-                     style="display: flex; align-items: center; background-color: white; padding: 8px; border-radius: 20px; margin: 10px 0;">
-                    <form id="playerSearchForm" style="display: flex; width: 100%; align-items: center; gap: 8px;">
-                        <img src="{% static 'images/search.png' %}" alt="Search"
-                             style="width: 20px; height: 20px;">
-                        <input type="text" name="username" placeholder="Kullanıcı Adı ile Oyuncu Ekle..."
-                               style="border: none; outline: none; width: 100%; background: transparent;">
-                        <button type="submit" style="background: none; border: none; cursor: pointer; padding: 4px 8px; color: #006400;">
-                            Ekle
-                        </button>
+            <div class="popup-left">
+                <div class="search-container">
+                    <form id="playerSearchForm">
+                        <img src="{% static 'images/search.png' %}" alt="Search">
+                        <input type="text" name="username" placeholder="Kullanıcı Adı ile Oyuncu Ekle...">
+                        <button type="submit">Ekle</button>
                     </form>
                 </div>
 
-                <div class="player-cards"
-                     style="margin-top: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px;">
-                    {% for player in players %}
-                    <div class="player-card" draggable="true"
-                         style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: move;">
-                        <img src="{{ player.profile_picture.url }}" alt="Kapkap"
-                             style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid red;">
-                        <p style="margin: 4px 0; color: white; font-weight: bold; font-size: 12px;">{{ player.user.username }}</p>
-                        <div style="display: flex; gap: 5px; margin-top: 4px;">
-                            <button onclick="changeColor(this, 'red')"
-                                    style="width: 20px; height: 20px; background-color: red; border: none; border-radius: 50%; cursor: pointer;"></button>
-                            <button onclick="changeColor(this, 'blue')"
-                                    style="width: 20px; height: 20px; background-color: blue; border: none; border-radius: 50%; cursor: pointer;"></button>
-                        </div>
-                    </div>
+                <div class="player-cards">
+                    {% for player,position in player_position_zip %}
+                        {% if position.top == "-1" or position.left == "-1" %}
+                            <div class="player-card" draggable="true" data-id="{{ player.id }}">
+                                <img src="{{ player.profile_picture.url }}" alt="Kapkap">
+                                <p>{{ player.user.username }}</p>
+                                <div class="color-buttons">
+                                    <button onclick="changeColor(this, 'red')" class="color-button red"></button>
+                                    <button onclick="changeColor(this, 'blue')" class="color-button blue"></button>
+                                </div>
+                            </div>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
-            <div class="popup-right"
-                 style="background-image: url('{% static 'images/acikksaha.png' %}'); background-size: cover; background-position: center; position: relative;"
-                 ondragover="allowDrop(event)" ondrop="drop(event)">
+            <div id="layout" class="popup-right" ondragover="allowDrop(event)" ondrop="drop(event)"
+                 data-bg-image="{% static 'images/acikksaha.png' %}">
+                {% for player,position in player_position_zip %}
+                    {% if position.top != '-1' and position.left != '-1' %}
+                    <div class="player-card" draggable="true" data-id="{{ player.id }}"
+                         style="position: absolute; left: {{ position.left }}px; top: {{ position.top }}px;">
+                        <img src="{{ player.profile_picture.url }}" alt="{{ player.user.username }}"
+                             style="border-color: {{ position.color|default:'red' }}">
+                        <p>{{ player.user.username }}</p>
+                        <div class="color-buttons">
+                            <button onclick="changeColor(this, 'red')" class="color-button red"></button>
+                            <button onclick="changeColor(this, 'blue')" class="color-button blue"></button>
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-            <button onclick="saveImage()"
-                    style="position: absolute; bottom: 20px; right: 20px; padding: 10px 20px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-                Görüntüyü Kaydet
-            </button>
+            <div class="button-container">
+                <button class="reset-button" onclick="resetPositions()">Sıfırla</button>
+                <button class="save-button" onclick="savePositions()">Görüntüyü Kaydet</button>
+            </div>
         </div>
     </div>
 {% endblock %}
 {% block extraJS %}
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script src="{% static 'js/team/team_main.js' %}"></script>
 {% endblock %}
 
