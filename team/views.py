@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render
 
+from reservation.models import Reservation
 from team.models import Team, TeamJoinRequest, TeamInvite
 
 
@@ -15,16 +16,21 @@ def team_main(request, pk):
     players_position_zip = []
     for player in players:
         member_position = member_positions[str(player.id)]
-        players_position_zip.append((player,{
-            'top': str(member_position['top']).replace(',','.'),
-            'left': str(member_position['left']).replace(',','.'),
+        players_position_zip.append((player, {
+            'top': str(member_position['top']).replace(',', '.'),
+            'left': str(member_position['left']).replace(',', '.'),
             'color': member_position['color'],
 
         }))
-
+    payment_reservations = Reservation.objects.filter(belonged_team=team)
+    payment_reservations_intervals = []
+    for payment_reservation in payment_reservations:
+        payment_reservations_intervals.append(
+            f'{str(payment_reservation.start_hour).zfill(2)}.00-{str(payment_reservation.start_hour + 1).zfill(2)}.00')
     context = {'players': players,
                'player_positions': member_positions,
-               'player_position_zip': players_position_zip}
+               'player_position_zip': players_position_zip,
+               'payment_reservations': zip(payment_reservations, payment_reservations_intervals), }
     return render(request, 'team_main.html', context)
 
 

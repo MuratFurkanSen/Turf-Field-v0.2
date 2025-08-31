@@ -8,6 +8,7 @@ class FacilityCreationForm(forms.ModelForm):
         fields = ['name', 'contact_phone_number', 'picture', 'open_location', 'maps_location', 'website']
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'İşletme İsmi'}),
+            'description': forms.TextInput(attrs={'placeholder': 'İşletme Açıklaması'}),
             'contact_phone_number': forms.TextInput(attrs={'placeholder': 'İletişim Numarası'}),
             'open_location': forms.TextInput(attrs={'placeholder': 'Açık adres'}),
             'maps_location': forms.URLInput(attrs={'placeholder': 'Google Maps Linkini Girin'}),

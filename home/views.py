@@ -57,4 +57,4 @@ def make_transaction(card_holder_name, card_number, amount, exp_date, cvv):
 
 
 def test(request):
-    return render(request, 'calendar.html', {})
+    return render(request, 'fields_home.html', {})

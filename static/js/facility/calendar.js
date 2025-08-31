@@ -103,7 +103,7 @@ function loadFields(facilityId) {
     fieldSelect.disabled = true;
     fieldSelect.innerHTML = '<option value="">Sahalar Yükleniyor...</option>';
 
-    fetch(`/field/get/${facilityId}/`, {
+    fetch(`/field/get_facility/${facilityId}/`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

@@ -1,0 +1,54 @@
+{% load static %}
+{% for facility in facilities.all %}
+    <div class="field-info-container" data-facility-id="{{ facility.id }}">
+        <!-- Left Section with Image and Info -->
+        <div class="field-left-section">
+            <div class="field-image">
+                <img src="{{ facility.picture.url }}" alt="Field Image">
+            </div>
+            <div class="field-details">
+                <h2>{{ facility.name }}</h2>
+                <p>{{ facility.description }}</p>
+                <div class="field-icons">
+                    <img src="{% static 'images/ball-icon.png' %}" alt="Ball">
+                </div>
+            </div>
+        </div>
+
+        <!-- Vertical Separator -->
+        <div class="vertical-separator"></div>
+
+        <!-- Field Selection Section -->
+        <div class="field-selection-section">
+            <div class="field-selection-header">
+                <h3>Saha Seçimi</h3>
+            </div>
+            <div class="field-selection-content">
+                {% for field in facility.fields.all %}
+                    <button class="field-option-btn" data-field_pk="{{ field.id }}">{{ field.name }}</button>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Time Slots Section -->
+        <div class="time-slots-section">
+            <div class="time-header">
+                <h3>Saatler</h3>
+            </div>
+            <div class="time-content">
+                <!-- Add time slots here -->
+            </div>
+        </div>
+
+        <!-- Teams Section -->
+        <div class="teams-section">
+            <div class="teams-content">
+                <h3>Takım seçimi</h3>
+                <div class="team-selection-content">
+
+                </div>
+            </div>
+            <button class="reservation-button">Rezervasyon Oluştur</button>
+        </div>
+    </div>
+{% endfor %}

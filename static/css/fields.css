@@ -46,10 +46,203 @@
     font-size: 16px;
 }
 
+/* Date Selector and Calendar Styles */
+.date-selector-container {
+    position: relative;
+    flex: 1;
+}
+
+.date-selector-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: #ff9a8b;
+    border-radius: 300px;
+    border: 2px solid #e0e0e0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.date-selector-wrapper:hover {
+    border-color: #4CAF50;
+}
+
+.date-selector-wrapper:focus-within {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
+}
+
+.date-arrow-btn {
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    padding: 0 15px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 50px;
+}
+
+.date-arrow-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.date-arrow-btn:active {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.date-arrow-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.date-arrow-btn:disabled:hover {
+    background-color: transparent;
+}
+
+.date-selector-container .rounded-select {
+    border: none;
+    background-color: transparent;
+    color: #fff;
+    flex: 1;
+}
+
+.date-selector-container .rounded-select::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.calendar-popup {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #ff9a8b;
+    border-radius: 15px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+    display: none;
+    border: 2px solid #4CAF50;
+}
+
+.calendar-popup.show {
+    display: block;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.calendar-nav-btn {
+    background-color: rgba(76, 175, 80, 0.3);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-nav-btn:hover {
+    background-color: rgba(76, 175, 80, 0.5);
+    transform: scale(1.1);
+}
+
+#calendar-title {
+    color: #fff;
+    font-size: 18px;
+    margin: 0;
+    font-weight: bold;
+}
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    margin-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(76, 175, 80, 0.4);
+    padding-bottom: 0.5rem;
+}
+
+.calendar-weekdays div {
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0.5rem 0;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.25rem;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 10px;
+    padding: 0.5rem;
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.calendar-day {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: #fff;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-day:hover {
+    background-color: rgba(76, 175, 80, 0.4);
+    transform: scale(1.05);
+}
+
+.calendar-day.selected {
+    background-color: #4CAF50;
+    color: #fff;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+.calendar-day.other-month {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.calendar-day.today {
+    border: 2px solid #4CAF50;
+    background-color: rgba(76, 175, 80, 0.3);
+    font-weight: bold;
+}
+
+.calendar-day.past {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
 /* Field Info Section Styles */
 .field-info-container {
     display: flex;
-    max-width: 1200px;
+    max-width: 1400px;
+    max-height: 4000px;
     margin: 2rem auto;
     padding: 1rem;
     background-color: #77dd77;
@@ -62,7 +255,7 @@
 .field-left-section {
     display: flex;
     gap: 1.5rem;
-    min-width: 400px;
+    min-width: 350px;
     cursor: pointer;
 }
 
@@ -149,13 +342,54 @@
 }
 
 .time-content {
-    background-color: #666;
-    color: white;
-    padding: 0.3rem 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    max-height: 120px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom scrollbar for time content */
+.time-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.time-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.time-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.time-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.time-slot-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: none;
     border-radius: 8px;
-    margin-bottom: 0.75rem;
-    display: inline-block;
+    padding: 0.5rem;
     font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.time-slot-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.time-slot-btn.selected {
+    background-color: #fff;
+    color: #ff9a8b;
+    font-weight: bold;
 }
 
 .time-header h3 {
@@ -219,8 +453,7 @@
 }
 
 .field-info-container.show-field .field-selection-section {
-    flex: 1;
-    width: 140px;
+    flex: 0 0 140px;
     opacity: 1;
     visibility: visible;
 }
@@ -234,6 +467,28 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    max-height: 120px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom scrollbar for field selection content */
+.field-selection-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.field-selection-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.field-selection-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.field-selection-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .field-option-btn {
@@ -254,6 +509,58 @@
 }
 
 .field-option-btn.selected {
+    background-color: #fff;
+    color: #ff9a8b;
+    font-weight: bold;
+}
+
+/* Team Selection Styles */
+.team-selection-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 60px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom scrollbar for team selection content */
+.team-selection-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.team-selection-content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+}
+
+.team-selection-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
+
+.team-selection-content::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.team-option-btn {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+}
+
+.team-option-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.team-option-btn.selected {
     background-color: #fff;
     color: #ff9a8b;
     font-weight: bold;

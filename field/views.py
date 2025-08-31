@@ -1,21 +1,32 @@
+import json
+
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render
 from json import loads
 from datetime import datetime, timedelta, time
 
+from django.template.loader import render_to_string
+
 from facility.models import Facility
 from field.models import Field, ReservationHour
+from reservation.models import Reservation
+from team.models import Team
 
 
 # Create your views here.
-def fields(request):
-    return render(request, 'fields.html', {})
+
+# Home Page Render
+def fields_home(request):
+    provinces = set(Facility.objects.values_list('province', flat=True))
+    return render(request, 'fields_home.html', {'provinces': provinces})
 
 
+# Dashboard for Facilities
 def field_dashboard(request, pk):
     return render(request, 'fields_dashboard.html', {})
 
 
+# Facility APIs
 def send_schedule(request, pk):
     field = Field.objects.get(pk=pk)
     if field.belonged_facility.belonged_vendor != request.user.profile:
@@ -23,7 +34,7 @@ def send_schedule(request, pk):
     return JsonResponse({'success': True, 'schedule': field.schedule_hours})
 
 
-def send_fields(request, pk):
+def send_facility_fields(request, pk):
     if Facility.objects.get(pk=pk).belonged_vendor != request.user.profile:
         return HttpResponseForbidden('Fuck Off')
     fields = Field.objects.filter(belonged_facility_id=pk)
@@ -101,7 +112,6 @@ def update_calendar(request):
         slot.save()
     else:
         date = datetime.strptime(data['date'], '%Y-%m-%d')
-        print(date)
         ReservationHour.objects.create(
             field=field,
             start_hour=time(hour=int(data['start_hour'])),
@@ -111,3 +121,46 @@ def update_calendar(request):
             code=data['code'],
         ).save()
     return JsonResponse({'success': True})
+
+
+# User Fields Homepage APIs
+def send_user_facilities(request):
+    data = json.loads(request.body.decode('utf-8'))
+    loc = data.get('location')
+    if loc == 'all':
+        facilities = Facility.objects.all()
+    else:
+        facilities = Facility.objects.filter(province=loc)
+
+    if not facilities.exists():
+        return JsonResponse({'success': False})
+    html = render_to_string('particles/facility_card.html', {'facilities': facilities})
+    return JsonResponse({'success': True, 'html': html})
+
+
+def send_field_hours(request):
+    data = json.loads(request.body.decode('utf-8'))
+    pk = data.get('field_pk')
+    selected_date = data.get('selected_date').split('T')[0]
+    selected_date = datetime.strptime(selected_date, '%Y-%m-%d')
+
+    field = Field.objects.filter(pk=pk)
+    if not field.exists():
+        return JsonResponse({'success': False})
+    field = field.first()
+    field_hours_data = field.reservation_hours.filter(date__exact=selected_date)
+    field_hours = []
+    for hour in field_hours_data:
+        pk = hour.pk
+        start_hour = str(hour.start_hour.hour).zfill(2)
+        end_hour = str(hour.start_hour.hour + 1).zfill(2)
+        field_hours.append((pk, f'{start_hour}.00-{end_hour}.00'))
+    return JsonResponse({'success': True, 'field_hours': field_hours})
+
+
+def send_team_options(request):
+    teams_data = request.user.profile.teams.all()
+    teams = []
+    for team in teams_data:
+        teams.append((team.pk, team.name))
+    return JsonResponse({'success': True, 'teams': teams})

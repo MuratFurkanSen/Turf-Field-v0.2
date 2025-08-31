@@ -19,11 +19,12 @@ class Command(BaseCommand):
         else:
             next_day = today
 
-        # Loop through all facilities
+        # Loop through all fields
         for field in Field.objects.all():
             day_name = today.strftime("%a")
             for start_time in field.schedule_hours[day_name]:
                 ReservationHour.objects.create(
+                    price= field.default_price,
                     field=field,
                     date=next_day,
                     start_hour= time(hour=start_time),
