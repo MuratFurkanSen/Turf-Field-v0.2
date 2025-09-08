@@ -32,6 +32,33 @@ body {
     align-items: flex-start;
 }
 
+/* Wallet summary at top of right column */
+.wallet-summary {
+    width: 100%;
+    background: #eefff2;
+    border: 1px solid #cfe7d3;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    box-sizing: border-box;
+}
+
+.wallet-title {
+    font-weight: 700;
+    color: #003366;
+    margin-bottom: 6px;
+}
+
+.wallet-balance-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wallet-label { color: #4f5b57; }
+.wallet-amount { font-weight: 700; color: #1e7e34; }
+
 .left-div img {
     max-width: 100%; /* Resmin genişliği div'in genişliğine uyum sağlar */
     border-radius: 10px; /* Resmin köşeleri yuvarlatıldı */
@@ -223,6 +250,36 @@ button.next {
     margin: 20px auto;
     padding: 20px;
     box-sizing: border-box;
+    max-height: calc(100vh - 200px); /* Limit height to viewport height minus header space */
+    overflow-y: auto; /* Enable vertical scrolling */
+    scrollbar-width: thin; /* Thin scrollbar for Firefox */
+    scrollbar-color: #4CAF50 #f0f0f0; /* Green scrollbar */
+}
+
+/* Webkit scrollbar styles for main div */
+.ana-div::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ana-div::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.ana-div::-webkit-scrollbar-thumb {
+    background-color: #4CAF50;
+    border-radius: 4px;
+}
+
+/* Smoothly divided reservation cards */
+.payment-reservation {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid #d9efe0;
+    border-left: 3px solid #28a745;
+    border-radius: 10px;
+    padding: 14px;
+    margin: 14px 0;
+    box-shadow: none;
 }
 
 .ikinci-div {
@@ -233,6 +290,37 @@ button.next {
     margin-top: 40px;
     padding: 5px;
 }
+
+/* Compact cost badge */
+.cost-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+    background: rgba(255,255,255,0.6);
+    border: 1px solid #d9efe0;
+    border-left: 3px solid #28a745;
+    padding: 6px 8px;
+    border-radius: 10px;
+    width: 100%;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.cost-badge .badge-label {
+    color: #4f5b57;
+    font-weight: 600;
+    font-size: 12px;
+}
+
+.cost-badge .badge-amount {
+    color: #2f3b38;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.cost-badge .badge-amount .remain { color: #1e7e34; }
+.cost-badge .badge-amount .total { color: #1565c0; }
 
 .ikinci-div h3 {
     color: #333;
@@ -510,15 +598,20 @@ button.next {
 }
 
 .selection-counter {
-    text-align: center;
-    margin: 15px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
     font-size: 14px;
     color: #333;
     font-weight: 500;
-    background-color: #f8f9fa;
-    padding: 8px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255,255,255,0.5);
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d9efe0;
+    box-shadow: none;
+    border-left: 3px solid #28a745;
 }
 
 #selectedCount {
@@ -526,6 +619,20 @@ button.next {
     font-weight: bold;
     font-size: 16px;
     margin-right: 5px;
+}
+
+.selection-counter .selectedCount {
+    color: #ff6b6b;
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+.selection-counter .counter-left,
+.selection-counter .counter-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 @keyframes popupAnimation {
@@ -607,13 +714,60 @@ button.next {
 }
 
 .payment-button {
-    padding: 10px 20px;
+    padding: 8px 16px;
     background-color: #6ec6ff;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* Compact header row inside reservation card */
+.reservation-header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 100%;
+}
+
+.reservation-header .header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.reservation-header .header-right {
+    display: flex;
+    align-items: center;
+}
+
+.reservation-header .header-sep {
+    color: #4f5b57;
+}
+
+/* New compact elements inside badge */
+.cost-badge .badge-title {
+    color: #2f3b38;
+    font-weight: 600;
+    font-size: 12px;
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cost-badge .badge-time, .cost-badge .badge-date {
+    color: #4f5b57;
+    font-size: 12px;
+}
+
+.cost-badge .badge-sep {
+    color: #7b8a86;
 }
 
 .popup-left {

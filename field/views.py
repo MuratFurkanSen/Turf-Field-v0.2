@@ -1,3 +1,4 @@
+import logging
 import json
 
 from django.http import JsonResponse, HttpResponseForbidden
@@ -14,6 +15,7 @@ from team.models import Team
 
 
 # Create your views here.
+logger = logging.getLogger(__name__)
 
 # Home Page Render
 def fields_home(request):
@@ -110,6 +112,14 @@ def update_calendar(request):
         slot.is_reserved = data['is_reserved']
         slot.code = data['code']
         slot.save()
+        if not data['is_reserved']:
+            booked_reservation = Reservation.objects.filter(date__exact=slot.date,start_hour__exact=slot.start_hour.hour,reserved_field=slot.field)
+            if booked_reservation.exists():
+                if booked_reservation.count() > 1:
+                    logger.warning('Multiple Reservations Found that Related to Same Hour')
+                else:
+                    booked_reservation.first().delete()
+
     else:
         date = datetime.strptime(data['date'], '%Y-%m-%d')
         ReservationHour.objects.create(
@@ -154,7 +164,7 @@ def send_field_hours(request):
         pk = hour.pk
         start_hour = str(hour.start_hour.hour).zfill(2)
         end_hour = str(hour.start_hour.hour + 1).zfill(2)
-        field_hours.append((pk, f'{start_hour}.00-{end_hour}.00'))
+        field_hours.append((pk, f'{start_hour}.00-{end_hour}.00', hour.is_reserved))
     return JsonResponse({'success': True, 'field_hours': field_hours})
 
 

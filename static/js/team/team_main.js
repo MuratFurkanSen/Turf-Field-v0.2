@@ -114,14 +114,40 @@ function savePositions() {
 }
 
 function toggleSelection(element) {
+    const currentReservation = element.closest('#payment_reservation');
+    
+    // Reset all other reservation cards
+    document.querySelectorAll('#payment_reservation').forEach(card => {
+        if (card !== currentReservation) {
+            // Clear selections in other cards
+            card.querySelectorAll('.player-item.selected').forEach(player => {
+                player.classList.remove('selected');
+            });
+            // Reset counters in other cards
+            updateSelectionAndTotals(card);
+        }
+    });
+    
+    // Toggle current selection
     element.classList.toggle('selected');
-    updateSelectionCount();
+    updateSelectionAndTotals(currentReservation);
 }
 
-function updateSelectionCount() {
-    const selectedPlayers = document.querySelectorAll('.player-item.selected');
-    const countElement = document.getElementById('selectedCount');
-    countElement.textContent = selectedPlayers.length;
+function updateSelectionAndTotals(reservationCard) {
+    if (!reservationCard) return;
+
+    const selectedPlayers = reservationCard.querySelectorAll('.player-item.selected');
+    const countElement = reservationCard.querySelector('.selectedCount');
+    if (countElement) countElement.textContent = selectedPlayers.length;
+
+    // Compute per-selected total
+    const remaining = parseFloat(reservationCard.dataset.remainingCost || '0');
+    const owerCount = parseInt(reservationCard.dataset.owerCount || '1');
+    const perPerson = owerCount > 0 ? remaining / owerCount : 0;
+    const totalToPay = perPerson * selectedPlayers.length;
+
+    const totalElement = reservationCard.querySelector('.selectedTotal');
+    if (totalElement) totalElement.textContent = (Math.round(totalToPay * 100) / 100).toString();
 }
 
 // Initialize drag functionality for player cards
@@ -171,6 +197,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     capturePreview();
+
+    // Initialize counters/totals for any pre-rendered reservations
+    document.querySelectorAll('#payment_reservation').forEach(card => updateSelectionAndTotals(card));
 });
 
 document.querySelectorAll('.player-card').forEach(card => {
@@ -332,3 +361,35 @@ function resetPositions() {
     }
 }
 
+async function makePayment(card){
+    let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
+    let reservation_id = card.dataset['reservation_pk'];
+    let selectedPlayers = card.querySelectorAll('.selected')
+    let selectedPlayerIDs = [];
+    selectedPlayers.forEach((player) => {
+       selectedPlayerIDs.add(player.dataset['player_pk']);
+    });
+    let resp = await fetch('/reservation/make_payment/', {
+        method:"POST",
+        headers:{
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({
+            "reservation_pk":reservation_id,
+            "selected_player_pks":selectedPlayerIDs,
+        }),
+    });
+    if (!resp.ok){
+        alert('Ödeme Yapılırken bir hata oluştu.');
+    }
+    let data = await resp.json();
+    if (!data.success){
+        alert('Ödeme Yapılırken bir hata oluştu.');
+    }
+    let status = data["status"];
+    if (status === "Insufficient Balance"){
+        alert("Yeterli Bakiyeniz Yok");
+    }
+
+}

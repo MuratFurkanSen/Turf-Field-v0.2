@@ -15,35 +15,67 @@
             <div class="bekleyen-rezervasyonlar">
                 <h2>Bekleyen Rezervasyonlar</h2>
             </div>
+            <!--
+            Could have open it later
+            <div class="wallet-summary">
+                <div class="wallet-title">Cüzdan</div>
+                <div class="wallet-balance-row">
+                    <span class="wallet-label">Mevcut Bakiye</span>
+                    <span class="wallet-amount">{{ request.user.profile.wallet_balance }} TL</span>
+                </div>
+            </div>
+            -->
             <div class="ana-div">
-                {% for reservation, time_interval in payment_reservations %}
-                    <div class="ilk-div">
-                        <span class="facility-name"
-                              data-field_pk{{ reservation.reserved_field.pk }}>{{ reservation.reserved_field.name }}</span>
-                        <span class="divider">|</span>
-                        <span class="time-slot">{{ time_interval }}</span>
-                    </div>
-                    <div id="test" class="ikinci-div">
-                        <h3>Ödeme Bekleyenler</h3>
-                        <div class="slider">
-                            <div class="slides">
-                                <div class="slide">
-                                    {% for ower_player in reservation.ower_players.all %}
-                                        <div class="player-item" data-player_pk="{{ ower_player.pk }}"
-                                             onclick="toggleSelection(this)">
-                                            <img src="{{ ower_player.profile_picture.url }}" alt="Fotoğraf 1">
-                                            <span class="player-name">{{ ower_player.user.username }}</span>
-                                        </div>
-                                    {% endfor %}
+                {% for reservation, time_interval,date in payment_reservations %}
+                    <div id="payment_reservation" class="payment-reservation"
+                         data-reservation-pk="{{ reservation.pk }}"
+                         data-remaining-cost="{{ reservation.remaining_cost }}"
+                         data-total-cost="{{ reservation.total_cost }}"
+                         data-ower-count="{{ reservation.ower_players.count }}">
+                        <div class="reservation-header">
+                            <div class="header-right">
+                                <div class="cost-badge">
+                                    <span class="badge-title"
+                                          title="{{ reservation.reserved_field.name }}">{{ reservation.reserved_field.name }}</span>
+                                    <span class="badge-sep">•</span>
+                                    <span class="badge-time">{{ time_interval }}</span>
+                                    <span class="badge-sep">/</span>
+                                    <span class="badge-date">{{ date }}</span>
+                                    <span class="badge-sep">|</span>
+                                    <span class="badge-amount"><span
+                                            class="remain">{{ reservation.remaining_cost }}</span>/<span
+                                            class="total">{{ reservation.total_cost }}</span> TL</span>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="selection-counter">
-                        <span id="selectedCount">0</span> Kişi Seçildi
-                    </div>
-                    <div class="ucuncu-div">
-                        <button class="payment-button">Ödeme Yap</button>
+                        <div id="test" class="ikinci-div">
+                            <h3>Ödeme Bekleyenler</h3>
+                            <div class="slider">
+                                <div class="slides">
+                                    <div class="slide">
+                                        {% for ower_player in reservation.ower_players.all %}
+                                            <div class="player-item" data-player_pk="{{ ower_player.pk }}"
+                                                 onclick="toggleSelection(this)">
+                                                <img src="{{ ower_player.profile_picture.url }}"
+                                                     alt="{{ ower_player.user.username }}">
+                                                <span class="player-name">{{ ower_player.user.username }}</span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selection-counter">
+                            <div class="counter-left">
+                                <span class="selectedCount">0</span> Kişi Seçildi
+                            </div>
+                            <div class="counter-right">
+                                <span>Toplam Ödeme: <strong class="selectedTotal">0</strong> TL</span>
+                            </div>
+                            <div class="counter-payment">
+                                <button class="payment-button">Ödeme Yap</button>
+                            </div>
+                        </div>
                     </div>
                 {% endfor %}
             </div>
@@ -100,6 +132,7 @@
             </div>
         </div>
     </div>
+    {% csrf_token %}
 {% endblock %}
 {% block extraJS %}
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>

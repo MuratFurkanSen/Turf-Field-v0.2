@@ -106,12 +106,20 @@ async function loadFacilityCards() {
 
                     reservation_hour_data['field_hours'].forEach((data) => {
                         let new_slot = document.createElement("button");
-                        new_slot.className = 'time-slot-btn';
+                        new_slot.classList.add('time-slot-btn');
                         new_slot.dataset['pk'] = data[0];
                         new_slot.innerText = data[1];
+                        if (data[2]){
+                            new_slot.classList.add('reserved')
+                            new_slot.setAttribute('disabled','true');
+                            new_slot.setAttribute('aria-disabled','true');
+                        }
 
                         // Add click event listener for time slot selection
                         new_slot.addEventListener('click', async function () {
+                            if (new_slot.classList.contains('reserved')){
+                                return;
+                            }
                             // Remove selected class from all time slot buttons
                             const allTimeSlots = hour_options.querySelectorAll('.time-slot-btn');
                             allTimeSlots.forEach(slot => slot.classList.remove('selected'));

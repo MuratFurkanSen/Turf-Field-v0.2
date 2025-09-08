@@ -1,11 +1,13 @@
 import json
 
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render
 
 from field.models import Field, ReservationHour
 from reservation.models import Reservation
 from team.models import Team
+from user.models import AppUserProfile
 
 
 # Create your views here.
@@ -42,3 +44,13 @@ def make_reservation(request):
     )
     reservation.ower_players.set(team.members.all())
     return JsonResponse({'success': True})
+
+def make_payment(request):
+    data = json.loads(request.body.decode('utf-8'))
+    reservation_pk = data.get('reservation_hour_pk')
+    selected_players = User.objects.filter(pk__in=data['selected_player_pks'])
+    reservation = Reservation.objects.get(pk=reservation_pk)
+    per_player_cost = reservation.remaining_cost //reservation.ower_players.count()
+    return JsonResponse({'success': True, 'status': 'Complete'})
+
+

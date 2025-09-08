@@ -430,7 +430,6 @@ function activateTimeSlot(button, input) {
     const slot_date = new Date(monday);
     slot_date.setDate(monday.getDate() + index);
     slot_date.setHours(0, 0, 0, 0);
-    console.log(slot_date)
     const slot_hour = parseInt(row.getElementsByTagName('td')[0].innerText.split(':')[0]);
 
     updateSlot(button, false, true, '', slot_date, slot_hour);
@@ -455,6 +454,7 @@ function cancelBooking(button, input, cancelContainer) {
     const slot_hour = parseInt(row.getElementsByTagName('td')[0].innerText.split(':')[0]);
 
     updateSlot(button, false, true, '', slot_date, slot_hour);
+
     button.classList.remove('booked');
     button.classList.add('available');
     button.textContent = 'Müsait';

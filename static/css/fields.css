@@ -60,6 +60,7 @@
     border: 2px solid #e0e0e0;
     overflow: hidden;
     transition: all 0.3s ease;
+    height: 100%;
 }
 
 .date-selector-wrapper:hover {
@@ -106,12 +107,12 @@
 .date-selector-container .rounded-select {
     border: none;
     background-color: transparent;
-    color: #fff;
+    color: #000;
     flex: 1;
 }
 
 .date-selector-container .rounded-select::placeholder {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(51, 51, 51, 0.7);
 }
 
 .calendar-popup {
@@ -390,6 +391,19 @@
     background-color: #fff;
     color: #ff9a8b;
     font-weight: bold;
+}
+
+/* Reserved time slot state */
+.time-slot-btn.reserved {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: #eeeeee;
+    cursor: not-allowed;
+    opacity: 0.7;
+    text-decoration: line-through;
+}
+
+.time-slot-btn.reserved:hover {
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
 .time-header h3 {

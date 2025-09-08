@@ -157,4 +157,30 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,  # keep Django’s default logs
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] {levelname} {name} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "WARNING",  # log WARNING and above (ERROR, CRITICAL)
+            "class": "logging.FileHandler",
+            "filename": os.path.join(BASE_DIR, "logs", "django_warnings.log"),
+            "formatter": "verbose",  # use our verbose formatter
+        },
+    },
+    "loggers": {
+        "": {
+            "handlers": ["file"],
+            "level": "WARNING",
+            "propagate": False,  # don’t pass logs to parent loggers
+        },
+    },
+}

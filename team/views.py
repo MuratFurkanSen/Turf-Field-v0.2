@@ -20,17 +20,19 @@ def team_main(request, pk):
             'top': str(member_position['top']).replace(',', '.'),
             'left': str(member_position['left']).replace(',', '.'),
             'color': member_position['color'],
-
         }))
+
     payment_reservations = Reservation.objects.filter(belonged_team=team)
     payment_reservations_intervals = []
+    payment_reservations_dates = []
     for payment_reservation in payment_reservations:
         payment_reservations_intervals.append(
             f'{str(payment_reservation.start_hour).zfill(2)}.00-{str(payment_reservation.start_hour + 1).zfill(2)}.00')
+        payment_reservations_dates.append(payment_reservation.date)
     context = {'players': players,
                'player_positions': member_positions,
                'player_position_zip': players_position_zip,
-               'payment_reservations': zip(payment_reservations, payment_reservations_intervals), }
+               'payment_reservations': zip(payment_reservations, payment_reservations_intervals, payment_reservations_dates),}
     return render(request, 'team_main.html', context)
 
 
@@ -120,6 +122,7 @@ def send_invite(request, team_pk):
 
 
 def accept_invite(request, invite_pk):
+
     invite = TeamInvite.objects.filter(pk=invite_pk)
     if not invite.exists():
         return HttpResponseForbidden('Fuck OFF')
@@ -147,7 +150,6 @@ def send_member_positions(request, team_pk):
     team = Team.objects.get(pk=team_pk)
     if request.user.profile not in team.members.all():
         return HttpResponseForbidden('Fuck OFF')
-    print(team.member_positions)
     return JsonResponse({'success': True, 'playerPositions': team.member_positions})
 
 
