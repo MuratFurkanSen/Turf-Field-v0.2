@@ -94,11 +94,7 @@ def user_logout(request):
 
 @login_required
 def user_profile(request):
-    if request.user.profile.role == 'app_user':
-        curr_profile = AppUserProfile.objects.get(user_id=request.user.id)
-    else:
-        curr_profile = VendorProfile.objects.get(user_id=request.user.id)
-    return render(request, "profileInfo.html", {'user_profile': curr_profile})
+    return render(request, "profileInfo.html", {'user_profile': request.user.profile})
 
 
 @login_required

@@ -1,0 +1,22 @@
+{% load static %}
+<div id="active_reservation" class="active-reservation"
+     data-reservation-pk="{{ reservation.pk }}"
+     data-remaining-cost="{{ reservation.remaining_cost|stringformat:".2f" }}"
+     data-total-cost="{{ reservation.total_cost|stringformat:".2f" }}"
+     data-ower-count="{{ reservation.ower_players.count }}">
+    <div class="reservation-header">
+        <div class="header-right">
+            <div class="cost-badge">
+                <i class="fa fa-check-circle active-icon"></i>
+                <span class="badge-title" title="{{ reservation.reserved_field.belonged_facility.name }}">
+                    {{ reservation.reserved_field.belonged_facility.name }}
+                </span>
+                <span class="badge-sep">•</span>
+                <span class="badge-time">{{ time_interval }}</span>
+                <span class="badge-sep">/</span>
+                <span class="badge-date">{{ date }}</span>
+                <button class="cancel-button" onclick="makePayment(this)">Askıya Al</button>
+            </div>
+        </div>
+    </div>
+</div>

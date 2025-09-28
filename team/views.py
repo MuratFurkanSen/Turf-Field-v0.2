@@ -1,4 +1,5 @@
 import json
+from datetime import timedelta
 
 from django.contrib.auth.models import User
 from django.http import JsonResponse, HttpResponseForbidden
@@ -25,14 +26,22 @@ def team_main(request, pk):
     payment_reservations = Reservation.objects.filter(belonged_team=team)
     payment_reservations_intervals = []
     payment_reservations_dates = []
+    payment_exp_dates = []
     for payment_reservation in payment_reservations:
         payment_reservations_intervals.append(
             f'{str(payment_reservation.start_hour).zfill(2)}.00-{str(payment_reservation.start_hour + 1).zfill(2)}.00')
         payment_reservations_dates.append(payment_reservation.date)
+        payment_exp_dates.append(payment_reservation.creation_date + timedelta(seconds=Reservation.PAYMENT_TIMEOUT))
+
+    payment_reservation_data = zip(payment_reservations,
+                                   payment_reservations_intervals,
+                                   payment_reservations_dates,
+                                   payment_exp_dates)
     context = {'players': players,
                'player_positions': member_positions,
                'player_position_zip': players_position_zip,
-               'payment_reservations': zip(payment_reservations, payment_reservations_intervals, payment_reservations_dates),}
+               'payment_reservation_data': payment_reservation_data,
+               }
     return render(request, 'team_main.html', context)
 
 

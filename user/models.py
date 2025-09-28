@@ -23,7 +23,7 @@ class AppUserProfile(BaseProfile):
     profile_picture = models.ImageField(upload_to='app_user_profile_pics/',
                                         default='app_user_profile_pics/Default User Profile Male.png')
     skills = models.OneToOneField('UserSkillSet', on_delete=models.CASCADE, related_name='skills')
-    wallet_balance = models.IntegerField(default=0)
+    wallet_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     friends = models.ManyToManyField(User, related_name='friends')
     position = models.CharField(max_length=50, blank=True)
 
@@ -96,5 +96,5 @@ class UserSkillSet(models.Model):
 class Transaction(models.Model):
     user_profile = models.ForeignKey(AppUserProfile, on_delete=models.CASCADE, related_name='transactions')
     type = models.CharField(max_length=20)
-    amount = models.IntegerField()
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)

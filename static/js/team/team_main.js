@@ -115,7 +115,7 @@ function savePositions() {
 
 function toggleSelection(element) {
     const currentReservation = element.closest('#payment_reservation');
-    
+
     // Reset all other reservation cards
     document.querySelectorAll('#payment_reservation').forEach(card => {
         if (card !== currentReservation) {
@@ -127,7 +127,7 @@ function toggleSelection(element) {
             updateSelectionAndTotals(card);
         }
     });
-    
+
     // Toggle current selection
     element.classList.toggle('selected');
     updateSelectionAndTotals(currentReservation);
@@ -145,9 +145,8 @@ function updateSelectionAndTotals(reservationCard) {
     const owerCount = parseInt(reservationCard.dataset.owerCount || '1');
     const perPerson = owerCount > 0 ? remaining / owerCount : 0;
     const totalToPay = perPerson * selectedPlayers.length;
-
     const totalElement = reservationCard.querySelector('.selectedTotal');
-    if (totalElement) totalElement.textContent = (Math.round(totalToPay * 100) / 100).toString();
+    if (totalElement) totalElement.textContent = (Math.round(totalToPay * 100) / 100).toFixed(2);
 }
 
 // Initialize drag functionality for player cards
@@ -201,6 +200,25 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize counters/totals for any pre-rendered reservations
     document.querySelectorAll('#payment_reservation').forEach(card => updateSelectionAndTotals(card));
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    let counters = document.querySelectorAll('.badge-counter');
+    counters.forEach(counter => {
+        let card = counter.closest('.payment-reservation');
+        let time_left = (new Date(card.dataset.expDate) - new Date());
+        let time_left_seconds = Math.floor(time_left / 1000);
+        let counter_interval = setInterval(() => {
+            let minutes = Math.floor(time_left_seconds / 60);
+            let seconds = time_left_seconds % 60;
+            counter.innerText = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+            time_left_seconds -= 1
+            if (time_left_seconds <0) {
+                clearInterval(counter_interval)
+                window.location.reload();
+            }
+        }, 1000);
+    })
+})
 
 document.querySelectorAll('.player-card').forEach(card => {
     card.addEventListener('dragstart', (e) => {
@@ -295,7 +313,6 @@ function capturePreview() {
 }
 
 
-
 // Helper function to get CSRF token
 function getCookie(name) {
     let cookieValue = null;
@@ -361,35 +378,54 @@ function resetPositions() {
     }
 }
 
-async function makePayment(card){
+async function makePayment(button) {
     let csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value
-    let reservation_id = card.dataset['reservation_pk'];
+    let card = button.closest('.payment-reservation');
+    let reservation_id = parseInt(card.dataset['reservationPk']);
     let selectedPlayers = card.querySelectorAll('.selected')
     let selectedPlayerIDs = [];
     selectedPlayers.forEach((player) => {
-       selectedPlayerIDs.add(player.dataset['player_pk']);
+        let player_pk = parseInt(player.dataset['player_pk']);
+        if (isNaN(player_pk)) {
+            alert('Ödeme Yapılırken bir Hata Oluştu. 1');
+            return;
+        }
+        selectedPlayerIDs.push(player_pk);
     });
+
+    if (isNaN(reservation_id)) {
+        alert('Ödeme Yapılırken bir Hata Oluştu. 2');
+        return;
+    }
+
     let resp = await fetch('/reservation/make_payment/', {
-        method:"POST",
-        headers:{
+        method: "POST",
+        headers: {
             "Content-Type": "application/json",
             "X-CSRFToken": csrfToken,
         },
         body: JSON.stringify({
-            "reservation_pk":reservation_id,
-            "selected_player_pks":selectedPlayerIDs,
+            "reservation_pk": reservation_id,
+            "selected_player_pks": selectedPlayerIDs,
         }),
     });
-    if (!resp.ok){
+    if (!resp.ok) {
         alert('Ödeme Yapılırken bir hata oluştu.');
+        return;
     }
     let data = await resp.json();
-    if (!data.success){
+    if (!data.success) {
         alert('Ödeme Yapılırken bir hata oluştu.');
+        return;
     }
     let status = data["status"];
-    if (status === "Insufficient Balance"){
+    if (status === "Insufficient Funds") {
         alert("Yeterli Bakiyeniz Yok");
+        return;
+    }
+    if (status === "Complete") {
+        alert("İşlem Başarılı")
+        window.location.reload();
     }
 
 }

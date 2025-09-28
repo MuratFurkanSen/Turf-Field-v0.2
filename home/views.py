@@ -29,7 +29,9 @@ def player_card(request):
 
 
 def wallet(request):
-    return render(request, 'wallet.html')
+    transactions = Transaction.objects.all().order_by('-date')
+    context = {'transactions': transactions}
+    return render(request, 'wallet.html', context)
 
 
 def load_balance(request):
@@ -41,7 +43,7 @@ def load_balance(request):
         cvv = request.POST.get('cvv')
         if make_transaction(card_holder_name, card_number, amount, exp_date, cvv):
             Transaction.objects.create(user_profile=request.user.profile,
-                                       type="Yükleme",
+                                       type="Load",
                                        amount=amount)
 
             request.user.profile.wallet_balance += int(amount)

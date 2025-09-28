@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -5,7 +6,6 @@ from facility.forms import FacilityCreationForm
 from facility.models import Facility
 from field.forms import FieldCreationForm
 from field.models import Field
-from user.models import VendorProfile
 
 
 # Create your views here.
@@ -14,7 +14,7 @@ def facility_home(request):
 
 
 def facility_profile(request):
-    curr_user_profile = VendorProfile.objects.get(user_id=request.user.id)
+    curr_user_profile = User.objects.get(user_id=request.user.id).profile
     return render(request, 'facilityInfo.html', {'curr_user_profile': curr_user_profile})
 
 

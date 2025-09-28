@@ -187,7 +187,7 @@ body {
 }
 
 .player-item.selected img {
-    border: 3px solid #003366;
+    border: 3px solid #76FFCC;
     box-shadow: 0 0 15px rgba(0, 51, 102, 0.4);
     transform: scale(1.05);
 }
@@ -269,17 +269,6 @@ button.next {
 .ana-div::-webkit-scrollbar-thumb {
     background-color: #4CAF50;
     border-radius: 4px;
-}
-
-/* Smoothly divided reservation cards */
-.payment-reservation {
-    background: rgba(255,255,255,0.6);
-    border: 1px solid #d9efe0;
-    border-left: 3px solid #28a745;
-    border-radius: 10px;
-    padding: 14px;
-    margin: 14px 0;
-    box-shadow: none;
 }
 
 .ikinci-div {
@@ -728,10 +717,15 @@ button.next {
 .reservation-header {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: flex-start;
     gap: 8px;
     flex-wrap: wrap;
     max-width: 100%;
+    width: 100%;
+}
+
+.reservation-header .header-right {
+    width: 100%;
 }
 
 .reservation-header .header-left {
@@ -1043,4 +1037,66 @@ button.next {
 .save-button:hover, .reset-button:hover {
     transform: scale(1.05);
     transition: transform 0.2s ease;
+}
+
+.active-icon {
+    color: #28a745;
+    font-size: 1.3rem;
+}
+.payment-icon {
+    color: #8B4000;
+    font-size: 1.3rem;
+}
+
+.cancel-button{
+    padding: 8px 16px;
+    background-color: #Dec677;
+    color: white;
+    border: none;
+    border-radius: 13px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: auto;
+    white-space: nowrap;
+
+}
+.active-reservation {
+    background: rgba(255,255,255,0.6);
+    border: 1px solid #d9efe0;
+    border-left: 3px solid #28a745;
+    border-radius: 10px;
+    padding: 14px;
+    margin: 14px 0;
+    box-shadow: none;
+}
+.payment-reservation {
+    background: rgba(255,180,120,0.7);
+    border: 1px solid #d9efe0;
+    border-left: 3px solid #28a745;
+    border-radius: 10px;
+    padding: 14px;
+    margin: 14px 0;
+    box-shadow: none;
+}
+
+.cost-badge .badge-counter {
+    font-weight: 600;
+    font-size: 12px;
+    margin-left: auto;
+}
+/* Rounded bubble counter */
+.badge-counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 9999px;
+    background-color: #dc5545; /* red bubble */
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }

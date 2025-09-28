@@ -13,7 +13,7 @@
         <img src="{% static 'images/line.png' %}" alt="Line" class="divider-image">
         <div class="right-div">
             <div class="bekleyen-rezervasyonlar">
-                <h2>Bekleyen Rezervasyonlar</h2>
+                <h2>Güncel Rezervasyonlar</h2>
             </div>
             <!--
             Could have open it later
@@ -26,57 +26,12 @@
             </div>
             -->
             <div class="ana-div">
-                {% for reservation, time_interval,date in payment_reservations %}
-                    <div id="payment_reservation" class="payment-reservation"
-                         data-reservation-pk="{{ reservation.pk }}"
-                         data-remaining-cost="{{ reservation.remaining_cost }}"
-                         data-total-cost="{{ reservation.total_cost }}"
-                         data-ower-count="{{ reservation.ower_players.count }}">
-                        <div class="reservation-header">
-                            <div class="header-right">
-                                <div class="cost-badge">
-                                    <span class="badge-title"
-                                          title="{{ reservation.reserved_field.name }}">{{ reservation.reserved_field.name }}</span>
-                                    <span class="badge-sep">•</span>
-                                    <span class="badge-time">{{ time_interval }}</span>
-                                    <span class="badge-sep">/</span>
-                                    <span class="badge-date">{{ date }}</span>
-                                    <span class="badge-sep">|</span>
-                                    <span class="badge-amount"><span
-                                            class="remain">{{ reservation.remaining_cost }}</span>/<span
-                                            class="total">{{ reservation.total_cost }}</span> TL</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div id="test" class="ikinci-div">
-                            <h3>Ödeme Bekleyenler</h3>
-                            <div class="slider">
-                                <div class="slides">
-                                    <div class="slide">
-                                        {% for ower_player in reservation.ower_players.all %}
-                                            <div class="player-item" data-player_pk="{{ ower_player.pk }}"
-                                                 onclick="toggleSelection(this)">
-                                                <img src="{{ ower_player.profile_picture.url }}"
-                                                     alt="{{ ower_player.user.username }}">
-                                                <span class="player-name">{{ ower_player.user.username }}</span>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="selection-counter">
-                            <div class="counter-left">
-                                <span class="selectedCount">0</span> Kişi Seçildi
-                            </div>
-                            <div class="counter-right">
-                                <span>Toplam Ödeme: <strong class="selectedTotal">0</strong> TL</span>
-                            </div>
-                            <div class="counter-payment">
-                                <button class="payment-button">Ödeme Yap</button>
-                            </div>
-                        </div>
-                    </div>
+                {% for reservation, time_interval,date,exp_date in payment_reservation_data %}
+                    {% if reservation.status == 'payment' %}
+                        {% include 'particles/payment_reservation.html' %}
+                    {% elif reservation.status == 'active' %}
+                        {% include 'particles/active_reservation.html' %}
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -98,7 +53,7 @@
                     {% for player,position in player_position_zip %}
                         {% if position.top == "-1" or position.left == "-1" %}
                             <div class="player-card" draggable="true" data-id="{{ player.id }}">
-                                <img src="{{ player.profile_picture.url }}" alt="Kapkap">
+                                <img src="{{ player.profile_picture.url }}" alt="playerPicture">
                                 <p>{{ player.user.username }}</p>
                                 <div class="color-buttons">
                                     <button onclick="changeColor(this, 'red')" class="color-button red"></button>

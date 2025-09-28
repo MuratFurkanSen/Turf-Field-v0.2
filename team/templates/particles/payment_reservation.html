@@ -1,0 +1,55 @@
+{% load static %}
+<div id="payment_reservation" class="payment-reservation"
+     data-reservation-pk="{{ reservation.pk }}"
+     data-remaining-cost="{{ reservation.remaining_cost|stringformat:".2f" }}"
+     data-total-cost="{{ reservation.total_cost|stringformat:".2f" }}"
+     data-exp-date="{{ exp_date|date:'c'}}"
+     data-ower-count="{{ reservation.ower_players.count }}">
+    <div class="reservation-header">
+        <div class="header-right">
+            <div class="cost-badge">
+                <i class="fa fa-hourglass-half payment-icon"></i>
+                <span class="badge-title" title="{{ reservation.reserved_field.belonged_facility.name }}">
+                    {{ reservation.reserved_field.belonged_facility.name }}
+                </span>
+                <span class="badge-sep">•</span>
+                <span class="badge-time">{{ time_interval }}</span>
+                <span class="badge-sep">/</span>
+                <span class="badge-date">{{ date }}</span>
+                <span class="badge-sep">|</span>
+                <span class="badge-amount"><span
+                        class="remain">{{ reservation.remaining_cost }}</span>/<span
+                        class="total">{{ reservation.total_cost }}</span> TL</span>
+                <span class="badge-counter">--:--</span>
+            </div>
+        </div>
+    </div>
+    <div id="test" class="ikinci-div">
+        <h3>Ödeme Beklenenler</h3>
+        <div class="slider">
+            <div class="slides">
+                <div class="slide">
+                    {% for ower_player in reservation.ower_players.all %}
+                        <div class="player-item" data-player_pk="{{ ower_player.user.pk }}"
+                             onclick="toggleSelection(this)">
+                            <img src="{{ ower_player.profile_picture.url }}"
+                                 alt="{{ ower_player.user.username }}">
+                            <span class="player-name">{{ ower_player.user.username }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="selection-counter">
+        <div class="counter-left">
+            <span class="selectedCount">0</span> Kişi Seçildi
+        </div>
+        <div class="counter-right">
+            <span>Toplam Ödeme: <strong class="selectedTotal">0</strong> TL</span>
+        </div>
+        <div class="counter-payment">
+            <button class="payment-button" onclick="makePayment(this)">Ödeme Yap</button>
+        </div>
+    </div>
+</div>

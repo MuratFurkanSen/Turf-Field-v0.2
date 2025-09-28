@@ -36,10 +36,15 @@
                             </div>
                             <div class="modal-body">
                                 <div class="transaction-list">
-                                    {% for transaction in user.profile.transactions.all %}
+                                    {% for transaction in transactions %}
                                     <div class="transaction-item">
                                         <div class="transaction-info">
-                                            <span class="transaction-type">{{ transaction.type }}</span>
+                                            <span class="transaction-type">
+                                                {% if transaction.type == "Load" %}Yükleme
+                                                {% elif transaction.type == "Expense" %}Harcama
+                                                {% elif transaction.type == "Refund" %}İade
+                                                {% endif %}
+                                            </span>
                                             <span class="transaction-date">{{ transaction.date|date:"d.m.Y H:i" }}</span>
                                         </div>
                                         <div class="transaction-amount {% if transaction.amount > 0 %}positive{% else %}negative{% endif %}">

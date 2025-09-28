@@ -116,7 +116,6 @@ LANGUAGE_CODE = 'tr-tr'
 
 TIME_ZONE = 'Europe/Istanbul'
 
-
 USE_I18N = True
 
 USE_TZ = True
@@ -184,3 +183,11 @@ LOGGING = {
         },
     },
 }
+
+# Celery Config
+CELERY_BROKER_URL = "redis://localhost:6379/0"  # Redis broker
+CELERY_RESULT_BACKEND = "redis://localhost:6379/0"  # optional: store results
+CELERY_ACCEPT_CONTENT = ["json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = "Europe/Istanbul"  # matches your project
