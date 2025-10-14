@@ -12,7 +12,7 @@ class Team(models.Model):
     captain = models.ForeignKey(AppUserProfile, on_delete=models.PROTECT, related_name='captain')
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
-    member_positions = models.JSONField(default=list)
+    member_positions = models.JSONField(default=dict)
 
 
 class TeamJoinRequest(models.Model):

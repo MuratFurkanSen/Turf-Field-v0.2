@@ -63,7 +63,47 @@
                         {% endif %}
                     {% endfor %}
                 </div>
+
+                {% if team_join_requests %}
+                    <!-- Team Invites Section -->
+                    <div class="team-invites-section">
+                        <h4>Gelen Katılma İstekleri</h4>
+                        <div class="received-invites">
+                            {% for join_request in team_join_requests %}
+                                <div class="invite-item">
+                                    <div class="invite-info">
+                                        <div class="invite-team-name">
+                                            <i class="fas fa-users"></i>
+                                            <span>{{ join_request.sender.name }}</span>
+                                        </div>
+                                        <div class="invite-meta">
+                                    <span>
+                                        <i class="fas fa-user-friends"></i>
+                                        {{ join_request.team.members.count }} Oyuncu
+                                    </span>
+                                            <span>
+                                        <i class="fas fa-crown"></i>
+                                        {{ join_request.team.captain.user.username }}
+                                    </span>
+                                        </div>
+                                    </div>
+                                    <div class="invite-actions">
+                                        <button class="accept-invite-btn" onclick="acceptJoinRequest(this)" data-request-id="{{ join_request.pk }}">
+                                            <i class="fas fa-check"></i>
+                                            Kabul Et
+                                        </button>
+                                        <button class="decline-invite-btn" onclick="rejectJoinRequest(this)" data-request-id="{{ join_request.pk }}">
+                                            <i class="fas fa-times"></i>
+                                            Reddet
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
             </div>
+
             <div id="layout" class="popup-right" ondragover="allowDrop(event)" ondrop="drop(event)"
                  data-bg-image="{% static 'images/acikksaha.png' %}">
                 {% for player,position in player_position_zip %}

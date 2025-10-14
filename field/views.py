@@ -11,7 +11,6 @@ from django.template.loader import render_to_string
 from facility.models import Facility
 from field.models import Field, ReservationHour
 from reservation.models import Reservation
-from team.models import Team
 
 
 # Create your views here.

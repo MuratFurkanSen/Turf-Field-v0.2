@@ -227,7 +227,7 @@ async function loadFacilityCards() {
                     alert("Rezervayon yapılırken bir hata oluştu.");
                     return;
                 }
-                window.href = "/reservation"
+                window.location.reload()
             });
         }
 

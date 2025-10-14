@@ -2,6 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 import user
+from reservation.tasks import reservation_start_time_arrival
 from user.forms import UserRegistrationForm, UserLoginForm, VendorRegistrationForm
 from user.models import Transaction
 
@@ -59,4 +60,5 @@ def make_transaction(card_holder_name, card_number, amount, exp_date, cvv):
 
 
 def test(request):
-    return render(request, 'fields_home.html', {})
+    reservation_start_time_arrival(3)
+    return redirect('/')

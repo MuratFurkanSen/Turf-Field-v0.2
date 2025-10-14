@@ -37,10 +37,13 @@ def team_main(request, pk):
                                    payment_reservations_intervals,
                                    payment_reservations_dates,
                                    payment_exp_dates)
+    team_join_requests = team.incoming_requests.all()
+
     context = {'players': players,
                'player_positions': member_positions,
                'player_position_zip': players_position_zip,
                'payment_reservation_data': payment_reservation_data,
+               'team_join_requests': team_join_requests,
                }
     return render(request, 'team_main.html', context)
 
@@ -112,11 +115,39 @@ def send_join_request(request, team_pk):
     )
     return JsonResponse({'success': True})
 
+def accept_join_request(request, request_pk):
+    join_request = TeamJoinRequest.objects.filter(pk=request_pk)
+    if not join_request.exists():
+        return HttpResponseForbidden('Fuck OFF')
+    join_request = join_request.first()
+    if request.user.profile != join_request.team.captain:
+        return HttpResponseForbidden('Fuck OFF')
+    for reservation in join_request.team.reservations.all():
+        if reservation.status == 'payment':
+            return JsonResponse({'success': False, 'message': 'Ödeme işlemi varken takıma üye eklenemez.'})
+
+    join_request.team.members.add(join_request.sender)
+    join_request.delete()
+    return JsonResponse({'success': True})
+
+def decline_join_request(request, request_pk):
+    join_request = TeamJoinRequest.objects.filter(pk=request_pk)
+    if not join_request.exists():
+        return HttpResponseForbidden('Fuck OFF')
+    join_request = join_request.first()
+    if request.user.profile != join_request.team.captain:
+        return HttpResponseForbidden('Fuck OFF')
+    join_request.delete()
+    return JsonResponse({'success': True})
+
 
 def send_invite(request, team_pk):
     team = Team.objects.get(pk=team_pk)
     if not team.captain == request.user.profile:
         return JsonResponse({'success': False, 'error': 'Takıma birini davet edebilmek için kaptan olmalısınız!!!'})
+    for reservation in team.reservations.all():
+        if reservation.status == 'payment':
+            return JsonResponse({'success': False, 'error': 'Takıma üye alabilmek için ilk önce bütün ödemeler tamamlanmalı veya iptal edilmeli!!!'})
     data = json.loads(request.body.decode('utf-8'))
     recipient = data['username']
     recipient = User.objects.filter(username__exact=recipient)
@@ -131,13 +162,15 @@ def send_invite(request, team_pk):
 
 
 def accept_invite(request, invite_pk):
-
     invite = TeamInvite.objects.filter(pk=invite_pk)
     if not invite.exists():
         return HttpResponseForbidden('Fuck OFF')
     invite = invite.first()
     if request.user.profile != invite.recipient:
         return HttpResponseForbidden('Fuck OFF')
+    for reservation in invite.team.reservations.all():
+        if reservation.status == 'payment':
+            return JsonResponse({'success': False, 'message': 'Ödeme işlemi varken takıma üye eklenemez.'})
 
     invite.team.members.add(invite.recipient)
     invite.delete()

@@ -1,25 +1,3 @@
-let slideIndex = 0;
-
-// İlk slide'ı göster
-showSlides();
-
-function showSlides() {
-    const slides = document.querySelector('.slides');
-    const totalSlides = slides.children.length;
-    if (slideIndex >= totalSlides) {
-        slideIndex = 0;
-    }
-    if (slideIndex < 0) {
-        slideIndex = totalSlides - 1;
-    }
-    slides.style.transform = `translateX(${-slideIndex * 100}%)`;
-}
-
-function changeSlide(n) {
-    slideIndex += n;
-    showSlides();
-}
-
 function openPopup() {
     const popup = document.getElementById("editPopup");
     popup.classList.remove('hide');
@@ -428,4 +406,103 @@ async function makePayment(button) {
         window.location.reload();
     }
 
+}
+
+async function requestCancelReservation(button){
+    const card = button.closest('.payment-reservation');
+    const reservationId = card ? card.dataset['reservationPk'] : undefined;
+    console.log("Damn 1");
+    if (confirm('Rezervasyonu iptal etmek istediğinize emin misiniz?')){
+        console.log("Damn 2");
+        let resp = await fetch('/reservation/manuel_timeout/', {
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+               'reservation_pk': reservationId,
+            }),
+        });
+        console.log("Damn 3");
+        if (!resp.ok){
+            alert('İptal işlemi sırasında bir hata oluştu');
+            return;
+        }
+        let data = await resp.json();
+        if (!data.success) {
+            alert(data.message ? data.message: 'İptal İşlemi Sırasında Bir Hata Oluştu');
+            return;
+        }
+        alert('İptal Başarı ile gerçekleştirildi');
+        window.location.reload();
+    }
+}
+
+
+async function putReservationOnHold(button){
+    const card = button.closest('.active-reservation');
+    const reservationId = card ? card.dataset['reservationPk'] : undefined;
+    if (confirm('Rezervasyonu askıya almak etmek istediğinize emin misiniz?')){
+        let resp = await fetch('/reservation/put_on_hold/', {
+            method: 'POST',
+            headers:{
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+               'reservation_pk': reservationId,
+            }),
+        });
+        if (!resp.ok){
+            alert('İptal işlemi sırasında bir hata oluştu');
+            return;
+        }
+        let data = await resp.json();
+        if (!data.success) {
+            alert(data.message ? data.message: 'Askıya Alma İşlemi Sırasında Bir Hata Oluştu');
+            return;
+        }
+        alert('Aslıya Alma Başarı ile gerçekleştirildi');
+        window.location.reload();
+    }
+}
+
+async function acceptJoinRequest(button){
+    let request_id  = button.dataset['requestId']
+    let resp = fetch(`/team/join/accept/${request_id}/`, {
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+    });
+    if (!resp.ok){
+        return alert('İstek kabul edilirken bir hata oluştu...')
+    }
+    let data = await resp.json();
+    if (!data.success) {
+        console.log("Dam")
+        return alert(data.message ? data.message:'İstek Kabul Edilirken Bir Hata Oluştu');
+    }
+    window.location.reload();
+
+}
+async function rejectJoinRequest(button){
+    let request_id  = button.dataset['requestId']
+    let resp = fetch(`/team/join/deny/${request_id}/`, {
+        method: 'POST',
+        headers:{
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+    });
+    if (!resp.ok){
+        return alert('İstek red edilirken bir hata oluştu...')
+    }
+    let data = await resp.json();
+    if (!data.success) {
+        return alert(data.message ? data.message:'İstek red Edilirken Bir Hata Oluştu');
+    }
+    window.location.reload();
 }

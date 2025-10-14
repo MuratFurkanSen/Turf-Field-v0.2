@@ -15,14 +15,15 @@ class BaseProfile(PolymorphicModel):
     )
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
     full_name = models.CharField(max_length=50)
-    phone_number = models.CharField(max_length=50, unique=True)
+    phone_number = models.CharField(max_length=50)
 
 
 class AppUserProfile(BaseProfile):
     birth_date = models.DateField()
     profile_picture = models.ImageField(upload_to='app_user_profile_pics/',
                                         default='app_user_profile_pics/Default User Profile Male.png')
-    skills = models.OneToOneField('UserSkillSet', on_delete=models.CASCADE, related_name='skills')
+    skills = models.OneToOneField('UserSkillSet', on_delete=models.CASCADE, related_name='profile', blank=True,
+                                  null=True)
     wallet_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     friends = models.ManyToManyField(User, related_name='friends')
     position = models.CharField(max_length=50, blank=True)
@@ -31,41 +32,43 @@ class AppUserProfile(BaseProfile):
 class VendorProfile(BaseProfile):
     profile_picture = models.ImageField(upload_to='vendor_profile_pics/',
                                         default='vendor_profile_pics/Default Vendor Profile.png')
+    wallet_balance = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
 
 class UserSkillSet(models.Model):
-    user_profile = models.OneToOneField(AppUserProfile, on_delete=models.CASCADE, related_name='skill_set', blank=True,
-                                        null=True)
+    voter_count = models.IntegerField(default=1)
+
     # Pace Fields
-    sprint_speed = models.IntegerField(default=SKILL_DEFAULT_VALUE)
+    acceleration = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    sprint_speed = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
 
     # Shooting Fields
-    attack_position = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    finishing = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    shot_power = models.IntegerField(default=SKILL_DEFAULT_VALUE)
+    attack_position = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    finishing = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    shot_power = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
 
     # Passing Fields
-    vision = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    short_pass = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    long_pass = models.IntegerField(default=SKILL_DEFAULT_VALUE)
+    vision = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    short_pass = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    long_pass = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
 
     # Dribbling Fields
-    agility = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    ball_control = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    dribble = models.IntegerField(default=SKILL_DEFAULT_VALUE)
+    agility = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    ball_control = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    dribble = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
 
     # Defense Fields
-    def_awareness = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    interceptions = models.IntegerField(default=SKILL_DEFAULT_VALUE)
+    def_awareness = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    interceptions = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
 
     # Physics Fields
-    stamina = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    strength = models.IntegerField(default=SKILL_DEFAULT_VALUE)
-    aggression = models.IntegerField(default=SKILL_DEFAULT_VALUE)
+    stamina = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
+    strength = models.DecimalField(max_digits=5, decimal_places=2, default=SKILL_DEFAULT_VALUE)
 
     @property
     def pace(self):
-        return self.sprint_speed
+        skills = [self.acceleration, self.sprint_speed]
+        return int(sum(skills) / len(skills))
 
     @property
     def shooting(self):
@@ -89,8 +92,48 @@ class UserSkillSet(models.Model):
 
     @property
     def physics(self):
-        skills = [self.stamina, self.strength, self.aggression]
+        skills = [self.stamina, self.strength]
         return int(sum(skills) / len(skills))
+
+    def update_values(self, skills):
+        for skill, value in skills.items():
+            match skill:
+                case 'acceleration':
+                    self.acceleration = self.calculate_new_skill_value(self.acceleration, value)
+                case 'sprint_speed':
+                    self.sprint_speed = self.calculate_new_skill_value(self.sprint_speed, value)
+                case 'attack_position':
+                    self.attack_position = self.calculate_new_skill_value(self.attack_position, value)
+                case 'finishing':
+                    self.finishing = self.calculate_new_skill_value(self.finishing, value)
+                case 'shot_power':
+                    self.shot_power = self.calculate_new_skill_value(self.shot_power, value)
+                case 'vision':
+                    self.vision = self.calculate_new_skill_value(self.vision, value)
+                case 'short_pass':
+                    self.short_pass = self.calculate_new_skill_value(self.short_pass, value)
+                case 'long_pass':
+                    self.long_pass = self.calculate_new_skill_value(self.long_pass, value)
+                case 'agility':
+                    self.agility = self.calculate_new_skill_value(self.agility, value)
+                case 'ball_control':
+                    self.ball_control = self.calculate_new_skill_value(self.ball_control, value)
+                case 'dribble':
+                    self.dribble = self.calculate_new_skill_value(self.dribble, value)
+                case 'def_awareness':
+                    self.def_awareness = self.calculate_new_skill_value(self.def_awareness, value)
+                case 'interceptions':
+                    self.interceptions = self.calculate_new_skill_value(self.interceptions, value)
+                case 'stamina':
+                    self.stamina = self.calculate_new_skill_value(self.stamina, value)
+                case 'strength':
+                    self.strength = self.calculate_new_skill_value(self.strength, value)
+                case _:
+                    raise KeyError
+            self.voter_count += 1
+
+    def calculate_new_skill_value(self, old_values, new_value):
+        return ((old_values * self.voter_count) + new_value) / (self.voter_count + 1)
 
 
 class Transaction(models.Model):

@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 
 from django.contrib.auth.models import User
@@ -13,19 +14,19 @@ from user.models import AppUserProfile, Transaction
 # Create your models here.
 
 class Reservation(models.Model):
-    PAYMENT_TIMEOUT = 30  # Seconds
+    PAYMENT_TIMEOUT = 600  # Seconds
     STATUS_CHOICES = (
         ('active', 'active'),
         ('payment', 'payment-pending'),
-        ('review', 'review'),
         ('past','completed'),
         ('on_hold', 'on-hold'),
         ('cancelled', 'cancelled'),
         ('timeout', 'payment-timeout'),
     )
 
-    belonged_team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True)
+    belonged_team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, related_name='reservations')
     reserved_field = models.ForeignKey(Field, on_delete=models.CASCADE)
+    hour_slot = models.ForeignKey(ReservationHour, on_delete=models.SET_NULL, null=True, related_name='reservations')
 
     creation_date = models.DateTimeField(auto_now_add=True)
     date = models.DateField()
@@ -35,6 +36,8 @@ class Reservation(models.Model):
     total_cost = models.DecimalField(max_digits=10, decimal_places=2)
     ower_players = models.ManyToManyField(AppUserProfile, related_name='owed_reservations')
     paid_users = models.JSONField(default=dict, blank=True)
+
+    review_pending_users = models.JSONField(default=dict, blank=True)
 
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
 
@@ -51,6 +54,11 @@ class Reservation(models.Model):
 @receiver(post_save, sender=Reservation)
 def schedule_payment_timeout(sender, instance, created, **kwargs):
     if created:
-        from .tasks import payment_timeout
+        from .tasks import payment_timeout, reservation_start_time_arrival
         payment_timeout.apply_async((instance.id,), countdown=Reservation.PAYMENT_TIMEOUT)
+        start_time = datetime(year=instance.date.year,
+                              month=instance.date.month,
+                              day=instance.date.day,
+                              hour=instance.start_hour,)
+        reservation_start_time_arrival.apply_async((instance.id,), eta=start_time)
 

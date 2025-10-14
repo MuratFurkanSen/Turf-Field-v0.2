@@ -11,6 +11,7 @@ class Field(models.Model):
     picture = models.ImageField(upload_to='field_pics', default='field_pics/Default Field Picture.png')
     schedule_hours = models.JSONField(default=dict)
     default_price = models.DecimalField(max_digits=10, decimal_places=2)
+    deposit_fee = models.DecimalField(max_digits=10, decimal_places=2)
 
 class ReservationHour(models.Model):
     field = models.ForeignKey(Field, on_delete=models.CASCADE, related_name='reservation_hours')

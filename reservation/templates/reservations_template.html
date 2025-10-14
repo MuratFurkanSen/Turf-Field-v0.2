@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% extends 'base.html' %}
 {% load static %}
     {% block extraCSS %}
         <link rel="stylesheet" href="{% static 'css/reservations.css' %}">
@@ -23,6 +24,18 @@
             <h3>Şahlanlar Hali Sa.</h3>
             <div class="separator"></div>
             <h3>19.00-20.00</h3>
+            <div class="separator"></div>
+            <h3>Takım Adı</h3>
+        </div>
+        <button class="cancel-button">İptal Talebi</button>
+    </div>
+
+    <div class="reservation-item payment-timeout">
+        <div class="left-content">
+            <img src="{% static 'images/placeholder.png' %}" alt="Field Image" class="field-image">
+            <h3>Şahlanlar Hali Sa.</h3>
+            <div class="separator"></div>
+            <h3>19.30-20.30</h3>
             <div class="separator"></div>
             <h3>Takım Adı</h3>
         </div>

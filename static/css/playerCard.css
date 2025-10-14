@@ -55,7 +55,7 @@
 
 .card-stat {
     position: absolute;
-    color: wheat;
+    color: #33953B;
     font-weight: 200;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     transform: translate(-50%, -50%);

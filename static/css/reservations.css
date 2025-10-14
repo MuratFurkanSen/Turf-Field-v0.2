@@ -35,6 +35,11 @@
     color: #4a4a4a;
 }
 
+.payment-timeout {
+    background-color: #fcb09b;
+    color: #4a4a4a;
+}
+
 .on-hold {
     background-color: #ff914d;
     color: #efefef;
@@ -579,6 +584,10 @@
     border-radius: 8px;
     object-fit: cover;
 }
+.staff-eval-player-item.selected img{
+    border: 2px solid #00ff00;
+}
+
 
 .staff-eval-player-name {
     font-size: 12px;

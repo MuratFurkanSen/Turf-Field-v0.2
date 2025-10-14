@@ -6,6 +6,7 @@
      data-exp-date="{{ exp_date|date:'c'}}"
      data-ower-count="{{ reservation.ower_players.count }}">
     <div class="reservation-header">
+        <button class="cancel-x-button" title="Rezervasyonu İptal Et" onclick="requestCancelReservation(this)">×</button>
         <div class="header-right">
             <div class="cost-badge">
                 <i class="fa fa-hourglass-half payment-icon"></i>

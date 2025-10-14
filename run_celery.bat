@@ -1,6 +1,8 @@
 @echo off
-echo Starting Redis...
-start cmd /k "docker run -p 6379:6379 --name redis -d redis"
-
 echo Starting Celery Worker...
 start cmd /k "celery -A TurfField worker -l info -P solo"
+
+echo Starting Celery Bear...
+start cmd /k "celery -A TurfField beat -l info"
+
+echo Celery Initialization Completed
